@@ -1,0 +1,57 @@
+<div
+  class="sky-split-view"
+>
+  <div *ngIf="listVisible"
+    class="sky-split-view-list"
+    [id]="'split-view-list-' + splitViewId"
+    [style.width.px]="listWidth"
+    [@listEnter]
+  >
+    <ng-content
+      select="sky-split-view-list"
+    ></ng-content>
+  </div>
+
+  <input *ngIf="listVisible && !isMobile"
+    class="sky-split-view-resize-handle"
+    role="separator"
+    step="10"
+    type="range"
+    [max]="listWidthMax"
+    [min]="listWidthMin"
+    [style.left.px]="listWidth - 7"
+    [attr.aria-controls]="'split-view-list-' + splitViewId"
+    [attr.aria-label]="'skyux_split_view_resize_handle' | skyLibResources"
+    [attr.aria-valuemax]="listWidthMax"
+    [attr.aria-valuemin]="listWidthMin"
+    [attr.aria-valuenow]="listWidth"
+    [(ngModel)]="listWidth"
+    (change)="onResizeInputChange($event)"
+    (mousedown)="onMouseDown($event)"
+  />
+
+  <div *ngIf="workspaceVisible"
+    class="sky-split-view-workspace"
+    [@workspaceEnter]
+  >
+
+    <div *ngIf="!listVisible"
+      class="sky-split-view-workspace-mobile-header"
+    >
+      <button
+        *ngIf="!listVisible"
+        (click)="onShowListButtonClick()"
+        class="sky-btn sky-btn-link"
+      >
+        <sky-icon
+          icon="chevron-left"
+        ></sky-icon>
+        Back to list
+      </button>
+    </div>
+
+    <ng-content
+      select="sky-split-view-workspace"
+    ></ng-content>
+  </div>
+</div>

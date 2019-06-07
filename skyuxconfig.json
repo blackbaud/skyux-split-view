@@ -1,10 +1,20 @@
 {
-  "name": "my-library",
+  "$schema": "./node_modules/@skyux/config/skyuxconfig-schema.json",
+  "name": "skyux-split-view",
   "mode": "easy",
   "compileMode": "aot",
-  "appSettings": {
-    "myLibrary": {
-      "name": "My Library"
+  "skyuxModules": [
+    "SkyErrorModule"
+  ],
+  "plugins": [
+    "@skyux-sdk/builder-plugin-skyux"
+  ],
+  "testSettings": {
+    "e2e": {
+      "browserSet": "speedy"
+    },
+    "unit": {
+      "browserSet": "paranoid"
     }
   }
 }

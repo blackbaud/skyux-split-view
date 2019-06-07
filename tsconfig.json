@@ -1,6 +1,7 @@
 {
   "extends": "./node_modules/@blackbaud/skyux-builder/tsconfig",
   "compilerOptions": {
+    "experimentalDecorators": true,
     "module": "commonjs"
   },
   "exclude": [

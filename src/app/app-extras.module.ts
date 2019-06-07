@@ -3,16 +3,15 @@ import {
 } from '@angular/core';
 
 import {
-  MyLibraryModule
-} from './public';
+  SkySplitViewModule
+} from './public/modules/split-view';
 
-// Specify entry components, module-level providers, etc. here.
 @NgModule({
   imports: [
-    MyLibraryModule
+    SkySplitViewModule
   ],
   exports: [
-    MyLibraryModule
+    SkySplitViewModule
   ],
   providers: [],
   entryComponents: []

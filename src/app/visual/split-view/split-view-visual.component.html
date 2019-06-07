@@ -1,0 +1,34 @@
+<sky-split-view
+  [messageStream]="splitViewStream"
+>
+  <sky-split-view-list>
+    <h1>Here's a random list and some more words to go to the left...</h1>
+    <ul>
+      <li *ngFor="let item of items"
+        (click)="onItemClick(item)"
+      >
+        {{ item.name }}
+      </li>
+    </ul>
+  </sky-split-view-list>
+
+  <sky-split-view-workspace>
+    <h1>My workspace</h1>
+    <form>
+      <p>
+        <label>
+          Title
+        </label>
+        <input
+          type="text"
+        />
+      </p>
+      <p>
+        <label>
+          Note
+        </label>
+        <textarea></textarea>
+      </p>
+    </form>
+  </sky-split-view-workspace>
+</sky-split-view>
