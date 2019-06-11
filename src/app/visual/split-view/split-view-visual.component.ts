@@ -40,7 +40,7 @@ export class SplitViewVisualComponent {
 
     // Set focus in workspace.
     const message: SkySplitViewMessage = {
-      type: SkySplitViewMessageType.FocusFirstItemInWorkspace
+      type: SkySplitViewMessageType.FocusWorkspace
     };
     this.splitViewStream.next(message);
   }

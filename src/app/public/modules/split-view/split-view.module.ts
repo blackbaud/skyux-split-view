@@ -15,7 +15,7 @@ import {
 } from '@angular/platform-browser/animations';
 
 import {
-  SkyMediaQueryService
+  SkyMediaQueryService, SkyAdapterService
 } from '@skyux/core';
 
 import {
@@ -35,10 +35,6 @@ import {
 } from './split-view-list.component';
 
 import {
-  SkySplitViewAdapterService
-} from './split-view-adapter.service';
-
-import {
   SkySplitViewResourcesModule
 } from '../shared';
 
@@ -49,8 +45,8 @@ import {
     SkySplitViewWorkspaceComponent
   ],
   providers: [
-    SkyMediaQueryService,
-    SkySplitViewAdapterService
+    SkyAdapterService,
+    SkyMediaQueryService
   ],
   imports: [
     BrowserAnimationsModule,

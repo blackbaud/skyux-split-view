@@ -1,3 +1,3 @@
 export enum SkySplitViewMessageType {
-  FocusFirstItemInWorkspace = 0
+  FocusWorkspace = 0
 }

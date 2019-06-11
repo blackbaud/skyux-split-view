@@ -1,18 +1,18 @@
 <div
   class="sky-split-view"
 >
-  <div *ngIf="listVisible"
+  <div *ngIf="isListVisible"
     class="sky-split-view-list"
     [id]="'split-view-list-' + splitViewId"
     [style.width.px]="listWidth"
-    [@listEnter]
   >
+  <!-- [@listEnter] -->
     <ng-content
       select="sky-split-view-list"
     ></ng-content>
   </div>
 
-  <input *ngIf="listVisible && !isMobile"
+  <input *ngIf="isListVisible && !isMobile"
     class="sky-split-view-resize-handle"
     role="separator"
     step="10"
@@ -33,20 +33,22 @@
   <div *ngIf="workspaceVisible"
     class="sky-split-view-workspace"
     [@workspaceEnter]
+    [@.disabled]="!isMobile"
+    (@workspaceEnter.done)="onWorkspaceEnterComplete($event)"
   >
 
-    <div *ngIf="!listVisible"
+    <div *ngIf="!isListVisible"
       class="sky-split-view-workspace-mobile-header"
     >
       <button
-        *ngIf="!listVisible"
+        *ngIf="!isListVisible"
         (click)="onShowListButtonClick()"
         class="sky-btn sky-btn-link"
       >
         <sky-icon
           icon="chevron-left"
         ></sky-icon>
-        Back to list
+        {{ 'skyux_split_view_back_to_list' | skyLibResources }}
       </button>
     </div>
 
