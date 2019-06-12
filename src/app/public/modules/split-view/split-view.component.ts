@@ -7,7 +7,9 @@ import {
   HostListener,
   Input,
   OnDestroy,
-  OnInit
+  OnInit,
+  Output,
+  EventEmitter
 } from '@angular/core';
 
 import {
@@ -55,6 +57,11 @@ let nextId = 0;
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [
     trigger(
+      'blockAnimationOnLoad', [
+        transition(':enter', [])
+      ]
+    ),
+    trigger(
       'listEnter', [
         transition(`void => *`, [
           style({transform: 'translate(-100%)'}),
@@ -73,6 +80,7 @@ let nextId = 0;
   ]
 })
 export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
+
   public appSettings: any;
 
   public splitViewId: string = `sky-split-view-${++nextId}`;
@@ -80,8 +88,20 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
   // Max needs to start as something to allow input range to work.
   // This value is updated as soon as the user takes action.
   public listWidthMax = 9999;
+
   public listWidthMin = 100;
+
   public listWidthDefault = 320;
+
+  public iteratorNextButtonDisabled = false;
+
+  public iteratorPreviousButtonDisabled = false;
+
+  @Output()
+  public iteratorNextButtonClick = new EventEmitter<void>();
+
+  @Output()
+  public iteratorPreviousButtonClick = new EventEmitter<void>();
 
   public set isListVisible(value: boolean) {
     this._listVisible = value;
@@ -169,6 +189,9 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
   public ngOnDestroy(): void {
     this.mediaQueryServiceSubscription.unsubscribe();
 
+    this.iteratorNextButtonClick.complete();
+    this.iteratorPreviousButtonClick.complete();
+
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
   }
@@ -240,6 +263,9 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public onShowListButtonClick() {
+
+    // Prevent if unsaved work?
+
     this.isListVisible = true;
   }
 
@@ -266,6 +292,14 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
         this.adapterService.getFocusableChildrenAndApplyFocus(this.elementRef, 'sky-split-view-workspace');
       }
     }
+  }
+
+  public onIteratorNextButtonClick(): void {
+    this.iteratorNextButtonClick.emit();
+  }
+
+  public onIteratorPreviousButtonClick(): void {
+    this.iteratorPreviousButtonClick.emit();
   }
 
   private setListViewMaxWidth(): void {

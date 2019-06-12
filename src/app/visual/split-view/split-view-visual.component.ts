@@ -45,4 +45,12 @@ export class SplitViewVisualComponent {
     this.splitViewStream.next(message);
   }
 
+  public onIteratorNextButtonClick(): void {
+    console.log('Next button clicked.');
+  }
+
+  public onIteratorPreviousButtonClick(): void {
+    console.log('Previous button clicked.');
+  }
+
 }

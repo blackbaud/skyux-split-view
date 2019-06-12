@@ -1,5 +1,6 @@
 <div
   class="sky-split-view"
+  [@blockAnimationOnLoad]
 >
   <div *ngIf="isListVisible"
     class="sky-split-view-list"
@@ -33,23 +34,32 @@
   <div *ngIf="workspaceVisible"
     class="sky-split-view-workspace"
     [@workspaceEnter]
-    [@.disabled]="!isMobile"
     (@workspaceEnter.done)="onWorkspaceEnterComplete($event)"
   >
 
     <div *ngIf="!isListVisible"
       class="sky-split-view-workspace-mobile-header"
     >
-      <button
-        *ngIf="!isListVisible"
-        (click)="onShowListButtonClick()"
-        class="sky-btn sky-btn-link"
+      <div
+        class="sky-split-view-workspace-mobile-header-content"
       >
-        <sky-icon
-          icon="chevron-left"
-        ></sky-icon>
-        {{ 'skyux_split_view_back_to_list' | skyLibResources }}
-      </button>
+        <button
+          *ngIf="!isListVisible"
+          (click)="onShowListButtonClick()"
+          class="sky-btn sky-btn-link"
+        >
+          <sky-icon
+            icon="chevron-left"
+          ></sky-icon>
+          {{ 'skyux_split_view_back_to_list' | skyLibResources }}
+        </button>
+      </div>
+      <sky-split-view-iterator
+        [nextButtonDisabled]="nextButtonDisabled"
+        [previousButtonDisabled]="previousButtonDisabled"
+        (nextButtonClick)="onIteratorNextButtonClick()"
+        (previousButtonClick)="onIteratorPreviousButtonClick()"
+      ></sky-split-view-iterator>
     </div>
 
     <ng-content

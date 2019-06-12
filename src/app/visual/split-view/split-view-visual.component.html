@@ -1,5 +1,7 @@
 <sky-split-view
   [messageStream]="splitViewStream"
+  (iteratorNextButtonClick)="onIteratorNextButtonClick()"
+  (iteratorPreviousButtonClick)="onIteratorPreviousButtonClick()"
 >
   <sky-split-view-list>
     <h1>Here's a random list and some more words to go to the left...</h1>

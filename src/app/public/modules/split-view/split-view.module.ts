@@ -23,24 +23,29 @@ import {
 } from '@skyux/indicators';
 
 import {
+  SkySplitViewResourcesModule
+} from '../shared';
+
+import {
   SkySplitViewComponent
 } from './split-view.component';
 
 import {
-  SkySplitViewWorkspaceComponent
-} from './split-view-workspace.component';
+  SkySplitViewIteratorComponent
+} from './split-view-iterator.component';
 
 import {
   SkySplitViewListComponent
 } from './split-view-list.component';
 
 import {
-  SkySplitViewResourcesModule
-} from '../shared';
+  SkySplitViewWorkspaceComponent
+} from './split-view-workspace.component';
 
 @NgModule({
   declarations: [
     SkySplitViewComponent,
+    SkySplitViewIteratorComponent,
     SkySplitViewListComponent,
     SkySplitViewWorkspaceComponent
   ],
@@ -57,6 +62,7 @@ import {
   ],
   exports: [
     SkySplitViewComponent,
+    SkySplitViewIteratorComponent,
     SkySplitViewListComponent,
     SkySplitViewWorkspaceComponent
   ]

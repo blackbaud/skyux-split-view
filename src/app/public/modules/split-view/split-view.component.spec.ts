@@ -322,6 +322,38 @@ describe('Split view component', () => {
     //   expect(iframe.style.pointerEvents).toBeFalsy();
     // }));
 
+    it ('should set focus in the workspace when messages are sent to the stream', fakeAsync(() => {
+      // TODO
+    }));
+
+    it ('should disable/enable iterator buttons when messages are sent to the stream', fakeAsync(() => {
+      // TODO
+    }));
+
+    it ('should not show the iterator buttons and back link on larger screens', fakeAsync(() => {
+        // TODO
+    }));
+
+    it ('should show the iterator buttons and back link on smaller screens', fakeAsync(() => {
+      // TODO
+    }));
+
+    it ('should emit when the iterator buttons are clicked', fakeAsync(() => {
+      // TODO
+    }));
+
+    it ('should show the list when the back link is clicked', fakeAsync(() => {
+      // TODO
+    }));
+
+    it ('should convert to responsive mode when the window is resized to xs size', fakeAsync(() => {
+      // TODO
+    }));
+
+    it ('should convert to normal display mode when the window is resized larger than xs size', fakeAsync(() => {
+      // TODO
+    }));
+
     it('should pass accessibility', async(() => {
       fixture.detectChanges();
       expect(fixture.nativeElement).toBeAccessible();

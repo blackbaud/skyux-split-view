@@ -18,8 +18,19 @@
     overflow: scroll;
 
     .sky-split-view-workspace-mobile-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-end;
       border-bottom: 1px solid $sky-border-color-neutral-medium;
       padding: 5px 0;
+
+      .sky-split-view-workspace-mobile-header-content {
+        flex-grow: 1;
+      }
+
+      ::ng-deep .sky-split-view-iterators {
+        margin: 0 5px;
+      }
     }
   }
 
