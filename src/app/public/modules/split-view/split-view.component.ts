@@ -20,7 +20,7 @@ import {
 } from '@angular/animations';
 
 import {
-  SkyAdapterService,
+  SkyCoreAdapterService,
   SkyMediaBreakpoints,
   SkyMediaQueryService
 } from '@skyux/core';
@@ -44,6 +44,7 @@ import 'rxjs/add/operator/takeWhile';
 import 'rxjs/add/observable/fromEvent';
 
 import {
+  SkySplitViewBeforeWorkspaceCloseHandler,
   SkySplitViewMessage,
   SkySplitViewMessageType
 } from './types';
@@ -137,6 +138,9 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public isDragging = false;
 
+  @Output()
+  public beforeWorkspaceClose = new EventEmitter<SkySplitViewBeforeWorkspaceCloseHandler>();
+
   private _listWidth: number;
 
   private xCoord = 0;
@@ -152,7 +156,7 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
   private widthTolerance = 100;
 
   constructor(
-    private adapterService: SkyAdapterService,
+    private adapterService: SkyCoreAdapterService,
     private changeDetectorRef: ChangeDetectorRef,
     private elementRef: ElementRef,
     private mediaQueryService: SkyMediaQueryService
@@ -191,6 +195,7 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.iteratorNextButtonClick.complete();
     this.iteratorPreviousButtonClick.complete();
+    this.beforeWorkspaceClose.complete();
 
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
@@ -264,9 +269,18 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public onShowListButtonClick() {
 
-    // Prevent if unsaved work?
-
-    this.isListVisible = true;
+    if (this.beforeWorkspaceClose.observers.length === 0) {
+      // this.closed.emit(args);
+      // this.closed.complete();
+      this.isListVisible = true;
+    } else {
+      this.beforeWorkspaceClose.emit(new SkySplitViewBeforeWorkspaceCloseHandler(() => {
+        // this.closed.emit(args);
+        // this.closed.complete();
+        this.isListVisible = true;
+        this.changeDetectorRef.markForCheck();
+      }));
+    }
   }
 
   @HostListener('window:resize', ['$event'])

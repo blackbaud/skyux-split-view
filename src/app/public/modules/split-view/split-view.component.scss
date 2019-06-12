@@ -9,13 +9,13 @@
   .sky-split-view-list {
     position: relative;
     border-right: 1px solid $sky-border-color-neutral-medium;
-    overflow: scroll;
+    overflow: auto;
   }
 
   .sky-split-view-workspace {
     flex-grow: 1;
     flex-shrink: 99;
-    overflow: scroll;
+    overflow: auto;
 
     .sky-split-view-workspace-mobile-header {
       display: flex;

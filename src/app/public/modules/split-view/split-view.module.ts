@@ -15,12 +15,19 @@ import {
 } from '@angular/platform-browser/animations';
 
 import {
-  SkyMediaQueryService, SkyAdapterService
+  SkyCoreAdapterService,
+  SkyMediaQueryService
 } from '@skyux/core';
 
 import {
   SkyIconModule
 } from '@skyux/indicators';
+
+import {
+  SkyConfirmComponent,
+  SkyConfirmService,
+  SkyModalModule
+} from '@skyux/modals';
 
 import {
   SkySplitViewResourcesModule
@@ -47,10 +54,12 @@ import {
     SkySplitViewComponent,
     SkySplitViewIteratorComponent,
     SkySplitViewListComponent,
-    SkySplitViewWorkspaceComponent
+    SkySplitViewWorkspaceComponent,
+    SkyConfirmComponent
   ],
   providers: [
-    SkyAdapterService,
+    SkyConfirmService,
+    SkyCoreAdapterService,
     SkyMediaQueryService
   ],
   imports: [
@@ -58,13 +67,17 @@ import {
     CommonModule,
     FormsModule,
     SkySplitViewResourcesModule,
-    SkyIconModule
+    SkyIconModule,
+    SkyModalModule
   ],
   exports: [
     SkySplitViewComponent,
     SkySplitViewIteratorComponent,
     SkySplitViewListComponent,
     SkySplitViewWorkspaceComponent
+  ],
+  entryComponents: [
+    SkyConfirmComponent
   ]
 })
 export class SkySplitViewModule { }

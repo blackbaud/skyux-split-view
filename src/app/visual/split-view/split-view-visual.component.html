@@ -2,6 +2,7 @@
   [messageStream]="splitViewStream"
   (iteratorNextButtonClick)="onIteratorNextButtonClick()"
   (iteratorPreviousButtonClick)="onIteratorPreviousButtonClick()"
+  (beforeWorkspaceClose)="onBeforeWorkspaceClose($event)"
 >
   <sky-split-view-list>
     <h1>Here's a random list and some more words to go to the left...</h1>
@@ -31,6 +32,11 @@
         </label>
         <textarea></textarea>
       </p>
+
+      <label>
+        <input type="checkbox" name="unsavedWork" [(ngModel)]="hasUnsavedWork" />
+        Has unsaved work
+      </label>
     </form>
   </sky-split-view-workspace>
 </sky-split-view>

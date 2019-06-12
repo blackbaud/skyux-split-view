@@ -6,8 +6,8 @@
     class="sky-split-view-list"
     [id]="'split-view-list-' + splitViewId"
     [style.width.px]="listWidth"
+    [@listEnter]
   >
-  <!-- [@listEnter] -->
     <ng-content
       select="sky-split-view-list"
     ></ng-content>

@@ -359,6 +359,11 @@ describe('Split view component', () => {
       expect(fixture.nativeElement).toBeAccessible();
     }));
 
+    it('should pass accessibility when in responsive mode', async(() => {
+      fixture.detectChanges();
+      expect(fixture.nativeElement).toBeAccessible();
+    }));
+
   });
 
 });

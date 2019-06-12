@@ -3,12 +3,23 @@ import {
 } from '@angular/core';
 
 import {
+  SkyConfirmCloseEventArgs,
+  SkyConfirmService,
+  SkyConfirmType
+} from '@skyux/modals';
+
+import {
   Subject
 } from 'rxjs/Subject';
 
 import {
-  SkySplitViewMessage, SkySplitViewMessageType
+  SkySplitViewMessage,
+  SkySplitViewMessageType
 } from '../../public';
+
+import {
+  SkySplitViewBeforeWorkspaceCloseHandler
+} from '../../public/modules';
 
 @Component({
   selector: 'split-view-visual',
@@ -20,6 +31,8 @@ export class SplitViewVisualComponent {
 
   public splitViewStream = new Subject<SkySplitViewMessage>();
 
+  public hasUnsavedWork = true;
+
   public items = [
     { id: '1', name: 'apple' },
     { id: '2', name: 'banana' },
@@ -27,6 +40,10 @@ export class SplitViewVisualComponent {
     { id: '4', name: 'pear' },
     { id: '5', name: 'strawberry' }
   ];
+
+  constructor(
+    public confirmService: SkyConfirmService
+  ) {}
 
   public onItemClick(record: any) {
     this.openWorkspace(record);
@@ -51,6 +68,21 @@ export class SplitViewVisualComponent {
 
   public onIteratorPreviousButtonClick(): void {
     console.log('Previous button clicked.');
+  }
+
+  public onBeforeWorkspaceClose(closeHandler: SkySplitViewBeforeWorkspaceCloseHandler): void {
+    if (this.hasUnsavedWork) {
+      this.confirmService.open({
+        message: 'You have unsaved work. Are you sure you want to close this dialog?',
+        type: SkyConfirmType.YesCancel
+      }).closed.subscribe((closeArgs: SkyConfirmCloseEventArgs) => {
+        if (closeArgs.action.toLowerCase() === 'yes') {
+          closeHandler.closeWorkspace();
+        }
+      });
+    } else {
+      closeHandler.closeWorkspace();
+    }
   }
 
 }
