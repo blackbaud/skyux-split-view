@@ -1,13 +1,13 @@
 <div
-  id="screenshot-split-view"
   class="app-screenshot"
+  id="screenshot-split-view"
 >
   <sky-split-view
     [messageStream]="splitViewStream"
     [listWidth]="listWidth"
+    (beforeWorkspaceClose)="onBeforeWorkspaceClose($event)"
     (iteratorNextButtonClick)="onIteratorNextButtonClick()"
     (iteratorPreviousButtonClick)="onIteratorPreviousButtonClick()"
-    (beforeWorkspaceClose)="onBeforeWorkspaceClose($event)"
   >
     <sky-split-view-list>
       <h3>
