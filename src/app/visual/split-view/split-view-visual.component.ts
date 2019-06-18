@@ -27,33 +27,56 @@ import {
   styleUrls: ['./split-view-visual.component.scss']
 })
 export class SplitViewVisualComponent {
-  public activeId: string;
+
+  public set activeId(value: number) {
+    if (value && value <= this.items.length && value <= 1) {
+      this._activeId = value;
+
+      if (this._activeId === 7) {
+        this.sendMessage(SkySplitViewMessageType.IteratorDisableNextButton);
+      } else if (this._activeId === 0) {
+        this.sendMessage(SkySplitViewMessageType.IteratorDisablePreviousButton);
+      } else {
+        this.sendMessage(SkySplitViewMessageType.IteratorEnableNextButton);
+        this.sendMessage(SkySplitViewMessageType.IteratorEnablePreviousButton);
+      }
+    }
+  }
+
+  public get activeId(): number {
+    return this._activeId || 1;
+  }
 
   public splitViewStream = new Subject<SkySplitViewMessage>();
 
   public hasUnsavedWork = true;
 
+  public listWidth: number;
+
+  public activeRecord: any;
+
   public items = [
-    { id: '1', name: 'apple' },
-    { id: '2', name: 'banana' },
-    { id: '3', name: 'orange' },
-    { id: '4', name: 'pear' },
-    { id: '5', name: 'strawberry' }
+    { id: 1, name: 'Jennifer Standley', amount: 12.45, date: '04/28/2019' },
+    { id: 2, name: 'Jennifer Standley', amount: 52.39, date: '04/22/2019' },
+    { id: 3, name: 'Jennifer Standley', amount: 9.12, date: '04/09/2019' },
+    { id: 4, name: 'Jennifer Standley', amount: 193.00, date: '03/27/2019' },
+    { id: 5, name: 'Jennifer Standley', amount: 19.89, date: '03/11/2019' },
+    { id: 6, name: 'Jennifer Standley', amount: 214.18, date: '02/17/2019' },
+    { id: 7, name: 'Jennifer Standley', amount: 4.53, date: '02/26/2019' }
   ];
+
+  private _activeId: number;
 
   constructor(
     public confirmService: SkyConfirmService
-  ) {}
-
-  public onItemClick(record: any) {
-    this.openWorkspace(record);
+  ) {
+    this.activeRecord = this.items[0];
+    this.activeId = this.items[0].id;
   }
 
-  public openWorkspace(record: any): void {
-    // Set active id so the proper repeater shows an active state.
+  public onItemClick(record: any) {
+    this.activeRecord = record;
     this.activeId = record.id;
-
-    // Load new workspace.
 
     // Set focus in workspace.
     const message: SkySplitViewMessage = {
@@ -63,11 +86,17 @@ export class SplitViewVisualComponent {
   }
 
   public onIteratorNextButtonClick(): void {
-    console.log('Next button clicked.');
+    if (this.activeId < this.items.length) {
+      this.activeRecord = this.items[this.activeId + 1];
+      this.activeId = this.activeId + 1;
+    }
   }
 
   public onIteratorPreviousButtonClick(): void {
-    console.log('Previous button clicked.');
+    if (this.activeId > 1) {
+      this.activeRecord = this.items[this.activeId - 1];
+      this.activeId = this.activeId - 1;
+    }
   }
 
   public onBeforeWorkspaceClose(closeHandler: SkySplitViewBeforeWorkspaceCloseHandler): void {
@@ -83,6 +112,13 @@ export class SplitViewVisualComponent {
     } else {
       closeHandler.closeWorkspace();
     }
+  }
+
+  private sendMessage(type: SkySplitViewMessageType) {
+    const message: SkySplitViewMessage = {
+      type: type
+    };
+    this.splitViewStream.next(message);
   }
 
 }

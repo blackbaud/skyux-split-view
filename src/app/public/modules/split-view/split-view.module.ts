@@ -49,6 +49,10 @@ import {
   SkySplitViewWorkspaceComponent
 } from './split-view-workspace.component';
 
+import {
+  SkySplitViewMediaQueryService
+} from './split-view-media-query.service';
+
 @NgModule({
   declarations: [
     SkySplitViewComponent,
@@ -60,7 +64,8 @@ import {
   providers: [
     SkyConfirmService,
     SkyCoreAdapterService,
-    SkyMediaQueryService
+    SkyMediaQueryService,
+    SkySplitViewMediaQueryService
   ],
   imports: [
     BrowserAnimationsModule,

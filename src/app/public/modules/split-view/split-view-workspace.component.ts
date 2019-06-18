@@ -1,7 +1,16 @@
 import {
   ChangeDetectionStrategy,
-  Component
+  Component,
+  ElementRef
 } from '@angular/core';
+
+import {
+  SkyCoreAdapterService
+} from '@skyux/core';
+
+import {
+  SkySplitViewMediaQueryService
+} from './split-view-media-query.service';
 
 @Component({
   selector: 'sky-split-view-workspace',
@@ -9,4 +18,16 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SkySplitViewWorkspaceComponent {
+
+  constructor(
+    private coreAdapterService: SkyCoreAdapterService,
+    private elementRef: ElementRef,
+    private splitViewMediaQueryService: SkySplitViewMediaQueryService
+  ) {}
+
+  public updateBreakpoint(width: number): void {
+    this.splitViewMediaQueryService.setBreakpointForWidth(width);
+    const newListBreakpoint = this.splitViewMediaQueryService.current;
+    this.coreAdapterService.setResponsiveContainerClass(this.elementRef, newListBreakpoint);
+  }
 }

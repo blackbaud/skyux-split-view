@@ -3,13 +3,15 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ContentChild,
   ElementRef,
+  EventEmitter,
   HostListener,
   Input,
   OnDestroy,
   OnInit,
   Output,
-  EventEmitter
+  ViewChild
 } from '@angular/core';
 
 import {
@@ -20,6 +22,7 @@ import {
 } from '@angular/animations';
 
 import {
+  SkyAppWindowRef,
   SkyCoreAdapterService,
   SkyMediaBreakpoints,
   SkyMediaQueryService
@@ -37,11 +40,29 @@ import {
   Subscription
 } from 'rxjs/Subscription';
 
+import 'rxjs/add/operator/take';
+
 import 'rxjs/add/operator/takeUntil';
 
 import 'rxjs/add/operator/takeWhile';
 
 import 'rxjs/add/observable/fromEvent';
+
+import {
+  SkySplitViewIteratorComponent
+} from './split-view-iterator.component';
+
+import {
+  SkySplitViewMediaQueryService
+} from './split-view-media-query.service';
+
+import {
+  SkySplitViewListComponent
+} from './split-view-list.component';
+
+import {
+  SkySplitViewWorkspaceComponent
+} from './split-view-workspace.component';
 
 import {
   SkySplitViewBeforeWorkspaceCloseHandler,
@@ -119,14 +140,21 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input()
   public set listWidth(value: number) {
     if (value) {
-      this._listWidth = value > this.listWidthMin ? value : this.listWidthMin;
+      this._listWidth = value;
+      this.updateBreakpoints();
     }
   }
   public get listWidth() {
     if (this.isMobile) {
       return undefined;
     } else {
-      return this._listWidth || this.listWidthDefault;
+      if (this._listWidth > this.listWidthMax) {
+        return this.listWidthMax;
+      } else if (this._listWidth < this.listWidthMin) {
+        return this.listWidthMin;
+      } else {
+        return this._listWidth || this.listWidthDefault;
+      }
     }
   }
 
@@ -136,10 +164,23 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input()
   public messageStream = new Subject<SkySplitViewMessage>();
 
+  @Input()
+  public ariaRole: string;
+
+  @Input()
+  public ariaDescribedBy: string;
+
+  @Input()
+  public ariaLabelledBy: string;
+
   public isDragging = false;
 
   @Output()
   public beforeWorkspaceClose = new EventEmitter<SkySplitViewBeforeWorkspaceCloseHandler>();
+
+  public nextButtonDisabled = false;
+
+  public previousButtonDisabled = false;
 
   private _listWidth: number;
 
@@ -151,16 +192,32 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private ngUnsubscribe = new Subject<void>();
 
+  private animationComplete = new Subject<void>();
+
   private mediaQueryServiceSubscription: Subscription;
 
   private widthTolerance = 100;
 
+  @ViewChild(SkySplitViewIteratorComponent)
+  private iteratorComponent: SkySplitViewIteratorComponent;
+
+  @ContentChild(SkySplitViewListComponent)
+  private listComponent: SkySplitViewListComponent;
+
+  @ContentChild(SkySplitViewWorkspaceComponent)
+  private workspaceComponent: SkySplitViewWorkspaceComponent;
+
+  @ContentChild(SkySplitViewWorkspaceComponent, { read: ElementRef })
+  private workspaceComponentRef: ElementRef;
+
   constructor(
-    private adapterService: SkyCoreAdapterService,
+    private coreAdapterService: SkyCoreAdapterService,
     private changeDetectorRef: ChangeDetectorRef,
     private elementRef: ElementRef,
-    private mediaQueryService: SkyMediaQueryService
-  ) { }
+    private mediaQueryService: SkyMediaQueryService,
+    private skyWindow: SkyAppWindowRef,
+    private splitViewMediaQueryService: SkySplitViewMediaQueryService
+  ) {}
 
   public ngOnInit(): void {
     this.mediaQueryServiceSubscription = this.mediaQueryService.subscribe(breakpoint => {
@@ -187,6 +244,7 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public ngAfterViewInit(): void {
+    this.updateBreakpoints();
     this.setListViewMaxWidth();
   }
 
@@ -205,16 +263,16 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
     event.preventDefault();
     event.stopPropagation();
 
-    // if (this.flyoutMediaQueryService.isWidthWithinBreakpiont(window.innerWidth,
-    //   SkyMediaBreakpoints.xs)) {
-    //     return;
-    // }
+    if (this.splitViewMediaQueryService.isWidthWithinBreakpiont(window.innerWidth,
+      SkyMediaBreakpoints.xs)) {
+        return;
+    }
 
     this.setListViewMaxWidth();
     this.isDragging = true;
     this.xCoord = event.clientX;
 
-    // this.adapter.toggleIframePointerEvents(false);
+    this.coreAdapterService.toggleIframePointerEvents(false);
 
     Observable
       .fromEvent(document, 'mousemove')
@@ -236,6 +294,8 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public onMouseMove(event: MouseEvent): void {
+    /* Sanity check */
+    /* istanbul ignore if */
     if (!this.isDragging) {
       return;
     }
@@ -251,32 +311,26 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.listWidth = width;
 
-    // this.updateBreakpointAndResponsiveClass(this.flyoutWidth);
-
     this.xCoord = event.clientX;
     this.changeDetectorRef.markForCheck();
   }
 
   public onHandleRelease(event: MouseEvent): void {
     this.isDragging = false;
-    // this.adapter.toggleIframePointerEvents(true);
+    this.coreAdapterService.toggleIframePointerEvents(true);
     this.changeDetectorRef.markForCheck();
   }
 
-  public onResizeInputChange(event: Event): void {
+  public onResizeInputChange(): void {
     this.setListViewMaxWidth();
   }
 
   public onShowListButtonClick() {
-
+    /* istanbul ignore else */
     if (this.beforeWorkspaceClose.observers.length === 0) {
-      // this.closed.emit(args);
-      // this.closed.complete();
       this.isListVisible = true;
     } else {
       this.beforeWorkspaceClose.emit(new SkySplitViewBeforeWorkspaceCloseHandler(() => {
-        // this.closed.emit(args);
-        // this.closed.complete();
         this.isListVisible = true;
         this.changeDetectorRef.markForCheck();
       }));
@@ -285,27 +339,15 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @HostListener('window:resize', ['$event'])
   public onWindowResize(event: any): void {
-
     // If window size is smaller than listWidth + tolerance, shrink listWidth.
     if (this.isListVisible && event.target.innerWidth < this.listWidth + this.widthTolerance) {
       this.listWidth = event.target.innerWidth - this.widthTolerance;
     }
-    // if (this.flyoutMediaQueryService.isWidthWithinBreakpiont(event.target.innerWidth,
-    //   SkyMediaBreakpoints.xs)) {
-    //     this.updateBreakpointAndResponsiveClass(event.target.innerWidth);
-    // } else {
-    //   this.updateBreakpointAndResponsiveClass(this.flyoutWidth);
-    // }
+    this.updateBreakpoints();
   }
 
   public onWorkspaceEnterComplete(): void {
-    // Set focus on workspace panel.
-    if (this.workspaceVisible) {
-      const applyAutoFocus = this.adapterService.applyAutoFocus(this.elementRef);
-      if (!applyAutoFocus) {
-        this.adapterService.getFocusableChildrenAndApplyFocus(this.elementRef, 'sky-split-view-workspace');
-      }
-    }
+    this.animationComplete.next();
   }
 
   public onIteratorNextButtonClick(): void {
@@ -317,8 +359,7 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private setListViewMaxWidth(): void {
-    const splitViewElementWidth = this.getElementWidth('.sky-split-view');
-    this.listWidthMax = splitViewElementWidth - 100;
+    this.listWidthMax = this.skyWindow.nativeWindow.innerWidth - this.widthTolerance;
     setTimeout(() => {
       this.changeDetectorRef.markForCheck();
     });
@@ -328,16 +369,68 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
     /* tslint:disable-next-line:switch-default */
     switch (message.type) {
       case SkySplitViewMessageType.FocusWorkspace:
+        // If mobile, wait until animation is complete then set focus on workspace panel.
+        // Otherwise, just set focus right away.
         if (this.isMobile) {
           this.isListVisible = false;
+          this.animationComplete
+            .take(1)
+            .subscribe(() => {
+              this.applyAutofocus();
+            });
+        } else {
+          this.applyAutofocus();
         }
         this.changeDetectorRef.markForCheck();
+        break;
+
+      case SkySplitViewMessageType.IteratorDisableNextButton:
+        if (this.iteratorComponent) {
+          this.nextButtonDisabled = true;
+          this.changeDetectorRef.markForCheck();
+        }
+        break;
+
+      case SkySplitViewMessageType.IteratorDisablePreviousButton:
+        if (this.iteratorComponent) {
+          this.previousButtonDisabled = true;
+          this.changeDetectorRef.markForCheck();
+        }
+        break;
+
+      case SkySplitViewMessageType.IteratorEnableNextButton:
+        if (this.iteratorComponent) {
+          this.nextButtonDisabled = false;
+          this.changeDetectorRef.markForCheck();
+        }
+        break;
+
+      case SkySplitViewMessageType.IteratorEnablePreviousButton:
+        if (this.iteratorComponent) {
+          this.previousButtonDisabled = false;
+          this.changeDetectorRef.markForCheck();
+        }
         break;
     }
   }
 
-  private getElementWidth(selector: string): number {
-    const element = this.elementRef.nativeElement.querySelector(selector);
-    return element.clientWidth;
+  private updateBreakpoints(): void {
+    // Update list component.
+    if (this.listComponent) {
+      this.listComponent.updateBreakpoint(this.listWidth);
+    }
+
+    // Update workspace component.
+    const workspaceParent = this.workspaceComponentRef.nativeElement.parentElement;
+    if (this.workspaceComponent && workspaceParent) {
+      this.workspaceComponent.updateBreakpoint(workspaceParent.clientWidth);
+    }
+  }
+
+  private applyAutofocus(): void {
+    const applyAutoFocus = this.coreAdapterService.applyAutoFocus(this.elementRef);
+    if (!applyAutoFocus) {
+      this.coreAdapterService.getFocusableChildrenAndApplyFocus(this.elementRef, 'sky-split-view-workspace');
+    }
   }
 }

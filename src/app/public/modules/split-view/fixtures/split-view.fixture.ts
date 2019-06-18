@@ -1,6 +1,23 @@
 import {
-  Component
+  Component,
+  ViewChild
 } from '@angular/core';
+
+import {
+  SkyConfirmService
+} from '@skyux/modals';
+
+import {
+  Subject
+} from 'rxjs/Subject';
+
+import {
+  SkySplitViewComponent
+} from '../split-view.component';
+
+import {
+  SkySplitViewMessage
+} from '../types';
 
 @Component({
   selector: 'split-view-fixture',
@@ -10,6 +27,21 @@ export class SplitViewFixtureComponent {
 
   public listWidth: number;
 
+  public ariaRole: string;
+
+  public ariaLabelledBy: string;
+
+  public ariaDescribedBy: string;
+
+  public showIframe = false;
+
+  public splitViewMessageStream = new Subject<SkySplitViewMessage>();
+
+  @ViewChild(SkySplitViewComponent)
+  public splitViewComponent: SkySplitViewComponent;
+
+  public hasUnsavedWork = false;
+
   public items = [
     { id: '1', name: 'apple' },
     { id: '2', name: 'banana' },
@@ -17,5 +49,17 @@ export class SplitViewFixtureComponent {
     { id: '4', name: 'pear' },
     { id: '5', name: 'strawberry' }
   ];
+
+  constructor(
+    public confirmService: SkyConfirmService
+  ) {}
+
+  public onIteratorNextButtonClick(): void {
+    console.log('next button clicked');
+  }
+
+  public onIteratorPreviousButtonClick(): void {
+    console.log('previous button clicked');
+  }
 
 }

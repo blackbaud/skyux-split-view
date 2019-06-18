@@ -1,42 +1,72 @@
-<sky-split-view
-  [messageStream]="splitViewStream"
-  (iteratorNextButtonClick)="onIteratorNextButtonClick()"
-  (iteratorPreviousButtonClick)="onIteratorPreviousButtonClick()"
-  (beforeWorkspaceClose)="onBeforeWorkspaceClose($event)"
+<div
+  id="screenshot-split-view"
+  class="app-screenshot"
 >
-  <sky-split-view-list>
-    <h1>Here's a random list and some more words to go to the left...</h1>
-    <ul>
-      <li *ngFor="let item of items"
-        (click)="onItemClick(item)"
+  <sky-split-view
+    [messageStream]="splitViewStream"
+    [listWidth]="listWidth"
+    (iteratorNextButtonClick)="onIteratorNextButtonClick()"
+    (iteratorPreviousButtonClick)="onIteratorPreviousButtonClick()"
+    (beforeWorkspaceClose)="onBeforeWorkspaceClose($event)"
+  >
+    <sky-split-view-list>
+      <h3>
+        <strong>{{ items.length }}</strong> transactions
+      </h3>
+      <ul
+        class="sky-visual-list"
       >
-        {{ item.name }}
-      </li>
-    </ul>
-  </sky-split-view-list>
+        <li *ngFor="let item of items"
+          (click)="onItemClick(item)"
+        >
+          {{ item.name }} <br />
+          {{ item.date }} <br />
+          {{ item.amount }}
+        </li>
+      </ul>
+    </sky-split-view-list>
 
-  <sky-split-view-workspace>
-    <h1>My workspace</h1>
-    <form>
-      <p>
-        <label>
-          Title
-        </label>
+    <sky-split-view-workspace>
+      <h3>
+        Transaction for {{ activeRecord.name }}
+      </h3>
+      <form>
+        <p>
+          <label>
+            Post date
+            <input
+              name="date"
+              type="text"
+              [(ngModel)]="activeRecord.date"
+            />
+          </label>
+        </p>
+        <p>
+          <label>
+            Amount
+            <input
+              name="amount"
+              type="text"
+              [(ngModel)]="activeRecord.amount"
+            />
+          </label>
+        </p>
+
         <input
-          type="text"
+          name="submit"
+          type="submit"
+          value="Save transaction"
         />
-      </p>
-      <p>
-        <label>
-          Note
-        </label>
-        <textarea></textarea>
-      </p>
 
-      <label>
-        <input type="checkbox" name="unsavedWork" [(ngModel)]="hasUnsavedWork" />
-        Has unsaved work
-      </label>
-    </form>
-  </sky-split-view-workspace>
-</sky-split-view>
+        <label>
+          <input
+            type="checkbox"
+            name="unsavedWork"
+            [(ngModel)]="hasUnsavedWork"
+          />
+          Has unsaved work
+        </label>
+      </form>
+    </sky-split-view-workspace>
+  </sky-split-view>
+</div>

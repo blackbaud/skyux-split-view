@@ -1,5 +1,8 @@
 <div
   class="sky-split-view"
+  [attr.role]="ariaRole"
+  [attr.aria-describedby]="ariaDescribedBy"
+  [attr.aria-labelledby]="ariaLabelledBy"
   [@blockAnimationOnLoad]
 >
   <div *ngIf="isListVisible"
@@ -7,6 +10,7 @@
     [id]="'split-view-list-' + splitViewId"
     [style.width.px]="listWidth"
     [@listEnter]
+    #skySplitViewListPanel
   >
     <ng-content
       select="sky-split-view-list"
@@ -27,7 +31,7 @@
     [attr.aria-valuemin]="listWidthMin"
     [attr.aria-valuenow]="listWidth"
     [(ngModel)]="listWidth"
-    (change)="onResizeInputChange($event)"
+    (change)="onResizeInputChange()"
     (mousedown)="onMouseDown($event)"
   />
 
@@ -35,13 +39,14 @@
     class="sky-split-view-workspace"
     [@workspaceEnter]
     (@workspaceEnter.done)="onWorkspaceEnterComplete($event)"
+    #skySplitViewWorkspacePanel
   >
 
     <div *ngIf="!isListVisible"
-      class="sky-split-view-workspace-mobile-header"
+      class="sky-split-view-workspace-header"
     >
       <div
-        class="sky-split-view-workspace-mobile-header-content"
+        class="sky-split-view-workspace-header-content"
       >
         <button
           *ngIf="!isListVisible"
@@ -62,8 +67,12 @@
       ></sky-split-view-iterator>
     </div>
 
-    <ng-content
-      select="sky-split-view-workspace"
-    ></ng-content>
+    <div
+      class="sky-split-view-workspace-content"
+    >
+      <ng-content
+        select="sky-split-view-workspace"
+      ></ng-content>
+    </div>
   </div>
 </div>

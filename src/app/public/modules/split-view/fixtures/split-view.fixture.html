@@ -1,5 +1,11 @@
 <sky-split-view
+  [ariaDescribedBy]="ariaDescribedBy"
+  [ariaLabelledBy]="ariaLabelledBy"
+  [ariaRole]="ariaRole"
   [listWidth]="listWidth"
+  [messageStream]="splitViewMessageStream"
+  (iteratorNextButtonClick)="onIteratorNextButtonClick()"
+  (iteratorPreviousButtonClick)="onIteratorPreviousButtonClick()"
 >
   <sky-split-view-list>
     <ul>
@@ -12,5 +18,24 @@
   <sky-split-view-workspace>
     <h1>foo</h1>
     <p>bar</p>
+    <label>
+      First input
+      <input
+        name="firstInput"
+        type="text"
+        id="sky-test-first-input"
+      />
+    </label>
+    <label>
+      Second input
+      <input
+        name="secondInput"
+        type="text"
+        id="sky-test-second-input"
+      />
+    </label>
+    <iframe *ngIf="showIframe"
+      src="https://developer.blackbaud.com/skyux/"
+    ></iframe>
   </sky-split-view-workspace>
 </sky-split-view>

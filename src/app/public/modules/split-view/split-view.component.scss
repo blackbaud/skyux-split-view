@@ -10,6 +10,7 @@
     position: relative;
     border-right: 1px solid $sky-border-color-neutral-medium;
     overflow: auto;
+    width: 100%;
   }
 
   .sky-split-view-workspace {
@@ -17,14 +18,14 @@
     flex-shrink: 99;
     overflow: auto;
 
-    .sky-split-view-workspace-mobile-header {
+    .sky-split-view-workspace-header {
       display: flex;
       align-items: flex-start;
       justify-content: flex-end;
       border-bottom: 1px solid $sky-border-color-neutral-medium;
       padding: 5px 0;
 
-      .sky-split-view-workspace-mobile-header-content {
+      .sky-split-view-workspace-header-content {
         flex-grow: 1;
       }
 

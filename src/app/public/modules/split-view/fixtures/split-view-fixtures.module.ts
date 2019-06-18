@@ -11,6 +11,14 @@ import {
 } from '@angular/forms';
 
 import {
+  SkyAppWindowRef
+} from '@skyux/core';
+
+import {
+  SplitViewBeforeCloseFixtureComponent
+} from './split-view-before-close.fixture';
+
+import {
   SplitViewFixtureComponent
 } from './split-view.fixture';
 
@@ -20,7 +28,11 @@ import {
 
 @NgModule({
   declarations: [
-    SplitViewFixtureComponent
+    SplitViewFixtureComponent,
+    SplitViewBeforeCloseFixtureComponent
+  ],
+  providers: [
+    SkyAppWindowRef
   ],
   imports: [
     CommonModule,
