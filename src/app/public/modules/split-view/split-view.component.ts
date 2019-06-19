@@ -165,9 +165,6 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   @Input()
-  public listPanelResizable: number;
-
-  @Input()
   public messageStream = new Subject<SkySplitViewMessage>();
 
   @Input()

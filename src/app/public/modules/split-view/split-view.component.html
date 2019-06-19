@@ -10,7 +10,6 @@
     [id]="'split-view-list-' + splitViewId"
     [style.width.px]="listWidth"
     [@listEnter]
-    #skySplitViewListPanel
   >
     <ng-content
       select="sky-split-view-list"
@@ -39,7 +38,6 @@
     class="sky-split-view-workspace"
     [@workspaceEnter]
     (@workspaceEnter.done)="onWorkspaceEnterComplete($event)"
-    #skySplitViewWorkspacePanel
   >
 
     <div *ngIf="!isListVisible"
