@@ -23,14 +23,14 @@
       align-items: flex-start;
       justify-content: flex-end;
       border-bottom: 1px solid $sky-border-color-neutral-medium;
-      padding: 5px 0;
+      padding: $sky-padding-half 0;
 
       .sky-split-view-workspace-header-content {
         flex-grow: 1;
       }
 
       ::ng-deep .sky-split-view-iterators {
-        margin: 0 5px;
+        margin: 0 $sky-padding-half;
       }
     }
   }

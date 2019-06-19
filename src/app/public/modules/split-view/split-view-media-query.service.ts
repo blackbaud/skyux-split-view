@@ -3,17 +3,17 @@ import {
 } from '@angular/core';
 
 import {
+  SkyMediaBreakpoints,
+  SkyMediaQueryListener
+} from '@skyux/core';
+
+import {
   BehaviorSubject
 } from 'rxjs/BehaviorSubject';
 
 import {
   Subscription
 } from 'rxjs/Subscription';
-
-import {
-  SkyMediaBreakpoints,
-  SkyMediaQueryListener
-} from '@skyux/core';
 
 @Injectable()
 export class SkySplitViewMediaQueryService {

@@ -44,12 +44,12 @@ import {
 } from './split-view-list.component';
 
 import {
-  SkySplitViewWorkspaceComponent
-} from './split-view-workspace.component';
-
-import {
   SkySplitViewMediaQueryService
 } from './split-view-media-query.service';
+
+import {
+  SkySplitViewWorkspaceComponent
+} from './split-view-workspace.component';
 
 @NgModule({
   declarations: [

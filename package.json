@@ -35,7 +35,7 @@
   "dependencies": {},
   "devDependencies": {
     "@blackbaud/skyux": "2.53.0",
-    "@blackbaud/skyux-builder": "1.35.0",
+    "@blackbaud/skyux-builder": "1.36.0",
     "@skyux-sdk/builder-plugin-skyux": "1.0.0",
     "@skyux-sdk/testing": "3.1.0"
   }

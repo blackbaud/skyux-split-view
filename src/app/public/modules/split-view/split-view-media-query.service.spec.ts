@@ -4,18 +4,18 @@ import {
 } from '@angular/core/testing';
 
 import {
-  Subscription
-} from 'rxjs/Subscription';
-
-import {
   SkyMediaBreakpoints
 } from '@skyux/core';
+
+import {
+  Subscription
+} from 'rxjs/Subscription';
 
 import {
   SkySplitViewMediaQueryService
 } from './split-view-media-query.service';
 
-describe('SplitView media query service', () => {
+describe('Split view media query service', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({

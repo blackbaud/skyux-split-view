@@ -22,17 +22,17 @@
     role="separator"
     step="10"
     type="range"
-    [max]="listWidthMax"
-    [min]="listWidthMin"
-    [style.left.px]="listWidth - 7"
     [attr.aria-controls]="'split-view-list-' + splitViewId"
     [attr.aria-label]="'skyux_split_view_resize_handle' | skyLibResources"
     [attr.aria-valuemax]="listWidthMax"
     [attr.aria-valuemin]="listWidthMin"
     [attr.aria-valuenow]="listWidth"
-    [(ngModel)]="listWidth"
+    [max]="listWidthMax"
+    [min]="listWidthMin"
+    [style.left.px]="listWidth - 7"
     (change)="onResizeInputChange()"
     (mousedown)="onMouseDown($event)"
+    [(ngModel)]="listWidth"
   />
 
   <div *ngIf="workspaceVisible"
@@ -48,10 +48,9 @@
       <div
         class="sky-split-view-workspace-header-content"
       >
-        <button
-          *ngIf="!isListVisible"
-          (click)="onShowListButtonClick()"
+        <button *ngIf="!isListVisible"
           class="sky-btn sky-btn-link"
+          (click)="onShowListButtonClick()"
         >
           <sky-icon
             icon="chevron-left"
