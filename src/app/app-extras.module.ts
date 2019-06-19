@@ -4,7 +4,7 @@ import {
 
 import {
   SkySplitViewModule
-} from './public/modules/split-view';
+} from './public';
 
 @NgModule({
   imports: [

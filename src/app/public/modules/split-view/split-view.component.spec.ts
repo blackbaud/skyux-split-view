@@ -41,14 +41,20 @@ import {
 } from './fixtures/split-view-before-close.fixture';
 
 import {
-  SkySplitViewComponent
-} from './split-view.component';
+  SkySplitViewBeforeWorkspaceCloseHandler
+} from './types/split-view-before-workspace-close-handler';
 
 import {
-  SkySplitViewMessage,
-  SkySplitViewMessageType,
-  SkySplitViewBeforeWorkspaceCloseHandler
-} from './types';
+  SkySplitViewMessage
+} from './types/split-view-message';
+
+import {
+  SkySplitViewMessageType
+} from './types/split-view-message-type';
+
+import {
+  SkySplitViewComponent
+} from './split-view.component';
 
 let mockQueryService: MockSkyMediaQueryService;
 

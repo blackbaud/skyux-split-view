@@ -49,6 +49,18 @@ import 'rxjs/add/operator/takeWhile';
 import 'rxjs/add/observable/fromEvent';
 
 import {
+  SkySplitViewBeforeWorkspaceCloseHandler
+} from './types/split-view-before-workspace-close-handler';
+
+import {
+  SkySplitViewMessage
+} from './types/split-view-message';
+
+import {
+  SkySplitViewMessageType
+} from './types/split-view-message-type';
+
+import {
   SkySplitViewIteratorComponent
 } from './split-view-iterator.component';
 
@@ -63,12 +75,6 @@ import {
 import {
   SkySplitViewWorkspaceComponent
 } from './split-view-workspace.component';
-
-import {
-  SkySplitViewBeforeWorkspaceCloseHandler,
-  SkySplitViewMessage,
-  SkySplitViewMessageType
-} from './types';
 
 let nextId = 0;
 
