@@ -4,7 +4,7 @@ import {
 
 import {
   SkySplitViewBeforeWorkspaceCloseHandler
-} from '../types';
+} from '../types/split-view-before-workspace-close-handler';
 
 @Component({
   selector: 'split-view-before-close-fixture',

@@ -17,7 +17,7 @@ import {
 
 import {
   SkySplitViewMessage
-} from '../types';
+} from '../types/split-view-message';
 
 @Component({
   selector: 'split-view-fixture',

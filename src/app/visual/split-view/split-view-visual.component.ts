@@ -13,13 +13,16 @@ import {
 } from 'rxjs/Subject';
 
 import {
-  SkySplitViewMessage,
-  SkySplitViewMessageType
-} from '../../public';
+  SkySplitViewBeforeWorkspaceCloseHandler
+} from '../../public/modules/split-view/types/split-view-before-workspace-close-handler';
 
 import {
-  SkySplitViewBeforeWorkspaceCloseHandler
-} from '../../public/modules';
+  SkySplitViewMessageType
+} from '../../public/modules/split-view/types/split-view-message-type';
+
+import {
+  SkySplitViewMessage
+} from '../../public/modules/split-view/types/split-view-message';
 
 @Component({
   selector: 'split-view-visual',
