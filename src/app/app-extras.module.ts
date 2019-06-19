@@ -7,18 +7,13 @@ import {
 } from '@skyux/lists';
 
 import {
-  SkySummaryActionBarModule
-} from '@skyux/action-bars';
-
-import {
   SkySplitViewModule
 } from './public';
 
 @NgModule({
   exports: [
     SkySplitViewModule,
-    SkyRepeaterModule,
-    SkySummaryActionBarModule
+    SkyRepeaterModule
   ]
 })
 export class AppExtrasModule { }
