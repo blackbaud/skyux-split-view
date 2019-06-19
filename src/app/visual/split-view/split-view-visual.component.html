@@ -1,3 +1,5 @@
+<h3>Split view for visual tests</h3>
+
 <div
   class="app-screenshot"
   id="screenshot-split-view"
@@ -16,8 +18,8 @@
       <ul
         class="sky-visual-list"
       >
-        <li *ngFor="let item of items"
-          (click)="onItemClick(item)"
+        <li *ngFor="let item of items; let i = index"
+          (click)="onItemClick(i)"
         >
           {{ item.name }} <br />
           {{ item.date }} <br />

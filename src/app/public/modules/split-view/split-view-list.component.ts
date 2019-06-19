@@ -5,7 +5,8 @@ import {
 } from '@angular/core';
 
 import {
-  SkyCoreAdapterService
+  SkyCoreAdapterService,
+  SkyMediaQueryService
 } from '@skyux/core';
 
 import {
@@ -15,7 +16,11 @@ import {
 @Component({
   selector: 'sky-split-view-list',
   template: `<ng-content></ng-content>`,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [
+    SkySplitViewMediaQueryService,
+    { provide: SkyMediaQueryService, useExisting: SkySplitViewMediaQueryService }
+  ]
 })
 export class SkySplitViewListComponent {
 

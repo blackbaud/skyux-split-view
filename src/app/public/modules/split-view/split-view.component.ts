@@ -10,8 +10,7 @@ import {
   Input,
   OnDestroy,
   OnInit,
-  Output,
-  ViewChild
+  Output
 } from '@angular/core';
 
 import {
@@ -59,10 +58,6 @@ import {
 import {
   SkySplitViewMessageType
 } from './types/split-view-message-type';
-
-import {
-  SkySplitViewIteratorComponent
-} from './split-view-iterator.component';
 
 import {
   SkySplitViewMediaQueryService
@@ -201,9 +196,6 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private widthTolerance = 100;
 
-  @ViewChild(SkySplitViewIteratorComponent)
-  private iteratorComponent: SkySplitViewIteratorComponent;
-
   @ContentChild(SkySplitViewListComponent)
   private listComponent: SkySplitViewListComponent;
 
@@ -214,8 +206,8 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
   private workspaceComponentRef: ElementRef;
 
   constructor(
-    private coreAdapterService: SkyCoreAdapterService,
     private changeDetectorRef: ChangeDetectorRef,
+    private coreAdapterService: SkyCoreAdapterService,
     private elementRef: ElementRef,
     private mediaQueryService: SkyMediaQueryService,
     private skyWindow: SkyAppWindowRef,
@@ -388,31 +380,23 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
         break;
 
       case SkySplitViewMessageType.IteratorDisableNextButton:
-        if (this.iteratorComponent) {
-          this.nextButtonDisabled = true;
-          this.changeDetectorRef.markForCheck();
-        }
+        this.nextButtonDisabled = true;
+        this.changeDetectorRef.markForCheck();
         break;
 
       case SkySplitViewMessageType.IteratorDisablePreviousButton:
-        if (this.iteratorComponent) {
-          this.previousButtonDisabled = true;
-          this.changeDetectorRef.markForCheck();
-        }
+        this.previousButtonDisabled = true;
+        this.changeDetectorRef.markForCheck();
         break;
 
       case SkySplitViewMessageType.IteratorEnableNextButton:
-        if (this.iteratorComponent) {
-          this.nextButtonDisabled = false;
-          this.changeDetectorRef.markForCheck();
-        }
+        this.nextButtonDisabled = false;
+        this.changeDetectorRef.markForCheck();
         break;
 
       case SkySplitViewMessageType.IteratorEnablePreviousButton:
-        if (this.iteratorComponent) {
-          this.previousButtonDisabled = false;
-          this.changeDetectorRef.markForCheck();
-        }
+        this.previousButtonDisabled = false;
+        this.changeDetectorRef.markForCheck();
         break;
     }
   }

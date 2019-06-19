@@ -27,11 +27,11 @@ import {
 } from '../../public/modules/split-view/types/split-view-message';
 
 @Component({
-  selector: 'split-view-visual',
-  templateUrl: './split-view-visual.component.html',
+  selector: 'split-view-with-repeater-visual',
+  templateUrl: './split-view-with-repeater-visual.component.html',
   styleUrls: ['./split-view-visual.component.scss']
 })
-export class SplitViewVisualComponent implements AfterViewInit {
+export class SplitViewWithRepeaterVisualComponent implements AfterViewInit {
 
   public splitViewStream = new Subject<SkySplitViewMessage>();
 
