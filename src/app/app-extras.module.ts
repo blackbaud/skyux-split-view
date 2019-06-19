@@ -12,8 +12,6 @@ import {
   ],
   exports: [
     SkySplitViewModule
-  ],
-  providers: [],
-  entryComponents: []
+  ]
 })
 export class AppExtrasModule { }

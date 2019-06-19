@@ -24,9 +24,7 @@ import {
 } from '@skyux/indicators';
 
 import {
-  SkyConfirmComponent,
-  SkyConfirmService,
-  SkyModalModule
+  SkyConfirmModule
 } from '@skyux/modals';
 
 import {
@@ -58,11 +56,9 @@ import {
     SkySplitViewComponent,
     SkySplitViewIteratorComponent,
     SkySplitViewListComponent,
-    SkySplitViewWorkspaceComponent,
-    SkyConfirmComponent
+    SkySplitViewWorkspaceComponent
   ],
   providers: [
-    SkyConfirmService,
     SkyCoreAdapterService,
     SkyMediaQueryService,
     SkySplitViewMediaQueryService
@@ -71,18 +67,15 @@ import {
     BrowserAnimationsModule,
     CommonModule,
     FormsModule,
+    SkyConfirmModule,
     SkySplitViewResourcesModule,
-    SkyIconModule,
-    SkyModalModule
+    SkyIconModule
   ],
   exports: [
     SkySplitViewComponent,
     SkySplitViewIteratorComponent,
     SkySplitViewListComponent,
     SkySplitViewWorkspaceComponent
-  ],
-  entryComponents: [
-    SkyConfirmComponent
   ]
 })
 export class SkySplitViewModule { }

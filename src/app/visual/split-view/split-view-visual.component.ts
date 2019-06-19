@@ -49,7 +49,7 @@ export class SplitViewVisualComponent {
 
   public splitViewStream = new Subject<SkySplitViewMessage>();
 
-  public hasUnsavedWork = true;
+  public hasUnsavedWork = false;
 
   public listWidth: number;
 

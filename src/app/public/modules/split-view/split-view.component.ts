@@ -182,11 +182,11 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public previousButtonDisabled = false;
 
+  public isMobile = false;
+
   private _listWidth: number;
 
   private xCoord = 0;
-
-  private isMobile = false;
 
   private _listVisible = true;
 
