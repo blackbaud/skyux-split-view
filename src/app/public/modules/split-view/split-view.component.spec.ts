@@ -136,11 +136,11 @@ function getIteratorButtons(): NodeListOf<HTMLButtonElement> {
 
 function enableIterators(value: boolean, component: any, fixture: ComponentFixture<any>): void {
   let message: SkySplitViewMessage = {
-    type: value ? SkySplitViewMessageType.IteratorEnableNextButton : SkySplitViewMessageType.IteratorDisableNextButton
+    type: value ? SkySplitViewMessageType.EnableIteratorNextButton : SkySplitViewMessageType.DisableIteratorNextButton
   };
   component.splitViewMessageStream.next(message);
   message = {
-    type: value ? SkySplitViewMessageType.IteratorEnablePreviousButton : SkySplitViewMessageType.IteratorDisablePreviousButton
+    type: value ? SkySplitViewMessageType.EnableIteratorPreviousButton : SkySplitViewMessageType.DisableIteratorPreviousButton
   };
   component.splitViewMessageStream.next(message);
   fixture.detectChanges();

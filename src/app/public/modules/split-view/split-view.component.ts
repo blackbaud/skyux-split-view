@@ -104,39 +104,14 @@ let nextId = 0;
 })
 export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  public appSettings: any;
+  @Input()
+  public ariaDescribedBy: string;
 
-  public splitViewId: string = `sky-split-view-${++nextId}`;
+  @Input()
+  public ariaRole: string;
 
-  // Max needs to start as something to allow input range to work.
-  // This value is updated as soon as the user takes action.
-  public listWidthMax = 9999;
-
-  public listWidthMin = 100;
-
-  public listWidthDefault = 320;
-
-  public iteratorNextButtonDisabled = false;
-
-  public iteratorPreviousButtonDisabled = false;
-
-  @Output()
-  public iteratorNextButtonClick = new EventEmitter<void>();
-
-  @Output()
-  public iteratorPreviousButtonClick = new EventEmitter<void>();
-
-  public set isListVisible(value: boolean) {
-    this._listVisible = value;
-  }
-
-  public get isListVisible() {
-    return !this.isMobile || this._listVisible;
-  }
-
-  public get workspaceVisible() {
-    return !this.isMobile || !this._listVisible;
-  }
+  @Input()
+  public ariaLabelledBy: string;
 
   @Input()
   public set listWidth(value: number) {
@@ -145,6 +120,7 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
       this.updateBreakpoints();
     }
   }
+
   public get listWidth() {
     if (this.isMobile) {
       return undefined;
@@ -162,48 +138,71 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input()
   public messageStream = new Subject<SkySplitViewMessage>();
 
-  @Input()
-  public ariaRole: string;
-
-  @Input()
-  public ariaDescribedBy: string;
-
-  @Input()
-  public ariaLabelledBy: string;
-
-  public isDragging = false;
-
   @Output()
   public beforeWorkspaceClose = new EventEmitter<SkySplitViewBeforeWorkspaceCloseHandler>();
+
+  @Output()
+  public iteratorNextButtonClick = new EventEmitter<void>();
+
+  @Output()
+  public iteratorPreviousButtonClick = new EventEmitter<void>();
+
+  public set isListVisible(value: boolean) {
+    this._listVisible = value;
+  }
+
+  public get isListVisible() {
+    return !this.isMobile || this._listVisible;
+  }
+
+  public splitViewId: string = `sky-split-view-${++nextId}`;
+
+  public get workspaceVisible() {
+    return !this.isMobile || !this._listVisible;
+  }
+
+  // Max needs to start as something to allow input range to work.
+  // This value is updated as soon as the user takes action.
+  public listWidthMax = 9999;
+
+  public listWidthMin = 100;
+
+  public listWidthDefault = 320;
 
   public nextButtonDisabled = false;
 
   public previousButtonDisabled = false;
 
+  public isDragging = false;
+
   public isMobile = false;
 
-  private _listWidth: number;
-
-  private xCoord = 0;
-
-  private _listVisible = true;
-
-  private ngUnsubscribe = new Subject<void>();
+  public iteratorNextButtonDisabled = false;
 
   private animationComplete = new Subject<void>();
+
+  public iteratorPreviousButtonDisabled = false;
+
+  @ContentChild(SkySplitViewListComponent)
+  private listComponent: SkySplitViewListComponent;
+
+  private ngUnsubscribe = new Subject<void>();
 
   private mediaQueryServiceSubscription: Subscription;
 
   private widthTolerance = 100;
-
-  @ContentChild(SkySplitViewListComponent)
-  private listComponent: SkySplitViewListComponent;
 
   @ContentChild(SkySplitViewWorkspaceComponent)
   private workspaceComponent: SkySplitViewWorkspaceComponent;
 
   @ContentChild(SkySplitViewWorkspaceComponent, { read: ElementRef })
   private workspaceComponentRef: ElementRef;
+
+  private xCoord = 0;
+
+  private _listVisible = true;
+
+  private _listWidth: number;
 
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
@@ -379,22 +378,22 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
         this.changeDetectorRef.markForCheck();
         break;
 
-      case SkySplitViewMessageType.IteratorDisableNextButton:
+      case SkySplitViewMessageType.DisableIteratorNextButton:
         this.nextButtonDisabled = true;
         this.changeDetectorRef.markForCheck();
         break;
 
-      case SkySplitViewMessageType.IteratorDisablePreviousButton:
+      case SkySplitViewMessageType.DisableIteratorPreviousButton:
         this.previousButtonDisabled = true;
         this.changeDetectorRef.markForCheck();
         break;
 
-      case SkySplitViewMessageType.IteratorEnableNextButton:
+      case SkySplitViewMessageType.EnableIteratorNextButton:
         this.nextButtonDisabled = false;
         this.changeDetectorRef.markForCheck();
         break;
 
-      case SkySplitViewMessageType.IteratorEnablePreviousButton:
+      case SkySplitViewMessageType.EnableIteratorPreviousButton:
         this.previousButtonDisabled = false;
         this.changeDetectorRef.markForCheck();
         break;

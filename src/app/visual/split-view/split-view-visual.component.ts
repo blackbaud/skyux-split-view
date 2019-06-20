@@ -124,14 +124,14 @@ export class SplitViewVisualComponent implements AfterViewInit {
 
   private checkForDisableIterators(): void {
     if (this.activeIndex === this.items.length - 1) {
-      this.sendMessage(SkySplitViewMessageType.IteratorDisableNextButton);
+      this.sendMessage(SkySplitViewMessageType.DisableIteratorNextButton);
     } else {
-      this.sendMessage(SkySplitViewMessageType.IteratorEnableNextButton);
+      this.sendMessage(SkySplitViewMessageType.EnableIteratorNextButton);
     }
     if (this.activeIndex === 0) {
-      this.sendMessage(SkySplitViewMessageType.IteratorDisablePreviousButton);
+      this.sendMessage(SkySplitViewMessageType.DisableIteratorPreviousButton);
     } else {
-      this.sendMessage(SkySplitViewMessageType.IteratorEnablePreviousButton);
+      this.sendMessage(SkySplitViewMessageType.EnableIteratorPreviousButton);
     }
   }
 

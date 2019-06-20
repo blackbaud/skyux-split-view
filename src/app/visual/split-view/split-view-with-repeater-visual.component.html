@@ -22,9 +22,7 @@
       </p>
       <sky-repeater>
         <sky-repeater-item *ngFor="let item of items; let i = index"
-          [isExpanded]="false"
           [ngClass]="{ 'sky-repeater-active' : activeIndex === i }"
-          [selectable]="false"
           (click)="onItemClick(i)"
         >
           <sky-repeater-item-title>

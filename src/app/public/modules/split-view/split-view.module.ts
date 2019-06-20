@@ -24,10 +24,6 @@ import {
 } from '@skyux/indicators';
 
 import {
-  SkyConfirmModule
-} from '@skyux/modals';
-
-import {
   SkySplitViewResourcesModule
 } from '../shared';
 
@@ -67,7 +63,6 @@ import {
     BrowserAnimationsModule,
     CommonModule,
     FormsModule,
-    SkyConfirmModule,
     SkySplitViewResourcesModule,
     SkyIconModule
   ],
