@@ -1,12 +1,11 @@
 <div
   class="sky-split-view"
-  [attr.role]="ariaRole"
-  [attr.aria-describedby]="ariaDescribedBy"
-  [attr.aria-labelledby]="ariaLabelledBy"
   [@blockAnimationOnLoad]
 >
   <div *ngIf="isListVisible"
     class="sky-split-view-list"
+    [attr.role]="ariaRoleForList"
+    [attr.aria-label]="ariaLabelForList"
     [id]="'split-view-list-' + splitViewId"
     [style.width.px]="listWidth"
     [@listEnter]
@@ -36,6 +35,8 @@
 
   <div *ngIf="workspaceVisible"
     class="sky-split-view-workspace"
+    [attr.role]="ariaRoleForWorkspace"
+    [attr.aria-label]="ariaLabelForWorkspace"
     [@workspaceEnter]
     (@workspaceEnter.done)="onWorkspaceEnterComplete($event)"
   >

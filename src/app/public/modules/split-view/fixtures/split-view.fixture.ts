@@ -27,11 +27,13 @@ export class SplitViewFixtureComponent {
 
   public listWidth: number;
 
-  public ariaRole: string;
+  public ariaLabelForList: string;
 
-  public ariaLabelledBy: string;
+  public ariaLabelForWorkspace: string;
 
-  public ariaDescribedBy: string;
+  public ariaRoleForList: string;
+
+  public ariaRoleForWorkspace: string;
 
   public showIframe = false;
 

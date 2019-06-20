@@ -59,12 +59,12 @@ import {
 let mockQueryService: MockSkyMediaQueryService;
 
 // #region helpers
-function getSplitViewElement(): HTMLElement {
-  return document.querySelector('.sky-split-view') as HTMLElement;
-}
-
 function getListPanel(): HTMLElement {
   return document.querySelector('.sky-split-view-list') as HTMLElement;
+}
+
+function getWorkspacePanel(): HTMLElement {
+  return document.querySelector('.sky-split-view-workspace') as HTMLElement;
 }
 
 function getResizeHandle(fixture: ComponentFixture<any>): DebugElement {
@@ -193,25 +193,26 @@ describe('Split view component', () => {
 
     it('should accept configuration options for aria-labelledBy, aria-describedby, and role',
     fakeAsync(() => {
-      const expectedLabel = 'customlabelledby';
-      const expectedDescribed = 'customdescribedby';
-      const expectedRole = 'customrole';
+      const expectedLabelForList = 'customlabelledby';
+      const expectedLabelForWorkspace = 'customlabelledby';
+      const expectedRoleForList = 'customrole';
+      const expectedRoleForWorkspace = 'customrole';
 
-      component.ariaLabelledBy = expectedLabel;
-      component.ariaDescribedBy = expectedDescribed;
-      component.ariaRole = expectedRole;
+      component.ariaLabelForList = expectedLabelForList;
+      component.ariaLabelForWorkspace = expectedLabelForWorkspace;
+      component.ariaRoleForList = expectedRoleForList;
+      component.ariaRoleForWorkspace = expectedRoleForWorkspace;
 
       fixture.detectChanges();
       tick();
 
-      const splitViewElement = getSplitViewElement();
+      const list = getListPanel();
+      const workspace = getWorkspacePanel();
 
-      expect(splitViewElement.getAttribute('aria-labelledby'))
-        .toBe(expectedLabel);
-      expect(splitViewElement.getAttribute('aria-describedby'))
-        .toBe(expectedDescribed);
-      expect(splitViewElement.getAttribute('role'))
-        .toBe(expectedRole);
+      expect(list.getAttribute('aria-label')).toBe(expectedLabelForList);
+      expect(list.getAttribute('role')).toBe(expectedRoleForList);
+      expect(workspace.getAttribute('aria-label')).toBe(expectedLabelForWorkspace);
+      expect(workspace.getAttribute('role')).toBe(expectedRoleForWorkspace);
     }));
 
     it('should set iframe styles correctly during dragging', fakeAsync(() => {

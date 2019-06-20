@@ -105,13 +105,16 @@ let nextId = 0;
 export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @Input()
-  public ariaDescribedBy: string;
+  public ariaLabelForList: string;
 
   @Input()
-  public ariaRole: string;
+  public ariaLabelForWorkspace: string;
 
   @Input()
-  public ariaLabelledBy: string;
+  public ariaRoleForList: string;
+
+  @Input()
+  public ariaRoleForWorkspace: string;
 
   @Input()
   public set listWidth(value: number) {
@@ -147,6 +150,8 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
   @Output()
   public iteratorPreviousButtonClick = new EventEmitter<void>();
 
+  public isDragging = false;
+
   public set isListVisible(value: boolean) {
     this._listVisible = value;
   }
@@ -155,11 +160,7 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
     return !this.isMobile || this._listVisible;
   }
 
-  public splitViewId: string = `sky-split-view-${++nextId}`;
-
-  public get workspaceVisible() {
-    return !this.isMobile || !this._listVisible;
-  }
+  public isMobile = false;
 
   // Max needs to start as something to allow input range to work.
   // This value is updated as soon as the user takes action.
@@ -173,15 +174,17 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public previousButtonDisabled = false;
 
-  public isDragging = false;
-
-  public isMobile = false;
-
   public iteratorNextButtonDisabled = false;
 
-  private animationComplete = new Subject<void>();
-
   public iteratorPreviousButtonDisabled = false;
+
+  public splitViewId: string = `sky-split-view-${++nextId}`;
+
+  public get workspaceVisible() {
+    return !this.isMobile || !this._listVisible;
+  }
+
+  private animationComplete = new Subject<void>();
 
   @ContentChild(SkySplitViewListComponent)
   private listComponent: SkySplitViewListComponent;
