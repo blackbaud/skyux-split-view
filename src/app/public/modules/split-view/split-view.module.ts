@@ -7,10 +7,6 @@ import {
 } from '@angular/common';
 
 import {
-  FormsModule
-} from '@angular/forms';
-
-import {
   BrowserAnimationsModule
 } from '@angular/platform-browser/animations';
 
@@ -62,7 +58,6 @@ import {
   imports: [
     BrowserAnimationsModule,
     CommonModule,
-    FormsModule,
     SkySplitViewResourcesModule,
     SkyIconModule
   ],

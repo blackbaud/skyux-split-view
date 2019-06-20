@@ -29,9 +29,9 @@
     [max]="listWidthMax"
     [min]="listWidthMin"
     [style.left.px]="listWidth - 7"
-    (change)="onResizeInputChange()"
+    [value]="listWidth"
+    (change)="onResizeHandleChange($event)"
     (mousedown)="onMouseDown($event)"
-    [(ngModel)]="listWidth"
   />
 
   <div *ngIf="workspaceVisible"

@@ -1,7 +1,7 @@
 {
   "skyux_split_view_resize_handle": {
     "_description": "Label for the list panel resizing handle",
-    "message": "Resize the list panel. Use left arrow key to expand and right arrow key to shrink."
+    "message": "Resize the list panel. Use right arrow key to expand and left arrow key to shrink."
   },
   "skyux_split_view_back_to_list": {
     "_description": "Label for list panel button to show list when in mobile mode.",

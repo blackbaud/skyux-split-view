@@ -315,7 +315,8 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
     this.changeDetectorRef.markForCheck();
   }
 
-  public onResizeInputChange(): void {
+  public onResizeHandleChange(event: any): void {
+    this.listWidth = event.target.value;
     this.setListViewMaxWidth();
   }
 

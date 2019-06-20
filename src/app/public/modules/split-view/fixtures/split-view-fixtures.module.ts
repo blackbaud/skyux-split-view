@@ -7,12 +7,12 @@ import {
 } from '@angular/core';
 
 import {
-  FormsModule
-} from '@angular/forms';
-
-import {
   SkyAppWindowRef
 } from '@skyux/core';
+
+import {
+  SkyConfirmModule
+} from '@skyux/modals';
 
 import {
   SplitViewBeforeCloseFixtureComponent
@@ -36,8 +36,10 @@ import {
   ],
   imports: [
     CommonModule,
-    FormsModule,
     SkySplitViewModule
+  ],
+  exports: [
+    SkyConfirmModule
   ]
 })
 export class SplitViewFixturesModule { }
