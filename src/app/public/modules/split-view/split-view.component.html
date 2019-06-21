@@ -4,7 +4,7 @@
 >
   <div *ngIf="isListVisible"
     class="sky-split-view-list"
-    [attr.role]="ariaRoleForList"
+    role="region"
     [attr.aria-label]="ariaLabelForList"
     [id]="'split-view-list-' + splitViewId"
     [style.width.px]="listWidth"
@@ -35,7 +35,7 @@
 
   <div *ngIf="workspaceVisible"
     class="sky-split-view-workspace"
-    [attr.role]="ariaRoleForWorkspace"
+    role="region"
     [attr.aria-label]="ariaLabelForWorkspace"
     [@workspaceEnter]
     (@workspaceEnter.done)="onWorkspaceEnterComplete($event)"

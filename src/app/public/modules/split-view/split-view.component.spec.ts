@@ -191,17 +191,13 @@ describe('Split view component', () => {
       expect(listPanelElement.style.width).toBe('500px');
     }));
 
-    it('should accept configuration options for aria-labelledBy, aria-describedby, and role',
+    it('should accept configuration options for aria-labelledBy, and aria-describedby',
     fakeAsync(() => {
       const expectedLabelForList = 'customlabelledby';
       const expectedLabelForWorkspace = 'customlabelledby';
-      const expectedRoleForList = 'customrole';
-      const expectedRoleForWorkspace = 'customrole';
 
       component.ariaLabelForList = expectedLabelForList;
       component.ariaLabelForWorkspace = expectedLabelForWorkspace;
-      component.ariaRoleForList = expectedRoleForList;
-      component.ariaRoleForWorkspace = expectedRoleForWorkspace;
 
       fixture.detectChanges();
       tick();
@@ -210,9 +206,9 @@ describe('Split view component', () => {
       const workspace = getWorkspacePanel();
 
       expect(list.getAttribute('aria-label')).toBe(expectedLabelForList);
-      expect(list.getAttribute('role')).toBe(expectedRoleForList);
+      expect(list.getAttribute('role')).toBe('region');
       expect(workspace.getAttribute('aria-label')).toBe(expectedLabelForWorkspace);
-      expect(workspace.getAttribute('role')).toBe(expectedRoleForWorkspace);
+      expect(workspace.getAttribute('role')).toBe('region');
     }));
 
     it('should set iframe styles correctly during dragging', fakeAsync(() => {

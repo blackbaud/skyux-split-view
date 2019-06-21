@@ -111,12 +111,6 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
   public ariaLabelForWorkspace: string;
 
   @Input()
-  public ariaRoleForList: string;
-
-  @Input()
-  public ariaRoleForWorkspace: string;
-
-  @Input()
   public set listWidth(value: number) {
     if (value) {
       this._listWidth = value;
