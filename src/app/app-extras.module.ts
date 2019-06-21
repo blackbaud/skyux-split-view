@@ -14,8 +14,13 @@ import {
   SkySplitViewModule
 } from './public';
 
+import {
+  AppSkyModule
+} from './app-sky.module';
+
 @NgModule({
   exports: [
+    AppSkyModule,
     SkyConfirmModule,
     SkySplitViewModule,
     SkyRepeaterModule

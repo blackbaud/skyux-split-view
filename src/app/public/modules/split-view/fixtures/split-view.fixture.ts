@@ -31,10 +31,6 @@ export class SplitViewFixtureComponent {
 
   public ariaLabelForWorkspace: string;
 
-  public ariaRoleForList: string;
-
-  public ariaRoleForWorkspace: string;
-
   public showIframe = false;
 
   public splitViewMessageStream = new Subject<SkySplitViewMessage>();
