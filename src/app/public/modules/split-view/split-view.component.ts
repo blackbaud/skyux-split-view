@@ -363,7 +363,7 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
       case SkySplitViewMessageType.FocusWorkspace:
         // If mobile, wait until animation is complete then set focus on workspace panel.
         // Otherwise, just set focus right away.
-        if (this.isMobile) {
+        if (!this.workspaceVisible) {
           this.isListVisible = false;
           this.animationComplete
             .take(1)

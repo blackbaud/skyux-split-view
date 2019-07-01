@@ -1,5 +1,4 @@
 import {
-  AfterViewInit,
   Component,
   ChangeDetectorRef
 } from '@angular/core';
@@ -31,7 +30,7 @@ import {
   templateUrl: './split-view-visual.component.html',
   styleUrls: ['./split-view-visual.component.scss']
 })
-export class SplitViewVisualComponent implements AfterViewInit {
+export class SplitViewVisualComponent {
 
   public splitViewStream = new Subject<SkySplitViewMessage>();
 
@@ -75,28 +74,22 @@ export class SplitViewVisualComponent implements AfterViewInit {
     });
   }
 
-  public ngAfterViewInit(): void {
-  }
-
   public onItemClick(index: number) {
     this.activeIndex = index;
-
-    // Set focus in workspace.
-    const message: SkySplitViewMessage = {
-      type: SkySplitViewMessageType.FocusWorkspace
-    };
-    this.splitViewStream.next(message);
+    this.setFocusInWorkspace();
   }
 
   public onIteratorNextButtonClick(): void {
     if (this.activeIndex < this.items.length - 1) {
       this.activeIndex++;
+      this.setFocusInWorkspace();
     }
   }
 
   public onIteratorPreviousButtonClick(): void {
     if (this.activeIndex > 0) {
       this.activeIndex--;
+      this.setFocusInWorkspace();
     }
   }
 
@@ -113,6 +106,13 @@ export class SplitViewVisualComponent implements AfterViewInit {
     } else {
       closeHandler.closeWorkspace();
     }
+  }
+
+  private setFocusInWorkspace(): void {
+    const message: SkySplitViewMessage = {
+      type: SkySplitViewMessageType.FocusWorkspace
+    };
+    this.splitViewStream.next(message);
   }
 
   private sendMessage(type: SkySplitViewMessageType) {
