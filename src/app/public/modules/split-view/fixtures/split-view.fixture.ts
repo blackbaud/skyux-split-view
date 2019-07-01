@@ -19,6 +19,10 @@ import {
   SkySplitViewMessage
 } from '../types/split-view-message';
 
+import {
+  SkySplitViewMessageType
+} from '../types/split-view-message-type';
+
 @Component({
   selector: 'split-view-fixture',
   templateUrl: './split-view.fixture.html'
@@ -53,11 +57,18 @@ export class SplitViewFixtureComponent {
   ) {}
 
   public onIteratorNextButtonClick(): void {
-    console.log('next button clicked');
+    this.setFocusInWorkspace();
   }
 
   public onIteratorPreviousButtonClick(): void {
-    console.log('previous button clicked');
+    this.setFocusInWorkspace();
+  }
+
+  private setFocusInWorkspace(): void {
+    const message: SkySplitViewMessage = {
+      type: SkySplitViewMessageType.FocusWorkspace
+    };
+    this.splitViewMessageStream.next(message);
   }
 
 }

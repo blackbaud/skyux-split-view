@@ -460,6 +460,20 @@ describe('Split view component', () => {
       expect(getFocusedElement()).toEqual(firstInputElement);
     }));
 
+    it('should set focus in the workspace when iterator buttons are used', fakeAsync(() => {
+      initiateResponsiveMode(fixture);
+      const iteratorButtons = getIteratorButtons();
+
+      // Click the next iterator button.
+      iteratorButtons[1].click();
+      fixture.detectChanges();
+      tick();
+
+      // Expect first element in workspace to have focus.
+      const firstInputElement = document.querySelector('#sky-test-first-input');
+      expect(getFocusedElement()).toEqual(firstInputElement);
+    }));
+
     it ('should not show the iterator buttons and back link on larger screens', fakeAsync(() => {
         const responsiveHeader = getHeader();
 
