@@ -1,6 +1,5 @@
 
-// Split view components/modules.
-export * from './modules/split-view/split-view-media-query.service';
+// Split view modules.
 export * from './modules/split-view/split-view.module';
 
 // Split view types.
