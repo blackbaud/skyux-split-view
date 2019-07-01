@@ -3,14 +3,6 @@ import {
 } from '@angular/core';
 
 import {
-  SkyConfirmModule
-} from '@skyux/modals';
-
-import {
-  SkyRepeaterModule
-} from '@skyux/lists';
-
-import {
   SkySplitViewModule
 } from './public';
 
@@ -21,9 +13,7 @@ import {
 @NgModule({
   exports: [
     AppSkyModule,
-    SkyConfirmModule,
-    SkySplitViewModule,
-    SkyRepeaterModule
+    SkySplitViewModule
   ]
 })
 export class AppExtrasModule { }
