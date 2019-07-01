@@ -1,7 +1,8 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  ElementRef
+  ElementRef,
+  Input
 } from '@angular/core';
 
 import {
@@ -23,6 +24,9 @@ import {
   ]
 })
 export class SkySplitViewWorkspaceComponent {
+
+  @Input()
+  public ariaLabel: string;
 
   constructor(
     private coreAdapterService: SkyCoreAdapterService,

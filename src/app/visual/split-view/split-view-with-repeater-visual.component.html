@@ -11,7 +11,9 @@
     (iteratorNextButtonClick)="onIteratorNextButtonClick()"
     (iteratorPreviousButtonClick)="onIteratorPreviousButtonClick()"
   >
-    <sky-split-view-list>
+    <sky-split-view-list
+      [ariaLabel]="'Transaction list'"
+    >
       <p>
         <span
           class="sky-headline"
@@ -36,7 +38,9 @@
       </sky-repeater>
     </sky-split-view-list>
 
-    <sky-split-view-workspace>
+    <sky-split-view-workspace
+      [ariaLabel]="'Transaction form'"
+    >
       <h3>
         Transaction for {{ activeRecord.name }}
       </h3>

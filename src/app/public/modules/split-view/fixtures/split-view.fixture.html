@@ -1,12 +1,12 @@
 <sky-split-view
-  [ariaLabelForList]="ariaLabelForList"
-  [ariaLabelForWorkspace]="ariaLabelForWorkspace"
   [listWidth]="listWidth"
   [messageStream]="splitViewMessageStream"
   (iteratorNextButtonClick)="onIteratorNextButtonClick()"
   (iteratorPreviousButtonClick)="onIteratorPreviousButtonClick()"
 >
-  <sky-split-view-list>
+  <sky-split-view-list
+    [ariaLabel]="ariaLabelForList"
+  >
     <ul>
       <li *ngFor="let item of items">
         {{ item.name }}
@@ -14,7 +14,9 @@
     </ul>
   </sky-split-view-list>
 
-  <sky-split-view-workspace>
+  <sky-split-view-workspace
+    [ariaLabel]="ariaLabelForWorkspace"
+  >
     <h1>foo</h1>
     <p>bar</p>
     <label>

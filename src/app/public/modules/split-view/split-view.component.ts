@@ -105,12 +105,6 @@ let nextId = 0;
 export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @Input()
-  public ariaLabelForList: string;
-
-  @Input()
-  public ariaLabelForWorkspace: string;
-
-  @Input()
   public set listWidth(value: number) {
     if (value) {
       this._listWidth = value;
@@ -156,6 +150,9 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public isMobile = false;
 
+  @ContentChild(SkySplitViewListComponent)
+  public listComponent: SkySplitViewListComponent;
+
   // Max needs to start as something to allow input range to work.
   // This value is updated as soon as the user takes action.
   public listWidthMax = 9999;
@@ -174,23 +171,20 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public splitViewId: string = `sky-split-view-${++nextId}`;
 
+  @ContentChild(SkySplitViewWorkspaceComponent)
+  public workspaceComponent: SkySplitViewWorkspaceComponent;
+
   public get workspaceVisible() {
     return !this.isMobile || !this._listVisible;
   }
 
   private animationComplete = new Subject<void>();
 
-  @ContentChild(SkySplitViewListComponent)
-  private listComponent: SkySplitViewListComponent;
-
   private ngUnsubscribe = new Subject<void>();
 
   private mediaQueryServiceSubscription: Subscription;
 
   private widthTolerance = 100;
-
-  @ContentChild(SkySplitViewWorkspaceComponent)
-  private workspaceComponent: SkySplitViewWorkspaceComponent;
 
   @ContentChild(SkySplitViewWorkspaceComponent, { read: ElementRef })
   private workspaceComponentRef: ElementRef;
