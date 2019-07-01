@@ -45,7 +45,7 @@
     "@angular/router": "7.2.15",
     "@blackbaud/auth-client": "2.15.1",
     "@pact-foundation/pact": "8.2.6",
-    "@pact-foundation/pact-web": "8.2.6",
+    "@pact-foundation/pact-web": "7.4.0",
     "@skyux-sdk/builder": "3.6.7",
     "@skyux-sdk/builder-plugin-skyux": "1.0.0",
     "@skyux-sdk/e2e": "3.1.2",
