@@ -453,7 +453,7 @@ describe('Split view component', () => {
       expect(backToListButton).not.toBeNull();
     }));
 
-    it ('should show default text in back button when backLabel property is not defined', fakeAsync(() => {
+    it ('should use default when backLabel property is not defined', fakeAsync(() => {
       initiateResponsiveMode(fixture);
       const backToListButton = getBackToListButton();
 
