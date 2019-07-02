@@ -105,6 +105,9 @@ let nextId = 0;
 export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @Input()
+  public backLabel: string;
+
+  @Input()
   public set listWidth(value: number) {
     if (value) {
       this._listWidth = value;
@@ -132,12 +135,6 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
   @Output()
   public beforeWorkspaceClose = new EventEmitter<SkySplitViewBeforeWorkspaceCloseHandler>();
 
-  @Output()
-  public iteratorNextButtonClick = new EventEmitter<void>();
-
-  @Output()
-  public iteratorPreviousButtonClick = new EventEmitter<void>();
-
   public isDragging = false;
 
   public set isListVisible(value: boolean) {
@@ -164,10 +161,6 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
   public nextButtonDisabled = false;
 
   public previousButtonDisabled = false;
-
-  public iteratorNextButtonDisabled = false;
-
-  public iteratorPreviousButtonDisabled = false;
 
   public splitViewId: string = `sky-split-view-${++nextId}`;
 
@@ -235,11 +228,7 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public ngOnDestroy(): void {
     this.mediaQueryServiceSubscription.unsubscribe();
-
-    this.iteratorNextButtonClick.complete();
-    this.iteratorPreviousButtonClick.complete();
     this.beforeWorkspaceClose.complete();
-
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
   }
@@ -336,14 +325,6 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
     this.animationComplete.next();
   }
 
-  public onIteratorNextButtonClick(): void {
-    this.iteratorNextButtonClick.emit();
-  }
-
-  public onIteratorPreviousButtonClick(): void {
-    this.iteratorPreviousButtonClick.emit();
-  }
-
   private setListViewMaxWidth(): void {
     this.listWidthMax = this.skyWindow.nativeWindow.innerWidth - this.widthTolerance;
     setTimeout(() => {
@@ -367,26 +348,6 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
         } else {
           this.applyAutofocus();
         }
-        this.changeDetectorRef.markForCheck();
-        break;
-
-      case SkySplitViewMessageType.DisableIteratorNextButton:
-        this.nextButtonDisabled = true;
-        this.changeDetectorRef.markForCheck();
-        break;
-
-      case SkySplitViewMessageType.DisableIteratorPreviousButton:
-        this.previousButtonDisabled = true;
-        this.changeDetectorRef.markForCheck();
-        break;
-
-      case SkySplitViewMessageType.EnableIteratorNextButton:
-        this.nextButtonDisabled = false;
-        this.changeDetectorRef.markForCheck();
-        break;
-
-      case SkySplitViewMessageType.EnableIteratorPreviousButton:
-        this.previousButtonDisabled = false;
         this.changeDetectorRef.markForCheck();
         break;
     }

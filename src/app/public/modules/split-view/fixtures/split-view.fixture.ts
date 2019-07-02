@@ -19,21 +19,19 @@ import {
   SkySplitViewMessage
 } from '../types/split-view-message';
 
-import {
-  SkySplitViewMessageType
-} from '../types/split-view-message-type';
-
 @Component({
   selector: 'split-view-fixture',
   templateUrl: './split-view.fixture.html'
 })
 export class SplitViewFixtureComponent {
 
-  public listWidth: number;
-
   public ariaLabelForList: string;
 
   public ariaLabelForWorkspace: string;
+
+  public backLabel: string;
+
+  public listWidth: number;
 
   public showIframe = false;
 
@@ -55,20 +53,5 @@ export class SplitViewFixtureComponent {
   constructor(
     public confirmService: SkyConfirmService
   ) {}
-
-  public onIteratorNextButtonClick(): void {
-    this.setFocusInWorkspace();
-  }
-
-  public onIteratorPreviousButtonClick(): void {
-    this.setFocusInWorkspace();
-  }
-
-  private setFocusInWorkspace(): void {
-    const message: SkySplitViewMessage = {
-      type: SkySplitViewMessageType.FocusWorkspace
-    };
-    this.splitViewMessageStream.next(message);
-  }
 
 }

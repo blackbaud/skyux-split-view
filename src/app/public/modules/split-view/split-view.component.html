@@ -54,15 +54,9 @@
           <sky-icon
             icon="chevron-left"
           ></sky-icon>
-          {{ 'skyux_split_view_back_to_list' | skyLibResources }}
+          {{ backLabel ? backLabel : ('skyux_split_view_back_to_list' | skyLibResources) }}
         </button>
       </div>
-      <sky-split-view-iterator
-        [nextButtonDisabled]="nextButtonDisabled"
-        [previousButtonDisabled]="previousButtonDisabled"
-        (nextButtonClick)="onIteratorNextButtonClick()"
-        (previousButtonClick)="onIteratorPreviousButtonClick()"
-      ></sky-split-view-iterator>
     </div>
 
     <div

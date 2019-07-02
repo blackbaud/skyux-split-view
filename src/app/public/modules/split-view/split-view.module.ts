@@ -28,10 +28,6 @@ import {
 } from './split-view.component';
 
 import {
-  SkySplitViewIteratorComponent
-} from './split-view-iterator.component';
-
-import {
   SkySplitViewListComponent
 } from './split-view-list.component';
 
@@ -46,7 +42,6 @@ import {
 @NgModule({
   declarations: [
     SkySplitViewComponent,
-    SkySplitViewIteratorComponent,
     SkySplitViewListComponent,
     SkySplitViewWorkspaceComponent
   ],
@@ -63,7 +58,6 @@ import {
   ],
   exports: [
     SkySplitViewComponent,
-    SkySplitViewIteratorComponent,
     SkySplitViewListComponent,
     SkySplitViewWorkspaceComponent
   ]
