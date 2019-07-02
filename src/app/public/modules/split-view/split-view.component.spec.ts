@@ -60,7 +60,7 @@ let mockQueryService: MockSkyMediaQueryService;
 
 // #region helpers
 function getListPanel(): HTMLElement {
-  return document.querySelector('.sky-split-view-list') as HTMLElement;
+  return document.querySelector('.sky-split-view-drawer') as HTMLElement;
 }
 
 function getWorkspacePanel(): HTMLElement {
@@ -167,7 +167,7 @@ describe('Split view component', () => {
 
   describe('before properties initialize', () => {
     it('should resize list panel when listPanelWidth input property has a numeric value', fakeAsync(() => {
-      component.listWidth = 500;
+      component.drawerWidth = 500;
       fixture.detectChanges();
       tick();
       const listPanelElement = getListPanel();
@@ -180,7 +180,7 @@ describe('Split view component', () => {
       const expectedLabelForList = 'customlabelledby';
       const expectedLabelForWorkspace = 'customlabelledby';
 
-      component.ariaLabelForList = expectedLabelForList;
+      component.ariaLabelForDrawer = expectedLabelForList;
       component.ariaLabelForWorkspace = expectedLabelForWorkspace;
 
       fixture.detectChanges();
@@ -248,7 +248,7 @@ describe('Split view component', () => {
     }));
 
     it('should resize list panel when listPanelWidth input property has a numeric value', fakeAsync(() => {
-      component.listWidth = 500;
+      component.drawerWidth = 500;
       fixture.detectChanges();
       tick();
       const listPanelElement = getListPanel();
@@ -256,11 +256,11 @@ describe('Split view component', () => {
       expect(listPanelElement.style.width).toBe('500px');
     }));
 
-    it('should respect min and max widths when changing listWidth input', fakeAsync(() => {
+    it('should respect min and max widths when changing drawerWidth input', fakeAsync(() => {
       const listPanelElement = getListPanel();
 
       // Resize list width larger than maximum.
-      component.listWidth = 9999;
+      component.drawerWidth = 9999;
       fixture.detectChanges();
       tick();
 
@@ -268,7 +268,7 @@ describe('Split view component', () => {
       expect(listPanelElement.style.width).toBe(getMaxWidth() + 'px');
 
       // Resize list width smaller than minimum.
-      component.listWidth = 1;
+      component.drawerWidth = 1;
       fixture.detectChanges();
       tick();
 
@@ -498,7 +498,7 @@ describe('Split view component', () => {
 
     it ('should resize list panel as window gets smaller to prevent it from overflowing', fakeAsync(() => {
       // Make list as wide as possible.
-      component.listWidth = 9999;
+      component.drawerWidth = 9999;
       fixture.detectChanges();
       tick();
 
@@ -506,8 +506,8 @@ describe('Split view component', () => {
       const windowResizeAmount = 300;
       const tolerance = 100;
       const listPanel = getListPanel();
-      const initialListWidth = listPanel.clientWidth;
-      const resizeWidth = initialListWidth + tolerance - windowResizeAmount;
+      const initialdrawerWidth = listPanel.clientWidth;
+      const resizeWidth = initialdrawerWidth + tolerance - windowResizeAmount;
       spyOnProperty(window, 'innerWidth', 'get').and.returnValue(resizeWidth);
 
       // Resize the window smaller.
@@ -516,7 +516,7 @@ describe('Split view component', () => {
 
       // Expect the list panel width to resize down as the window gets smaller.
       // Use isWithin() to allow some pixel tolerance for different browsers.
-      const newWidth = initialListWidth - windowResizeAmount;
+      const newWidth = initialdrawerWidth - windowResizeAmount;
       expect(isWithin(listPanel.clientWidth, newWidth, 10)).toEqual(true);
     }));
 

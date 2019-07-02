@@ -25,13 +25,13 @@ import {
 })
 export class SplitViewFixtureComponent {
 
-  public ariaLabelForList: string;
+  public ariaLabelForDrawer: string;
 
   public ariaLabelForWorkspace: string;
 
   public backLabel: string;
 
-  public listWidth: number;
+  public drawerWidth: number;
 
   public showIframe = false;
 

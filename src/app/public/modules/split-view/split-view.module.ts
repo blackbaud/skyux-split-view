@@ -28,8 +28,8 @@ import {
 } from './split-view.component';
 
 import {
-  SkySplitViewListComponent
-} from './split-view-list.component';
+  SkySplitViewDrawerComponent
+} from './split-view-drawer.component';
 
 import {
   SkySplitViewMediaQueryService
@@ -42,7 +42,7 @@ import {
 @NgModule({
   declarations: [
     SkySplitViewComponent,
-    SkySplitViewListComponent,
+    SkySplitViewDrawerComponent,
     SkySplitViewWorkspaceComponent
   ],
   providers: [
@@ -58,7 +58,7 @@ import {
   ],
   exports: [
     SkySplitViewComponent,
-    SkySplitViewListComponent,
+    SkySplitViewDrawerComponent,
     SkySplitViewWorkspaceComponent
   ]
 })

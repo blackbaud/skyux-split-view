@@ -29,14 +29,14 @@ describe('Split view', () => {
     });
   });
 
-  it('should match previous screenshot when list is displayed in mobile view (screen: xs)', (done) => {
+  it('should match previous screenshot when drawer is displayed in mobile view (screen: xs)', (done) => {
     SkyHostBrowser.setWindowBreakpoint('xs');
     element(
       by.css('#screenshot-split-view .sky-split-view-workspace-header-content .sky-btn')
     ).click();
     SkyHostBrowser.scrollTo('#screenshot-split-view');
     expect('#screenshot-split-view').toMatchBaselineScreenshot(done, {
-      screenshotName: 'split-view-list-xs'
+      screenshotName: 'split-view-drawer-xs'
     });
   });
 });

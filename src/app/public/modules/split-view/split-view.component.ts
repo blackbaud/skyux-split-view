@@ -64,8 +64,8 @@ import {
 } from './split-view-media-query.service';
 
 import {
-  SkySplitViewListComponent
-} from './split-view-list.component';
+  SkySplitViewDrawerComponent
+} from './split-view-drawer.component';
 
 import {
   SkySplitViewWorkspaceComponent
@@ -85,7 +85,7 @@ let nextId = 0;
       ]
     ),
     trigger(
-      'listEnter', [
+      'drawerEnter', [
         transition(`void => *`, [
           style({transform: 'translate(-100%)'}),
           animate('150ms ease-in')
@@ -108,23 +108,23 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
   public backLabel: string;
 
   @Input()
-  public set listWidth(value: number) {
+  public set drawerWidth(value: number) {
     if (value) {
-      this._listWidth = value;
+      this._drawerWidth = value;
       this.updateBreakpoints();
     }
   }
 
-  public get listWidth() {
+  public get drawerWidth() {
     if (this.isMobile) {
       return undefined;
     } else {
-      if (this._listWidth > this.listWidthMax) {
-        return this.listWidthMax;
-      } else if (this._listWidth < this.listWidthMin) {
-        return this.listWidthMin;
+      if (this._drawerWidth > this.drawerWidthMax) {
+        return this.drawerWidthMax;
+      } else if (this._drawerWidth < this.drawerWidthMin) {
+        return this.drawerWidthMin;
       } else {
-        return this._listWidth || this.listWidthDefault;
+        return this._drawerWidth || this.drawerWidthDefault;
       }
     }
   }
@@ -137,26 +137,26 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public isDragging = false;
 
-  public set isListVisible(value: boolean) {
-    this._listVisible = value;
+  public set isDrawerVisible(value: boolean) {
+    this._drawerVisible = value;
   }
 
-  public get isListVisible() {
-    return !this.isMobile || this._listVisible;
+  public get isDrawerVisible() {
+    return !this.isMobile || this._drawerVisible;
   }
 
   public isMobile = false;
 
-  @ContentChild(SkySplitViewListComponent)
-  public listComponent: SkySplitViewListComponent;
+  @ContentChild(SkySplitViewDrawerComponent)
+  public drawerComponent: SkySplitViewDrawerComponent;
 
   // Max needs to start as something to allow input range to work.
   // This value is updated as soon as the user takes action.
-  public listWidthMax = 9999;
+  public drawerWidthMax = 9999;
 
-  public listWidthMin = 100;
+  public drawerWidthMin = 100;
 
-  public listWidthDefault = 320;
+  public drawerWidthDefault = 320;
 
   public nextButtonDisabled = false;
 
@@ -168,7 +168,7 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
   public workspaceComponent: SkySplitViewWorkspaceComponent;
 
   public get workspaceVisible() {
-    return !this.isMobile || !this._listVisible;
+    return !this.isMobile || !this._drawerVisible;
   }
 
   private animationComplete = new Subject<void>();
@@ -184,9 +184,9 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private xCoord = 0;
 
-  private _listVisible = true;
+  private _drawerVisible = true;
 
-  private _listWidth: number;
+  private _drawerWidth: number;
 
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
@@ -203,11 +203,11 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
       if (nowMobile && !this.isMobile) {
         // switching to mobile
-        this.isListVisible = false;
+        this.isDrawerVisible = false;
 
       } else if (!nowMobile && this.isMobile) {
         // switching to widescreen
-        this.isListVisible = true;
+        this.isDrawerVisible = true;
       }
 
       this.isMobile = nowMobile;
@@ -223,7 +223,7 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public ngAfterViewInit(): void {
     this.updateBreakpoints();
-    this.setListViewMaxWidth();
+    this.setDrawerMaxWidth();
   }
 
   public ngOnDestroy(): void {
@@ -242,7 +242,7 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
         return;
     }
 
-    this.setListViewMaxWidth();
+    this.setDrawerMaxWidth();
     this.isDragging = true;
     this.xCoord = event.clientX;
 
@@ -275,15 +275,15 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     const offsetX = event.clientX - this.xCoord;
-    let width = this.listWidth;
+    let width = this.drawerWidth;
 
     width += offsetX;
 
-    if (width < this.listWidthMin || width > this.listWidthMax) {
+    if (width < this.drawerWidthMin || width > this.drawerWidthMax) {
       return;
     }
 
-    this.listWidth = width;
+    this.drawerWidth = width;
 
     this.xCoord = event.clientX;
     this.changeDetectorRef.markForCheck();
@@ -296,17 +296,17 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public onResizeHandleChange(event: any): void {
-    this.listWidth = event.target.value;
-    this.setListViewMaxWidth();
+    this.drawerWidth = event.target.value;
+    this.setDrawerMaxWidth();
   }
 
-  public onShowListButtonClick() {
+  public onShowDrawerButtonClick() {
     /* istanbul ignore else */
     if (this.beforeWorkspaceClose.observers.length === 0) {
-      this.isListVisible = true;
+      this.isDrawerVisible = true;
     } else {
       this.beforeWorkspaceClose.emit(new SkySplitViewBeforeWorkspaceCloseHandler(() => {
-        this.isListVisible = true;
+        this.isDrawerVisible = true;
         this.changeDetectorRef.markForCheck();
       }));
     }
@@ -314,9 +314,9 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @HostListener('window:resize', ['$event'])
   public onWindowResize(event: any): void {
-    // If window size is smaller than listWidth + tolerance, shrink listWidth.
-    if (this.isListVisible && event.target.innerWidth < this.listWidth + this.widthTolerance) {
-      this.listWidth = event.target.innerWidth - this.widthTolerance;
+    // If window size is smaller than drawerWidth + tolerance, shrink drawerWidth.
+    if (this.isDrawerVisible && event.target.innerWidth < this.drawerWidth + this.widthTolerance) {
+      this.drawerWidth = event.target.innerWidth - this.widthTolerance;
     }
     this.updateBreakpoints();
   }
@@ -325,8 +325,8 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
     this.animationComplete.next();
   }
 
-  private setListViewMaxWidth(): void {
-    this.listWidthMax = this.skyWindow.nativeWindow.innerWidth - this.widthTolerance;
+  private setDrawerMaxWidth(): void {
+    this.drawerWidthMax = this.skyWindow.nativeWindow.innerWidth - this.widthTolerance;
     setTimeout(() => {
       this.changeDetectorRef.markForCheck();
     });
@@ -339,7 +339,7 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
         // If mobile, wait until animation is complete then set focus on workspace panel.
         // Otherwise, just set focus right away.
         if (!this.workspaceVisible) {
-          this.isListVisible = false;
+          this.isDrawerVisible = false;
           this.animationComplete
             .take(1)
             .subscribe(() => {
@@ -354,9 +354,9 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private updateBreakpoints(): void {
-    // Update list component.
-    if (this.listComponent) {
-      this.listComponent.updateBreakpoint(this.listWidth);
+    // Update drawer component.
+    if (this.drawerComponent) {
+      this.drawerComponent.updateBreakpoint(this.drawerWidth);
     }
 
     // Update workspace component.
