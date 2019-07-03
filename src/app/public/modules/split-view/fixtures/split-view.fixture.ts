@@ -29,7 +29,7 @@ export class SplitViewFixtureComponent {
 
   public ariaLabelForWorkspace: string;
 
-  public backLabel: string;
+  public backButtonText: string;
 
   public drawerWidth: number;
 

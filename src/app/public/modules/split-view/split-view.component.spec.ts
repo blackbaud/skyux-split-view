@@ -453,15 +453,15 @@ describe('Split view component', () => {
       expect(backToListButton).not.toBeNull();
     }));
 
-    it ('should use default when backLabel property is not defined', fakeAsync(() => {
+    it ('should use default when backButtonText property is not defined', fakeAsync(() => {
       initiateResponsiveMode(fixture);
       const backToListButton = getBackToListButton();
 
       expect(backToListButton.innerText.trim()).toEqual('Back to list');
     }));
 
-    it ('should allow custom labels for back button if backLabel property is defined', fakeAsync(() => {
-      component.backLabel = 'FOOBAR';
+    it ('should allow custom labels for back button if backButtonText property is defined', fakeAsync(() => {
+      component.backButtonText = 'FOOBAR';
       initiateResponsiveMode(fixture);
       const backToListButton = getBackToListButton();
 

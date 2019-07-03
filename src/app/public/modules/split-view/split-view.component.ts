@@ -105,7 +105,7 @@ let nextId = 0;
 export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @Input()
-  public backLabel: string;
+  public backButtonText: string;
 
   @Input()
   public set drawerWidth(value: number) {
@@ -115,7 +115,7 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  public get drawerWidth() {
+  public get drawerWidth(): number {
     if (this.isMobile) {
       return undefined;
     } else {
