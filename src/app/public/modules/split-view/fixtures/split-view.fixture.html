@@ -1,18 +1,17 @@
 <sky-split-view
-  [listWidth]="listWidth"
+  [backLabel]="backLabel"
+  [drawerWidth]="drawerWidth"
   [messageStream]="splitViewMessageStream"
-  (iteratorNextButtonClick)="onIteratorNextButtonClick()"
-  (iteratorPreviousButtonClick)="onIteratorPreviousButtonClick()"
 >
-  <sky-split-view-list
-    [ariaLabel]="ariaLabelForList"
+  <sky-split-view-drawer
+    [ariaLabel]="ariaLabelForDrawer"
   >
     <ul>
       <li *ngFor="let item of items">
         {{ item.name }}
       </li>
     </ul>
-  </sky-split-view-list>
+  </sky-split-view-drawer>
 
   <sky-split-view-workspace
     [ariaLabel]="ariaLabelForWorkspace"

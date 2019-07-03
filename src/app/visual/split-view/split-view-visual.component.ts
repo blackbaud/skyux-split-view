@@ -36,7 +36,7 @@ export class SplitViewVisualComponent {
 
   public hasUnsavedWork = false;
 
-  public listWidth: number;
+  public drawerWidth: number;
 
   public items = [
     { id: 1, name: 'Jennifer Standley', amount: 12.45, date: '04/28/2019' },
@@ -51,7 +51,6 @@ export class SplitViewVisualComponent {
   public set activeIndex(value: number) {
     this._activeIndex = value;
     this.activeRecord = this.items[this._activeIndex];
-    this.checkForDisableIterators();
   }
 
   public get activeIndex(): number {
@@ -67,30 +66,11 @@ export class SplitViewVisualComponent {
     public changeDetectorRef: ChangeDetectorRef
   ) {
     this.activeIndex = 0;
-
-    // This avoids a ExpressionChangedAfterItHasBeenCheckedError.
-    setTimeout(() => {
-      this.checkForDisableIterators();
-    });
   }
 
   public onItemClick(index: number) {
     this.activeIndex = index;
     this.setFocusInWorkspace();
-  }
-
-  public onIteratorNextButtonClick(): void {
-    if (this.activeIndex < this.items.length - 1) {
-      this.activeIndex++;
-      this.setFocusInWorkspace();
-    }
-  }
-
-  public onIteratorPreviousButtonClick(): void {
-    if (this.activeIndex > 0) {
-      this.activeIndex--;
-      this.setFocusInWorkspace();
-    }
   }
 
   public onBeforeWorkspaceClose(closeHandler: SkySplitViewBeforeWorkspaceCloseHandler): void {
@@ -113,26 +93,6 @@ export class SplitViewVisualComponent {
       type: SkySplitViewMessageType.FocusWorkspace
     };
     this.splitViewStream.next(message);
-  }
-
-  private sendMessage(type: SkySplitViewMessageType) {
-    const message: SkySplitViewMessage = {
-      type: type
-    };
-    this.splitViewStream.next(message);
-  }
-
-  private checkForDisableIterators(): void {
-    if (this.activeIndex === this.items.length - 1) {
-      this.sendMessage(SkySplitViewMessageType.DisableIteratorNextButton);
-    } else {
-      this.sendMessage(SkySplitViewMessageType.EnableIteratorNextButton);
-    }
-    if (this.activeIndex === 0) {
-      this.sendMessage(SkySplitViewMessageType.DisableIteratorPreviousButton);
-    } else {
-      this.sendMessage(SkySplitViewMessageType.EnableIteratorPreviousButton);
-    }
   }
 
 }

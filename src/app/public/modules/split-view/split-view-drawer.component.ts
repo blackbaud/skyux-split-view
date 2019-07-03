@@ -15,7 +15,7 @@ import {
 } from './split-view-media-query.service';
 
 @Component({
-  selector: 'sky-split-view-list',
+  selector: 'sky-split-view-drawer',
   template: `<ng-content></ng-content>`,
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
@@ -23,7 +23,7 @@ import {
     { provide: SkyMediaQueryService, useExisting: SkySplitViewMediaQueryService }
   ]
 })
-export class SkySplitViewListComponent {
+export class SkySplitViewDrawerComponent {
 
   @Input()
   public ariaLabel: string;
@@ -36,7 +36,7 @@ export class SkySplitViewListComponent {
 
   public updateBreakpoint(width: number): void {
     this.splitViewMediaQueryService.setBreakpointForWidth(width);
-    const newListBreakpoint = this.splitViewMediaQueryService.current;
-    this.coreAdapterService.setResponsiveContainerClass(this.elementRef, newListBreakpoint);
+    const newDrawerBreakpoint = this.splitViewMediaQueryService.current;
+    this.coreAdapterService.setResponsiveContainerClass(this.elementRef, newDrawerBreakpoint);
   }
 }

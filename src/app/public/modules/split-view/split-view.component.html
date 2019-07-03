@@ -2,33 +2,33 @@
   class="sky-split-view"
   [@blockAnimationOnLoad]
 >
-  <div *ngIf="isListVisible"
-    class="sky-split-view-list"
+  <div *ngIf="isDrawerVisible"
+    class="sky-split-view-drawer"
     role="region"
-    [attr.aria-label]="listComponent?.ariaLabel"
-    [id]="'split-view-list-' + splitViewId"
-    [style.width.px]="listWidth"
-    [@listEnter]
+    [attr.aria-label]="drawerComponent?.ariaLabel"
+    [id]="'split-view-drawer-' + splitViewId"
+    [style.width.px]="drawerWidth"
+    [@drawerEnter]
   >
     <ng-content
-      select="sky-split-view-list"
+      select="sky-split-view-drawer"
     ></ng-content>
   </div>
 
-  <input *ngIf="isListVisible && !isMobile"
+  <input *ngIf="isDrawerVisible && !isMobile"
     class="sky-split-view-resize-handle"
     role="separator"
     step="10"
     type="range"
-    [attr.aria-controls]="'split-view-list-' + splitViewId"
+    [attr.aria-controls]="'split-view-drawer-' + splitViewId"
     [attr.aria-label]="'skyux_split_view_resize_handle' | skyLibResources"
-    [attr.aria-valuemax]="listWidthMax"
-    [attr.aria-valuemin]="listWidthMin"
-    [attr.aria-valuenow]="listWidth"
-    [max]="listWidthMax"
-    [min]="listWidthMin"
-    [style.left.px]="listWidth - 7"
-    [value]="listWidth"
+    [attr.aria-valuemax]="drawerWidthMax"
+    [attr.aria-valuemin]="drawerWidthMin"
+    [attr.aria-valuenow]="drawerWidth"
+    [max]="drawerWidthMax"
+    [min]="drawerWidthMin"
+    [style.left.px]="drawerWidth - 7"
+    [value]="drawerWidth"
     (change)="onResizeHandleChange($event)"
     (mousedown)="onMouseDown($event)"
   />
@@ -41,28 +41,22 @@
     (@workspaceEnter.done)="onWorkspaceEnterComplete($event)"
   >
 
-    <div *ngIf="!isListVisible"
+    <div *ngIf="!isDrawerVisible"
       class="sky-split-view-workspace-header"
     >
       <div
         class="sky-split-view-workspace-header-content"
       >
-        <button *ngIf="!isListVisible"
+        <button *ngIf="!isDrawerVisible"
           class="sky-btn sky-btn-link"
-          (click)="onShowListButtonClick()"
+          (click)="onShowDrawerButtonClick()"
         >
           <sky-icon
             icon="chevron-left"
           ></sky-icon>
-          {{ 'skyux_split_view_back_to_list' | skyLibResources }}
+          {{ backLabel ? backLabel : ('skyux_split_view_back_to_list' | skyLibResources) }}
         </button>
       </div>
-      <sky-split-view-iterator
-        [nextButtonDisabled]="nextButtonDisabled"
-        [previousButtonDisabled]="previousButtonDisabled"
-        (nextButtonClick)="onIteratorNextButtonClick()"
-        (previousButtonClick)="onIteratorPreviousButtonClick()"
-      ></sky-split-view-iterator>
     </div>
 
     <div

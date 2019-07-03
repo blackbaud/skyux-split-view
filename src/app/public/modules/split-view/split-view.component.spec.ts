@@ -60,7 +60,7 @@ let mockQueryService: MockSkyMediaQueryService;
 
 // #region helpers
 function getListPanel(): HTMLElement {
-  return document.querySelector('.sky-split-view-list') as HTMLElement;
+  return document.querySelector('.sky-split-view-drawer') as HTMLElement;
 }
 
 function getWorkspacePanel(): HTMLElement {
@@ -130,22 +130,6 @@ function initiateResponsiveMode(fixture: ComponentFixture<any>): void {
   fixture.detectChanges();
 }
 
-function getIteratorButtons(): NodeListOf<HTMLButtonElement> {
-  return document.querySelectorAll('.sky-split-view-iterators button') as NodeListOf<HTMLButtonElement>;
-}
-
-function enableIterators(value: boolean, component: any, fixture: ComponentFixture<any>): void {
-  let message: SkySplitViewMessage = {
-    type: value ? SkySplitViewMessageType.EnableIteratorNextButton : SkySplitViewMessageType.DisableIteratorNextButton
-  };
-  component.splitViewMessageStream.next(message);
-  message = {
-    type: value ? SkySplitViewMessageType.EnableIteratorPreviousButton : SkySplitViewMessageType.DisableIteratorPreviousButton
-  };
-  component.splitViewMessageStream.next(message);
-  fixture.detectChanges();
-}
-
 function getBackToListButton(): HTMLElement {
   return document.querySelector('.sky-split-view-workspace-header-content > button') as HTMLElement;
 }
@@ -183,7 +167,7 @@ describe('Split view component', () => {
 
   describe('before properties initialize', () => {
     it('should resize list panel when listPanelWidth input property has a numeric value', fakeAsync(() => {
-      component.listWidth = 500;
+      component.drawerWidth = 500;
       fixture.detectChanges();
       tick();
       const listPanelElement = getListPanel();
@@ -191,12 +175,12 @@ describe('Split view component', () => {
       expect(listPanelElement.style.width).toBe('500px');
     }));
 
-    it('should accept configuration options for aria-labelledBy, and aria-describedby',
+    it('should accept configuration options for aria-label',
     fakeAsync(() => {
       const expectedLabelForList = 'customlabelledby';
       const expectedLabelForWorkspace = 'customlabelledby';
 
-      component.ariaLabelForList = expectedLabelForList;
+      component.ariaLabelForDrawer = expectedLabelForList;
       component.ariaLabelForWorkspace = expectedLabelForWorkspace;
 
       fixture.detectChanges();
@@ -264,7 +248,7 @@ describe('Split view component', () => {
     }));
 
     it('should resize list panel when listPanelWidth input property has a numeric value', fakeAsync(() => {
-      component.listWidth = 500;
+      component.drawerWidth = 500;
       fixture.detectChanges();
       tick();
       const listPanelElement = getListPanel();
@@ -272,11 +256,11 @@ describe('Split view component', () => {
       expect(listPanelElement.style.width).toBe('500px');
     }));
 
-    it('should respect min and max widths when changing listWidth input', fakeAsync(() => {
+    it('should respect min and max widths when changing drawerWidth input', fakeAsync(() => {
       const listPanelElement = getListPanel();
 
       // Resize list width larger than maximum.
-      component.listWidth = 9999;
+      component.drawerWidth = 9999;
       fixture.detectChanges();
       tick();
 
@@ -284,7 +268,7 @@ describe('Split view component', () => {
       expect(listPanelElement.style.width).toBe(getMaxWidth() + 'px');
 
       // Resize list width smaller than minimum.
-      component.listWidth = 1;
+      component.drawerWidth = 1;
       fixture.detectChanges();
       tick();
 
@@ -460,91 +444,28 @@ describe('Split view component', () => {
       expect(getFocusedElement()).toEqual(firstInputElement);
     }));
 
-    it('should set focus in the workspace when iterator buttons are used', fakeAsync(() => {
-      initiateResponsiveMode(fixture);
-      const iteratorButtons = getIteratorButtons();
-
-      // Click the next iterator button.
-      iteratorButtons[1].click();
-      fixture.detectChanges();
-      tick();
-
-      // Expect first element in workspace to have focus.
-      const firstInputElement = document.querySelector('#sky-test-first-input');
-      expect(getFocusedElement()).toEqual(firstInputElement);
-    }));
-
-    it ('should not show the iterator buttons and back link on larger screens', fakeAsync(() => {
-        const responsiveHeader = getHeader();
-
-        expect(responsiveHeader).toBeNull();
-    }));
-
-    it ('should show the iterator buttons and back link on smaller screens', fakeAsync(() => {
+    it ('should show the header and back link on smaller screens', fakeAsync(() => {
       initiateResponsiveMode(fixture);
       const responsiveHeader = getHeader();
-      const iteratorButtons = getIteratorButtons();
       const backToListButton = getBackToListButton();
 
       expect(responsiveHeader).not.toBeNull();
-      expect(iteratorButtons).not.toBeNull();
       expect(backToListButton).not.toBeNull();
     }));
 
-    it ('should disable/enable iterator buttons when messages are sent to the stream', fakeAsync(() => {
+    it ('should use default when backLabel property is not defined', fakeAsync(() => {
       initiateResponsiveMode(fixture);
-      const iteratorButtons = getIteratorButtons();
+      const backToListButton = getBackToListButton();
 
-      // Expect iterator buttons to be enabled by default.
-      expect(iteratorButtons[0].disabled).toBeFalsy();
-      expect(iteratorButtons[1].disabled).toBeFalsy();
-
-      // Send message to disable the iterators.
-      enableIterators(false, component, fixture);
-
-      // Expect iterator buttons to be disabled.
-      expect(iteratorButtons[0].disabled).toBeTruthy();
-      expect(iteratorButtons[1].disabled).toBeTruthy();
-
-      // Send message to enable the iterators.
-      enableIterators(true, component, fixture);
-
-      // Expect iterator buttons to be enabled again.
-      expect(iteratorButtons[0].disabled).toBeFalsy();
-      expect(iteratorButtons[1].disabled).toBeFalsy();
+      expect(backToListButton.innerText.trim()).toEqual('Back to list');
     }));
 
-    it ('should emit when the iterator buttons are clicked', fakeAsync(() => {
+    it ('should allow custom labels for back button if backLabel property is defined', fakeAsync(() => {
+      component.backLabel = 'FOOBAR';
       initiateResponsiveMode(fixture);
-      const iteratorButtons = getIteratorButtons();
-      const nextSpy = spyOn(component, 'onIteratorNextButtonClick').and.callThrough();
-      const previousSpy = spyOn(component, 'onIteratorPreviousButtonClick').and.callThrough();
+      const backToListButton = getBackToListButton();
 
-      iteratorButtons[0].click();
-      expect(nextSpy).toHaveBeenCalledTimes(0);
-      expect(previousSpy).toHaveBeenCalledTimes(1);
-
-      nextSpy.calls.reset();
-      previousSpy.calls.reset();
-      iteratorButtons[1].click();
-      expect(nextSpy).toHaveBeenCalledTimes(1);
-      expect(previousSpy).toHaveBeenCalledTimes(0);
-    }));
-
-    it ('should not emit when the iterator buttons are disabled', fakeAsync(() => {
-      initiateResponsiveMode(fixture);
-      const iteratorButtons = getIteratorButtons();
-      const nextSpy = spyOn(component, 'onIteratorNextButtonClick').and.callThrough();
-      const previousSpy = spyOn(component, 'onIteratorPreviousButtonClick').and.callThrough();
-
-      // Send message to disable the iterators.
-      enableIterators(false, component, fixture);
-
-      // Expect spys should NOT have been called.
-      iteratorButtons[0].click();
-      iteratorButtons[1].click();
-      expect(nextSpy).toHaveBeenCalledTimes(0);
-      expect(previousSpy).toHaveBeenCalledTimes(0);
+      expect(backToListButton.innerText.trim()).toEqual('FOOBAR');
     }));
 
     it ('should show the list when the back link is clicked', fakeAsync(() => {
@@ -577,7 +498,7 @@ describe('Split view component', () => {
 
     it ('should resize list panel as window gets smaller to prevent it from overflowing', fakeAsync(() => {
       // Make list as wide as possible.
-      component.listWidth = 9999;
+      component.drawerWidth = 9999;
       fixture.detectChanges();
       tick();
 
@@ -585,8 +506,8 @@ describe('Split view component', () => {
       const windowResizeAmount = 300;
       const tolerance = 100;
       const listPanel = getListPanel();
-      const initialListWidth = listPanel.clientWidth;
-      const resizeWidth = initialListWidth + tolerance - windowResizeAmount;
+      const initialdrawerWidth = listPanel.clientWidth;
+      const resizeWidth = initialdrawerWidth + tolerance - windowResizeAmount;
       spyOnProperty(window, 'innerWidth', 'get').and.returnValue(resizeWidth);
 
       // Resize the window smaller.
@@ -595,7 +516,7 @@ describe('Split view component', () => {
 
       // Expect the list panel width to resize down as the window gets smaller.
       // Use isWithin() to allow some pixel tolerance for different browsers.
-      const newWidth = initialListWidth - windowResizeAmount;
+      const newWidth = initialdrawerWidth - windowResizeAmount;
       expect(isWithin(listPanel.clientWidth, newWidth, 10)).toEqual(true);
     }));
 

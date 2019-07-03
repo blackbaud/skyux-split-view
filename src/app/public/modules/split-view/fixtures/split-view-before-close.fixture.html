@@ -1,13 +1,13 @@
 <sky-split-view
   (beforeWorkspaceClose)="onBeforeWorkspaceClose($event)"
 >
-  <sky-split-view-list>
+  <sky-split-view-drawer>
     <ul>
       <li *ngFor="let item of items">
         {{ item.name }}
       </li>
     </ul>
-  </sky-split-view-list>
+  </sky-split-view-drawer>
 
   <sky-split-view-workspace>
     <h1>foo</h1>

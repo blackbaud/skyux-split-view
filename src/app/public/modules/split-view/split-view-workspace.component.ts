@@ -36,7 +36,7 @@ export class SkySplitViewWorkspaceComponent {
 
   public updateBreakpoint(width: number): void {
     this.splitViewMediaQueryService.setBreakpointForWidth(width);
-    const newListBreakpoint = this.splitViewMediaQueryService.current;
-    this.coreAdapterService.setResponsiveContainerClass(this.elementRef, newListBreakpoint);
+    const newDrawerBreakpoint = this.splitViewMediaQueryService.current;
+    this.coreAdapterService.setResponsiveContainerClass(this.elementRef, newDrawerBreakpoint);
   }
 }
