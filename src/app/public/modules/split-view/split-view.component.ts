@@ -21,15 +21,10 @@ import {
 } from '@angular/animations';
 
 import {
-  SkyAppWindowRef,
   SkyCoreAdapterService,
   SkyMediaBreakpoints,
   SkyMediaQueryService
 } from '@skyux/core';
-
-import {
-  Observable
-} from 'rxjs/Observable';
 
 import {
   Subject
@@ -60,18 +55,12 @@ import {
 } from './types/split-view-message-type';
 
 import {
-  SkySplitViewMediaQueryService
-} from './split-view-media-query.service';
-
-import {
   SkySplitViewDrawerComponent
 } from './split-view-drawer.component';
 
 import {
   SkySplitViewWorkspaceComponent
 } from './split-view-workspace.component';
-
-let nextId = 0;
 
 @Component({
   selector: 'sky-split-view',
@@ -108,34 +97,10 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
   public backButtonText: string;
 
   @Input()
-  public set drawerWidth(value: number) {
-    if (value) {
-      this._drawerWidth = value;
-      this.updateBreakpoints();
-    }
-  }
-
-  public get drawerWidth(): number {
-    if (this.isMobile) {
-      return undefined;
-    } else {
-      if (this._drawerWidth > this.drawerWidthMax) {
-        return this.drawerWidthMax;
-      } else if (this._drawerWidth < this.drawerWidthMin) {
-        return this.drawerWidthMin;
-      } else {
-        return this._drawerWidth || this.drawerWidthDefault;
-      }
-    }
-  }
-
-  @Input()
   public messageStream = new Subject<SkySplitViewMessage>();
 
   @Output()
   public beforeWorkspaceClose = new EventEmitter<SkySplitViewBeforeWorkspaceCloseHandler>();
-
-  public isDragging = false;
 
   public set isDrawerVisible(value: boolean) {
     this._drawerVisible = value;
@@ -150,19 +115,9 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
   @ContentChild(SkySplitViewDrawerComponent)
   public drawerComponent: SkySplitViewDrawerComponent;
 
-  // Max needs to start as something to allow input range to work.
-  // This value is updated as soon as the user takes action.
-  public drawerWidthMax = 9999;
-
-  public drawerWidthMin = 100;
-
-  public drawerWidthDefault = 320;
-
   public nextButtonDisabled = false;
 
   public previousButtonDisabled = false;
-
-  public splitViewId: string = `sky-split-view-${++nextId}`;
 
   @ContentChild(SkySplitViewWorkspaceComponent)
   public workspaceComponent: SkySplitViewWorkspaceComponent;
@@ -177,24 +132,13 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private mediaQueryServiceSubscription: Subscription;
 
-  private widthTolerance = 100;
-
-  @ContentChild(SkySplitViewWorkspaceComponent, { read: ElementRef })
-  private workspaceComponentRef: ElementRef;
-
-  private xCoord = 0;
-
   private _drawerVisible = true;
-
-  private _drawerWidth: number;
 
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
     private coreAdapterService: SkyCoreAdapterService,
     private elementRef: ElementRef,
-    private mediaQueryService: SkyMediaQueryService,
-    private skyWindow: SkyAppWindowRef,
-    private splitViewMediaQueryService: SkySplitViewMediaQueryService
+    private mediaQueryService: SkyMediaQueryService
   ) {}
 
   public ngOnInit(): void {
@@ -211,6 +155,8 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
       }
 
       this.isMobile = nowMobile;
+      this.drawerComponent.isMobile = this.isMobile;
+      this.workspaceComponent.isMobile = this.isMobile;
       this.changeDetectorRef.markForCheck();
     });
 
@@ -219,11 +165,26 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
       .subscribe((message: SkySplitViewMessage) => {
         this.handleIncomingMessages(message);
       });
+
+    this.updateBreakpoint();
   }
 
   public ngAfterViewInit(): void {
-    this.updateBreakpoints();
-    this.setDrawerMaxWidth();
+    // Watch for width changes on drawer and update workspace breakpoints.
+    this.drawerComponent.widthChanges
+      .takeUntil(this.ngUnsubscribe)
+      .subscribe(() => {
+        this.workspaceComponent.updateBreakpoint();
+      });
+
+    this.workspaceComponent.showDrawerButtonClick
+      .takeUntil(this.ngUnsubscribe)
+      .subscribe(() => {
+        this.onShowDrawerButtonClick();
+      });
+
+    this.drawerComponent.isMobile = this.isMobile;
+    this.workspaceComponent.isMobile = this.isMobile;
   }
 
   public ngOnDestroy(): void {
@@ -231,73 +192,6 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
     this.beforeWorkspaceClose.complete();
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
-  }
-
-  public onMouseDown(event: MouseEvent): void {
-    event.preventDefault();
-    event.stopPropagation();
-
-    if (this.splitViewMediaQueryService.isWidthWithinBreakpiont(window.innerWidth,
-      SkyMediaBreakpoints.xs)) {
-        return;
-    }
-
-    this.setDrawerMaxWidth();
-    this.isDragging = true;
-    this.xCoord = event.clientX;
-
-    this.coreAdapterService.toggleIframePointerEvents(false);
-
-    Observable
-      .fromEvent(document, 'mousemove')
-      .takeWhile(() => {
-        return this.isDragging;
-      })
-      .subscribe((moveEvent: any) => {
-        this.onMouseMove(moveEvent);
-      });
-
-    Observable
-      .fromEvent(document, 'mouseup')
-      .takeWhile(() => {
-        return this.isDragging;
-      })
-      .subscribe((mouseUpEvent: any) => {
-        this.onHandleRelease(mouseUpEvent);
-      });
-  }
-
-  public onMouseMove(event: MouseEvent): void {
-    /* Sanity check */
-    /* istanbul ignore if */
-    if (!this.isDragging) {
-      return;
-    }
-
-    const offsetX = event.clientX - this.xCoord;
-    let width = this.drawerWidth;
-
-    width += offsetX;
-
-    if (width < this.drawerWidthMin || width > this.drawerWidthMax) {
-      return;
-    }
-
-    this.drawerWidth = width;
-
-    this.xCoord = event.clientX;
-    this.changeDetectorRef.markForCheck();
-  }
-
-  public onHandleRelease(event: MouseEvent): void {
-    this.isDragging = false;
-    this.coreAdapterService.toggleIframePointerEvents(true);
-    this.changeDetectorRef.markForCheck();
-  }
-
-  public onResizeHandleChange(event: any): void {
-    this.drawerWidth = event.target.value;
-    this.setDrawerMaxWidth();
   }
 
   public onShowDrawerButtonClick() {
@@ -312,24 +206,22 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  @HostListener('window:resize', ['$event'])
-  public onWindowResize(event: any): void {
-    // If window size is smaller than drawerWidth + tolerance, shrink drawerWidth.
-    if (this.isDrawerVisible && event.target.innerWidth < this.drawerWidth + this.widthTolerance) {
-      this.drawerWidth = event.target.innerWidth - this.widthTolerance;
-    }
-    this.updateBreakpoints();
-  }
-
   public onWorkspaceEnterComplete(): void {
     this.animationComplete.next();
   }
 
-  private setDrawerMaxWidth(): void {
-    this.drawerWidthMax = this.skyWindow.nativeWindow.innerWidth - this.widthTolerance;
-    setTimeout(() => {
-      this.changeDetectorRef.markForCheck();
-    });
+  @HostListener('window:resize', ['$event'])
+  public onWindowResize(event: any): void {
+    // If window size is smaller than width + tolerance, shrink width.
+    if (!this.isMobile && event.target.innerWidth < this.drawerComponent.width + this.drawerComponent.widthTolerance) {
+      this.drawerComponent.width = event.target.innerWidth - this.drawerComponent.widthTolerance;
+    }
+    this.updateBreakpoint();
+  }
+
+  public updateBreakpoint(): void {
+    const newDrawerBreakpoint = this.mediaQueryService.current;
+    this.coreAdapterService.setResponsiveContainerClass(this.elementRef, newDrawerBreakpoint);
   }
 
   private handleIncomingMessages(message: SkySplitViewMessage) {
@@ -340,7 +232,7 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
         // Otherwise, just set focus right away.
         if (!this.workspaceVisible) {
           this.isDrawerVisible = false;
-          this.animationComplete
+          this.workspaceComponent.animationEnterComplete
             .take(1)
             .subscribe(() => {
               this.applyAutofocus();
@@ -353,23 +245,10 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  private updateBreakpoints(): void {
-    // Update drawer component.
-    if (this.drawerComponent) {
-      this.drawerComponent.updateBreakpoint(this.drawerWidth);
-    }
-
-    // Update workspace component.
-    const workspaceParent = this.workspaceComponentRef.nativeElement.parentElement;
-    if (this.workspaceComponent && workspaceParent) {
-      this.workspaceComponent.updateBreakpoint(workspaceParent.clientWidth);
-    }
-  }
-
   private applyAutofocus(): void {
     const applyAutoFocus = this.coreAdapterService.applyAutoFocus(this.elementRef);
     if (!applyAutoFocus) {
-      this.coreAdapterService.getFocusableChildrenAndApplyFocus(this.elementRef, 'sky-split-view-workspace');
+      this.coreAdapterService.getFocusableChildrenAndApplyFocus(this.elementRef, '.sky-split-view-workspace-content');
     }
   }
 }

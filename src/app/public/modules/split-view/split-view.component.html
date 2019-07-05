@@ -3,11 +3,7 @@
   [@blockAnimationOnLoad]
 >
   <div *ngIf="isDrawerVisible"
-    class="sky-split-view-drawer"
-    role="region"
-    [attr.aria-label]="drawerComponent?.ariaLabel"
-    [id]="'split-view-drawer-' + splitViewId"
-    [style.width.px]="drawerWidth"
+    class="sky-split-view-drawer-flex-container"
     [@drawerEnter]
   >
     <ng-content
@@ -15,56 +11,13 @@
     ></ng-content>
   </div>
 
-  <input *ngIf="isDrawerVisible && !isMobile"
-    class="sky-split-view-resize-handle"
-    role="separator"
-    step="10"
-    type="range"
-    [attr.aria-controls]="'split-view-drawer-' + splitViewId"
-    [attr.aria-label]="'skyux_split_view_resize_handle' | skyLibResources"
-    [attr.aria-valuemax]="drawerWidthMax"
-    [attr.aria-valuemin]="drawerWidthMin"
-    [attr.aria-valuenow]="drawerWidth"
-    [max]="drawerWidthMax"
-    [min]="drawerWidthMin"
-    [style.left.px]="drawerWidth - 7"
-    [value]="drawerWidth"
-    (change)="onResizeHandleChange($event)"
-    (mousedown)="onMouseDown($event)"
-  />
-
   <div *ngIf="workspaceVisible"
-    class="sky-split-view-workspace"
-    role="region"
-    [attr.aria-label]="workspaceComponent?.ariaLabel"
+    class="sky-split-view-workspace-flex-container"
     [@workspaceEnter]
     (@workspaceEnter.done)="onWorkspaceEnterComplete($event)"
   >
-
-    <div *ngIf="!isDrawerVisible"
-      class="sky-split-view-workspace-header"
-    >
-      <div
-        class="sky-split-view-workspace-header-content"
-      >
-        <button *ngIf="!isDrawerVisible"
-          class="sky-btn sky-btn-link"
-          (click)="onShowDrawerButtonClick()"
-        >
-          <sky-icon
-            icon="chevron-left"
-          ></sky-icon>
-          {{ backButtonText ? backButtonText : ('skyux_split_view_back_to_list' | skyLibResources) }}
-        </button>
-      </div>
-    </div>
-
-    <div
-      class="sky-padding-even-large"
-    >
-      <ng-content
-        select="sky-split-view-workspace"
-      ></ng-content>
-    </div>
+    <ng-content
+      select="sky-split-view-workspace"
+    ></ng-content>
   </div>
 </div>

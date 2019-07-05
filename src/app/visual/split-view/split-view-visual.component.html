@@ -6,10 +6,11 @@
 >
   <sky-split-view
     [messageStream]="splitViewStream"
-    [drawerWidth]="drawerWidth"
     (beforeWorkspaceClose)="onBeforeWorkspaceClose($event)"
   >
-    <sky-split-view-drawer>
+    <sky-split-view-drawer
+      [width]="width"
+    >
       <h3>
         <strong>{{ items.length }}</strong> transactions
       </h3>

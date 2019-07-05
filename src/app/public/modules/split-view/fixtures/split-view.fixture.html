@@ -1,10 +1,10 @@
 <sky-split-view
   [backButtonText]="backButtonText"
-  [drawerWidth]="drawerWidth"
   [messageStream]="splitViewMessageStream"
 >
   <sky-split-view-drawer
     [ariaLabel]="ariaLabelForDrawer"
+    [width]="width"
   >
     <ul>
       <li *ngFor="let item of items">

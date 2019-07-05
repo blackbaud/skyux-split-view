@@ -2,7 +2,10 @@ import {
   ChangeDetectionStrategy,
   Component,
   ElementRef,
-  Input
+  EventEmitter,
+  HostListener,
+  Input,
+  OnDestroy
 } from '@angular/core';
 
 import {
@@ -16,17 +19,33 @@ import {
 
 @Component({
   selector: 'sky-split-view-workspace',
-  template: `<ng-content></ng-content>`,
+  templateUrl: 'split-view-workspace.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     SkySplitViewMediaQueryService,
     { provide: SkyMediaQueryService, useExisting: SkySplitViewMediaQueryService }
   ]
 })
-export class SkySplitViewWorkspaceComponent {
+export class SkySplitViewWorkspaceComponent implements OnDestroy {
+
+  // Shows/hides the workspace header when the parent split view is in mobile view.
+  public set isMobile(value: boolean) {
+    this._isMobile = value;
+    // this.changeDetectorRef.markForCheck();
+  }
+
+  public get isMobile(): boolean {
+    return this._isMobile || false;
+  }
 
   @Input()
   public ariaLabel: string;
+
+  public showDrawerButtonClick = new EventEmitter<number>();
+
+  public animationEnterComplete = new EventEmitter<number>();
+
+  private _isMobile: boolean;
 
   constructor(
     private coreAdapterService: SkyCoreAdapterService,
@@ -34,9 +53,28 @@ export class SkySplitViewWorkspaceComponent {
     private splitViewMediaQueryService: SkySplitViewMediaQueryService
   ) {}
 
-  public updateBreakpoint(width: number): void {
+  public ngOnDestroy(): void {
+    this.animationEnterComplete.complete();
+    this.showDrawerButtonClick.complete();
+  }
+
+  public onShowDrawerButtonClick(): void {
+    this.showDrawerButtonClick.emit();
+  }
+
+  @HostListener('window:resize', ['$event'])
+  public onWindowResize(): void {
+    this.updateBreakpoint();
+  }
+
+  public updateBreakpoint(): void {
+    const width = this.elementRef.nativeElement.clientWidth;
     this.splitViewMediaQueryService.setBreakpointForWidth(width);
     const newDrawerBreakpoint = this.splitViewMediaQueryService.current;
     this.coreAdapterService.setResponsiveContainerClass(this.elementRef, newDrawerBreakpoint);
+  }
+
+  public onWorkspaceEnterComplete(): void {
+    this.animationEnterComplete.next();
   }
 }

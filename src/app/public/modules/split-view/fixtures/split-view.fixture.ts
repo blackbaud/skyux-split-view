@@ -31,7 +31,7 @@ export class SplitViewFixtureComponent {
 
   public backButtonText: string;
 
-  public drawerWidth: number;
+  public width: number;
 
   public showIframe = false;
 
