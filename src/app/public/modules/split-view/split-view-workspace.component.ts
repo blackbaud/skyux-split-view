@@ -72,8 +72,4 @@ export class SkySplitViewWorkspaceComponent implements OnDestroy {
     const newDrawerBreakpoint = this.splitViewMediaQueryService.current;
     this.coreAdapterService.setResponsiveContainerClass(this.elementRef, newDrawerBreakpoint);
   }
-
-  public onWorkspaceEnterComplete(): void {
-    this.animationEnterComplete.next();
-  }
 }
