@@ -40,9 +40,9 @@ export class SkySplitViewWorkspaceComponent implements OnDestroy {
   @Input()
   public ariaLabel: string;
 
-  public showDrawerButtonClick = new EventEmitter<number>();
-
   public animationEnterComplete = new EventEmitter<number>();
+
+  public showDrawerButtonClick = new EventEmitter<number>();
 
   private _isMobile: boolean;
 

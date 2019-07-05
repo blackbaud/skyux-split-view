@@ -57,7 +57,7 @@ export class SkySplitViewDrawerComponent implements AfterViewInit, OnInit, OnDes
     if (value) {
       this._width = Number(value);
       this.updateBreakpoint();
-      this.widthChanges.emit(this._width);
+      this.widthChange.emit(this._width);
       this.changeDetectorRef.markForCheck();
     }
   }
@@ -77,7 +77,7 @@ export class SkySplitViewDrawerComponent implements AfterViewInit, OnInit, OnDes
 
   public splitViewDrawerId: string = `sky-split-view-drawer-${++nextId}`;
 
-  public widthChanges = new EventEmitter<number>();
+  public widthChange = new EventEmitter<number>();
 
   // Max needs to start as something to allow input range to work.
   // This value is updated as soon as the user takes action.
@@ -114,7 +114,7 @@ export class SkySplitViewDrawerComponent implements AfterViewInit, OnInit, OnDes
   }
 
   public ngOnDestroy(): void {
-    this.widthChanges.complete();
+    this.widthChange.complete();
   }
 
   public onResizeHandleMouseDown(event: MouseEvent): void {

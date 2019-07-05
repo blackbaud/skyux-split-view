@@ -171,7 +171,7 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public ngAfterViewInit(): void {
     // Watch for width changes on drawer and update workspace breakpoints.
-    this.drawerComponent.widthChanges
+    this.drawerComponent.widthChange
       .takeUntil(this.ngUnsubscribe)
       .subscribe(() => {
         this.workspaceComponent.updateBreakpoint();
