@@ -31,7 +31,6 @@ export class SkySplitViewWorkspaceComponent implements OnDestroy {
   // Shows/hides the workspace header when the parent split view is in mobile view.
   public set isMobile(value: boolean) {
     this._isMobile = value;
-    // this.changeDetectorRef.markForCheck();
   }
 
   public get isMobile(): boolean {
