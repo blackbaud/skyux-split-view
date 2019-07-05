@@ -1,5 +1,6 @@
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
@@ -31,6 +32,7 @@ export class SkySplitViewWorkspaceComponent implements OnDestroy {
   // Shows/hides the workspace header when the parent split view is in mobile view.
   public set isMobile(value: boolean) {
     this._isMobile = value;
+    this.changeDetectorRef.markForCheck();
   }
 
   public get isMobile(): boolean {
@@ -40,20 +42,20 @@ export class SkySplitViewWorkspaceComponent implements OnDestroy {
   @Input()
   public ariaLabel: string;
 
-  public animationEnterComplete = new EventEmitter<number>();
+  public backButtonText: string;
 
   public showDrawerButtonClick = new EventEmitter<number>();
 
   private _isMobile: boolean;
 
   constructor(
+    private changeDetectorRef: ChangeDetectorRef,
     private coreAdapterService: SkyCoreAdapterService,
     private elementRef: ElementRef,
     private splitViewMediaQueryService: SkySplitViewMediaQueryService
   ) {}
 
   public ngOnDestroy(): void {
-    this.animationEnterComplete.complete();
     this.showDrawerButtonClick.complete();
   }
 

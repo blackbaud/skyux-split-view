@@ -429,14 +429,8 @@ describe('Split view component', () => {
       expect(getFocusedElement()).toEqual(firstInputElement);
     }));
 
-    fit('should set focus in the workspace when messages are sent to the stream and in mobile mode', fakeAsync(() => {
+    it('should set focus in the workspace when messages are sent to the stream and in mobile mode', fakeAsync(() => {
       initiateResponsiveMode(fixture);
-      fixture.detectChanges();
-      tick();
-      fixture.detectChanges();
-      tick();
-      fixture.detectChanges();
-      tick();
       const backToListButton = getBackToListButton();
 
       // Click the back button.
@@ -450,6 +444,9 @@ describe('Split view component', () => {
       component.splitViewMessageStream.next(message);
       fixture.detectChanges();
       tick();
+      tick();
+      tick();
+      fixture.detectChanges();
 
       // Expect first element in workspace to have focus.
       const firstInputElement = document.querySelector('#sky-test-first-input');
@@ -473,11 +470,13 @@ describe('Split view component', () => {
     }));
 
     it ('should allow custom labels for back button if backButtonText property is defined', fakeAsync(() => {
-      component.backButtonText = 'FOOBAR';
+      const labelText = 'FOOBAR';
+      component.backButtonText = labelText;
+      fixture.detectChanges();
       initiateResponsiveMode(fixture);
       const backToListButton = getBackToListButton();
 
-      expect(backToListButton.innerText.trim()).toEqual('FOOBAR');
+      expect(backToListButton.innerText.trim()).toEqual(labelText);
     }));
 
     it ('should show the list when the back link is clicked', fakeAsync(() => {

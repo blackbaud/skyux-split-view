@@ -3,7 +3,8 @@ import {
   Component,
   EventEmitter,
   OnDestroy,
-  Output
+  Output,
+  Input
 } from '@angular/core';
 
 @Component({
@@ -15,6 +16,9 @@ import {
 export class SkySplitViewWorkspaceHeaderComponent implements OnDestroy {
   @Output()
   public showDrawerButtonClick = new EventEmitter<void>();
+
+  @Input()
+  public backButtonText: string;
 
   public onShowDrawerButtonClick(): void {
     this.showDrawerButtonClick.emit();

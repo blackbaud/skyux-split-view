@@ -59,6 +59,10 @@ import {
 } from './split-view-drawer.component';
 
 import {
+  SkySplitViewWorkspaceHeaderComponent
+} from './split-view-workspace-header.component';
+
+import {
   SkySplitViewWorkspaceComponent
 } from './split-view-workspace.component';
 
@@ -104,6 +108,7 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public set isDrawerVisible(value: boolean) {
     this._drawerVisible = value;
+    this.changeDetectorRef.markForCheck();
   }
 
   public get isDrawerVisible() {
@@ -122,6 +127,9 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
   @ContentChild(SkySplitViewWorkspaceComponent)
   public workspaceComponent: SkySplitViewWorkspaceComponent;
 
+  @ContentChild(SkySplitViewWorkspaceComponent)
+  public workspaceHeaderComponent: SkySplitViewWorkspaceHeaderComponent;
+
   public get workspaceVisible() {
     return !this.isMobile || !this._drawerVisible;
   }
@@ -139,7 +147,8 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
     private coreAdapterService: SkyCoreAdapterService,
     private elementRef: ElementRef,
     private mediaQueryService: SkyMediaQueryService
-  ) {}
+  ) {
+  }
 
   public ngOnInit(): void {
     this.mediaQueryServiceSubscription = this.mediaQueryService.subscribe(breakpoint => {
@@ -157,6 +166,7 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
       this.isMobile = nowMobile;
       this.drawerComponent.isMobile = this.isMobile;
       this.workspaceComponent.isMobile = this.isMobile;
+      this.workspaceComponent.backButtonText = this.backButtonText;
       this.changeDetectorRef.markForCheck();
     });
 
@@ -232,7 +242,7 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
         // Otherwise, just set focus right away.
         if (!this.workspaceVisible) {
           this.isDrawerVisible = false;
-          this.workspaceComponent.animationEnterComplete
+          this.animationComplete
             .take(1)
             .subscribe(() => {
               this.applyAutofocus();
