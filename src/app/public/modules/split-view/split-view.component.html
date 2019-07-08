@@ -2,18 +2,20 @@
   class="sky-split-view"
   [@blockAnimationOnLoad]
 >
-  <div *ngIf="isDrawerVisible"
+  <div
     class="sky-split-view-drawer-flex-container"
-    [@drawerEnter]
+    [hidden]="!drawerVisible"
+    [@drawerEnter]="drawerVisible"
   >
     <ng-content
       select="sky-split-view-drawer"
     ></ng-content>
   </div>
 
-  <div *ngIf="workspaceVisible"
+  <div
     class="sky-split-view-workspace-flex-container"
-    [@workspaceEnter]
+    [hidden]="!workspaceVisible"
+    [@workspaceEnter]="workspaceVisible"
     (@workspaceEnter.done)="onWorkspaceEnterComplete($event)"
   >
     <ng-content

@@ -15,6 +15,7 @@ import {
 
 import {
   animate,
+  state,
   style,
   transition,
   trigger
@@ -79,18 +80,13 @@ import {
     ),
     trigger(
       'drawerEnter', [
-        transition(`void => *`, [
-          style({transform: 'translate(-100%)'}),
-          animate('150ms ease-in')
-        ])
-      ]
-    ),
+        state('false', style({transform: 'translate(-100%)'})),
+        transition('* => true', animate('150ms ease-in'))
+      ]),
     trigger(
       'workspaceEnter', [
-        transition(`void => *`, [
-          style({transform: 'translate(100%)'}),
-          animate('150ms ease-in')
-        ])
+        state('false', style({transform: 'translate(100%)'})),
+        transition('* => true', animate('150ms ease-in'))
       ]
     )
   ]
@@ -106,12 +102,12 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
   @Output()
   public beforeWorkspaceClose = new EventEmitter<SkySplitViewBeforeWorkspaceCloseHandler>();
 
-  public set isDrawerVisible(value: boolean) {
+  public set drawerVisible(value: boolean) {
     this._drawerVisible = value;
     this.changeDetectorRef.markForCheck();
   }
 
-  public get isDrawerVisible() {
+  public get drawerVisible() {
     return !this.isMobile || this._drawerVisible;
   }
 
@@ -156,11 +152,11 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
       if (nowMobile && !this.isMobile) {
         // switching to mobile
-        this.isDrawerVisible = false;
+        this.drawerVisible = false;
 
       } else if (!nowMobile && this.isMobile) {
         // switching to widescreen
-        this.isDrawerVisible = true;
+        this.drawerVisible = true;
       }
 
       this.isMobile = nowMobile;
@@ -207,10 +203,10 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
   public onShowDrawerButtonClick() {
     /* istanbul ignore else */
     if (this.beforeWorkspaceClose.observers.length === 0) {
-      this.isDrawerVisible = true;
+      this.drawerVisible = true;
     } else {
       this.beforeWorkspaceClose.emit(new SkySplitViewBeforeWorkspaceCloseHandler(() => {
-        this.isDrawerVisible = true;
+        this.drawerVisible = true;
         this.changeDetectorRef.markForCheck();
       }));
     }
@@ -241,7 +237,7 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
         // If mobile, wait until animation is complete then set focus on workspace panel.
         // Otherwise, just set focus right away.
         if (!this.workspaceVisible) {
-          this.isDrawerVisible = false;
+          this.drawerVisible = false;
           this.animationComplete
             .take(1)
             .subscribe(() => {
