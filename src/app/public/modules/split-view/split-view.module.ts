@@ -36,6 +36,10 @@ import {
 } from './split-view-media-query.service';
 
 import {
+  SkySplitViewWorkspaceHeaderComponent
+} from './split-view-workspace-header.component';
+
+import {
   SkySplitViewWorkspaceComponent
 } from './split-view-workspace.component';
 
@@ -43,7 +47,8 @@ import {
   declarations: [
     SkySplitViewComponent,
     SkySplitViewDrawerComponent,
-    SkySplitViewWorkspaceComponent
+    SkySplitViewWorkspaceComponent,
+    SkySplitViewWorkspaceHeaderComponent
   ],
   providers: [
     SkyCoreAdapterService,
@@ -59,7 +64,8 @@ import {
   exports: [
     SkySplitViewComponent,
     SkySplitViewDrawerComponent,
-    SkySplitViewWorkspaceComponent
+    SkySplitViewWorkspaceComponent,
+    SkySplitViewWorkspaceHeaderComponent
   ]
 })
 export class SkySplitViewModule { }

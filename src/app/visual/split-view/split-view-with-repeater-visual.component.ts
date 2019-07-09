@@ -37,7 +37,7 @@ export class SplitViewWithRepeaterVisualComponent implements AfterViewInit {
 
   public hasUnsavedWork = false;
 
-  public drawerWidth: number;
+  public width: number;
 
   public items = [
     { id: 1, name: 'Jennifer Standley', amount: 12.45, date: '04/28/2019' },

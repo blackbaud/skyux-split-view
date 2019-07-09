@@ -1,3 +1,12 @@
+@import "~@skyux/theme/scss/mixins";
+@import "~@skyux/theme/scss/_compat/mixins";
+
+.sky-split-view-drawer {
+  border-right: 1px solid $sky-border-color-neutral-medium;
+  overflow: auto;
+  width: 100%;
+}
+
 .sky-split-view-resize-handle {
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -8,7 +17,7 @@
   cursor: ew-resize;
   padding: 0;
   border: 0;
-  background: red;
+  background: transparent;
   display: block;
   top: 0;
   bottom: 0;

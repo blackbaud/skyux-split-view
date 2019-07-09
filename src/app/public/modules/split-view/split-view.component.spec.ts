@@ -53,14 +53,19 @@ import {
 } from './types/split-view-message-type';
 
 import {
-  SkySplitViewComponent
-} from './split-view.component';
+  SkySplitViewDrawerComponent
+} from './split-view-drawer.component';
 
 let mockQueryService: MockSkyMediaQueryService;
 
 // #region helpers
 function getListPanel(): HTMLElement {
   return document.querySelector('.sky-split-view-drawer') as HTMLElement;
+}
+
+function listPanelHidden(): boolean {
+  const listPanel = document.querySelector('.sky-split-view-drawer-flex-container') as HTMLElement;
+  return listPanel.hasAttribute('hidden');
 }
 
 function getWorkspacePanel(): HTMLElement {
@@ -156,7 +161,7 @@ describe('Split view component', () => {
         SplitViewFixturesModule
       ],
       providers: [
-        { provide: SkyMediaQueryService, useValue: mockQueryService}
+        { provide: SkyMediaQueryService, useValue: mockQueryService }
       ]
     });
 
@@ -167,7 +172,7 @@ describe('Split view component', () => {
 
   describe('before properties initialize', () => {
     it('should resize list panel when listPanelWidth input property has a numeric value', fakeAsync(() => {
-      component.drawerWidth = 500;
+      component.width = 500;
       fixture.detectChanges();
       tick();
       const listPanelElement = getListPanel();
@@ -248,7 +253,7 @@ describe('Split view component', () => {
     }));
 
     it('should resize list panel when listPanelWidth input property has a numeric value', fakeAsync(() => {
-      component.drawerWidth = 500;
+      component.width = 500;
       fixture.detectChanges();
       tick();
       const listPanelElement = getListPanel();
@@ -256,11 +261,11 @@ describe('Split view component', () => {
       expect(listPanelElement.style.width).toBe('500px');
     }));
 
-    it('should respect min and max widths when changing drawerWidth input', fakeAsync(() => {
+    it('should respect min and max widths when changing width input', fakeAsync(() => {
       const listPanelElement = getListPanel();
 
       // Resize list width larger than maximum.
-      component.drawerWidth = 9999;
+      component.width = 9999;
       fixture.detectChanges();
       tick();
 
@@ -268,7 +273,7 @@ describe('Split view component', () => {
       expect(listPanelElement.style.width).toBe(getMaxWidth() + 'px');
 
       // Resize list width smaller than minimum.
-      component.drawerWidth = 1;
+      component.width = 1;
       fixture.detectChanges();
       tick();
 
@@ -277,8 +282,8 @@ describe('Split view component', () => {
     }));
 
     it('should resize when handle is dragged', fakeAsync(() => {
-      const moveSpy = spyOn(SkySplitViewComponent.prototype, 'onMouseMove').and.callThrough();
-      const mouseUpSpy = spyOn(SkySplitViewComponent.prototype, 'onHandleRelease').and.callThrough();
+      const moveSpy = spyOn(SkySplitViewDrawerComponent.prototype, 'onMouseMove').and.callThrough();
+      const mouseUpSpy = spyOn(SkySplitViewDrawerComponent.prototype, 'onHandleRelease').and.callThrough();
       const listPanelElement = getListPanel();
       const resizeHandle = getResizeHandle(fixture).nativeElement;
 
@@ -299,14 +304,15 @@ describe('Split view component', () => {
     }));
 
     it('should not run any resizing logic when in responsive mode', fakeAsync(() => {
-      const moveSpy = spyOn(component.splitViewComponent, 'onMouseMove').and.callThrough();
-      const mouseUpSpy = spyOn(component.splitViewComponent, 'onHandleRelease').and.callThrough();
+      const drawerComponent = component.splitViewComponent.drawerComponent;
+      const moveSpy = spyOn(drawerComponent, 'onMouseMove').and.callThrough();
+      const mouseUpSpy = spyOn(drawerComponent, 'onHandleRelease').and.callThrough();
 
       // Window should fake a small size.
       spyOnProperty(window, 'innerWidth', 'get').and.returnValue(400);
 
       // Get split view component and fire a mouse down event.
-      component.splitViewComponent.onMouseDown(new MouseEvent('mousedown'));
+      drawerComponent.onResizeHandleMouseDown(new MouseEvent('mousedown'));
       fixture.detectChanges();
       tick();
 
@@ -316,8 +322,9 @@ describe('Split view component', () => {
     }));
 
     it('should not resize on mousemove unless the resize handle was clicked', fakeAsync(() => {
-      const moveSpy = spyOn(SkySplitViewComponent.prototype, 'onMouseMove').and.callThrough();
-      const mouseUpSpy = spyOn(SkySplitViewComponent.prototype, 'onHandleRelease').and.callThrough();
+      const drawerComponent = component.splitViewComponent.drawerComponent;
+      const moveSpy = spyOn(drawerComponent, 'onMouseMove').and.callThrough();
+      const mouseUpSpy = spyOn(drawerComponent, 'onHandleRelease').and.callThrough();
       const listPanelElement = getListPanel();
       const resizeHandle = getResizeHandle(fixture).nativeElement;
 
@@ -391,22 +398,20 @@ describe('Split view component', () => {
 
     it('resize handle and workspace panel should be hidden when screen size changes to xs', fakeAsync(() => {
       initiateResponsiveMode(fixture);
-      const listPanelElement = getListPanel();
       const resizeHandle = getResizeHandle(fixture);
 
       expect(resizeHandle).toBeNull();
-      expect(listPanelElement).toBeNull();
+      expect(listPanelHidden()).toEqual(true);
     }));
 
     it('resize handle and workspace panel should be revealed when screen size changes back to md from xs', fakeAsync(() => {
       initiateResponsiveMode(fixture);
       mockQueryService.fire(SkyMediaBreakpoints.md);
       fixture.detectChanges();
-      const listPanelElement = getListPanel();
       const resizeHandle = getResizeHandle(fixture);
 
       expect(resizeHandle).not.toBeNull();
-      expect(listPanelElement).not.toBeNull();
+      expect(listPanelHidden()).toEqual(false);
     }));
 
     it('should set focus in the workspace when messages are sent to the stream', fakeAsync(() => {
@@ -461,44 +466,34 @@ describe('Split view component', () => {
     }));
 
     it ('should allow custom labels for back button if backButtonText property is defined', fakeAsync(() => {
-      component.backButtonText = 'FOOBAR';
+      const labelText = 'FOOBAR';
+      component.backButtonText = labelText;
+      fixture.detectChanges();
       initiateResponsiveMode(fixture);
       const backToListButton = getBackToListButton();
 
-      expect(backToListButton.innerText.trim()).toEqual('FOOBAR');
+      expect(backToListButton.innerText.trim()).toEqual(labelText);
     }));
 
     it ('should show the list when the back link is clicked', fakeAsync(() => {
       // Start in responsive mode.
       initiateResponsiveMode(fixture);
-      let list = getListPanel();
       const backToListButton = getBackToListButton();
 
       // Expect list to be hidden when in responsive mode.
-      expect(list).toBeNull();
+      expect(listPanelHidden()).toEqual(true);
 
       // Click the back button.
       backToListButton.click();
       fixture.detectChanges();
 
       // Expect list to now be shown.
-      list = getListPanel();
-      expect(list).not.toBeNull();
-    }));
-
-    it ('should call the host listener correctly on resize', fakeAsync(() => {
-      const resizeSpy = spyOn(SkySplitViewComponent.prototype, 'onWindowResize').and.callThrough();
-      spyOnProperty(window, 'innerWidth', 'get').and.callThrough();
-
-      SkyAppTestUtility.fireDomEvent(window, 'resize');
-      fixture.detectChanges();
-
-      expect(resizeSpy).toHaveBeenCalled();
+      expect(listPanelHidden()).toEqual(false);
     }));
 
     it ('should resize list panel as window gets smaller to prevent it from overflowing', fakeAsync(() => {
       // Make list as wide as possible.
-      component.drawerWidth = 9999;
+      component.width = 9999;
       fixture.detectChanges();
       tick();
 
@@ -506,8 +501,8 @@ describe('Split view component', () => {
       const windowResizeAmount = 300;
       const tolerance = 100;
       const listPanel = getListPanel();
-      const initialdrawerWidth = listPanel.clientWidth;
-      const resizeWidth = initialdrawerWidth + tolerance - windowResizeAmount;
+      const initialwidth = listPanel.clientWidth;
+      const resizeWidth = initialwidth + tolerance - windowResizeAmount;
       spyOnProperty(window, 'innerWidth', 'get').and.returnValue(resizeWidth);
 
       // Resize the window smaller.
@@ -516,7 +511,7 @@ describe('Split view component', () => {
 
       // Expect the list panel width to resize down as the window gets smaller.
       // Use isWithin() to allow some pixel tolerance for different browsers.
-      const newWidth = initialdrawerWidth - windowResizeAmount;
+      const newWidth = initialwidth - windowResizeAmount;
       expect(isWithin(listPanel.clientWidth, newWidth, 10)).toEqual(true);
     }));
 
@@ -543,12 +538,21 @@ describe('Split view component confirm before close', () => {
         SplitViewFixturesModule
       ],
       providers: [
-        { provide: SkyMediaQueryService, useValue: mockQueryService}
+        { provide: SkyMediaQueryService, useValue: mockQueryService }
       ]
     });
 
     fixture = TestBed.createComponent(SplitViewBeforeCloseFixtureComponent);
     component = fixture.componentInstance;
+  }));
+
+  // Runs the initial getters. Make sure we always have a baseline of lg media breakpoint.
+  beforeEach(fakeAsync(() => {
+    mockQueryService.fire(SkyMediaBreakpoints.lg);
+    fixture.detectChanges();
+    tick();
+    fixture.detectChanges();
+    tick();
   }));
 
   it('should emit beforeWorkspaceClose if there are subscribers to the emitter', fakeAsync(() => {
