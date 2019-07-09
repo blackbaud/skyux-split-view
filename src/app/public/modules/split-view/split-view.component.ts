@@ -6,7 +6,6 @@ import {
   ContentChild,
   ElementRef,
   EventEmitter,
-  HostListener,
   Input,
   OnDestroy,
   OnInit,
@@ -23,17 +22,12 @@ import {
 
 import {
   SkyCoreAdapterService,
-  SkyMediaBreakpoints,
   SkyMediaQueryService
 } from '@skyux/core';
 
 import {
   Subject
 } from 'rxjs/Subject';
-
-import {
-  Subscription
-} from 'rxjs/Subscription';
 
 import 'rxjs/add/operator/take';
 
@@ -60,17 +54,14 @@ import {
 } from './split-view-drawer.component';
 
 import {
-  SkySplitViewWorkspaceHeaderComponent
-} from './split-view-workspace-header.component';
-
-import {
-  SkySplitViewWorkspaceComponent
-} from './split-view-workspace.component';
+  SkySplitViewService
+} from './split-view.service';
 
 @Component({
   selector: 'sky-split-view',
   templateUrl: './split-view.component.html',
   styleUrls: ['./split-view.component.scss'],
+  providers: [SkySplitViewService],
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [
     trigger(
@@ -91,10 +82,13 @@ import {
     )
   ]
 })
-export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
-
+export class SkySplitViewComponent implements AfterViewInit, OnInit, OnDestroy {
   @Input()
-  public backButtonText: string;
+  public set backButtonText(value: string) {
+    if (value) {
+      this.splitViewService.updateBackButtonText(value);
+    }
+  }
 
   @Input()
   public messageStream = new Subject<SkySplitViewMessage>();
@@ -102,9 +96,19 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
   @Output()
   public beforeWorkspaceClose = new EventEmitter<SkySplitViewBeforeWorkspaceCloseHandler>();
 
+  @ContentChild(SkySplitViewDrawerComponent)
+  public drawerComponent: SkySplitViewDrawerComponent;
+
   public set drawerVisible(value: boolean) {
-    this._drawerVisible = value;
-    this.changeDetectorRef.markForCheck();
+    if (this.beforeWorkspaceClose.observers.length > 0 && this.isMobile && value) {
+      this.beforeWorkspaceClose.emit(new SkySplitViewBeforeWorkspaceCloseHandler(() => {
+        this._drawerVisible = value;
+        this.changeDetectorRef.markForCheck();
+      }));
+    } else {
+      this._drawerVisible = value;
+      this.changeDetectorRef.markForCheck();
+    }
   }
 
   public get drawerVisible() {
@@ -113,18 +117,9 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public isMobile = false;
 
-  @ContentChild(SkySplitViewDrawerComponent)
-  public drawerComponent: SkySplitViewDrawerComponent;
-
   public nextButtonDisabled = false;
 
   public previousButtonDisabled = false;
-
-  @ContentChild(SkySplitViewWorkspaceComponent)
-  public workspaceComponent: SkySplitViewWorkspaceComponent;
-
-  @ContentChild(SkySplitViewWorkspaceComponent)
-  public workspaceHeaderComponent: SkySplitViewWorkspaceHeaderComponent;
 
   public get workspaceVisible() {
     return !this.isMobile || !this._drawerVisible;
@@ -134,37 +129,29 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private ngUnsubscribe = new Subject<void>();
 
-  private mediaQueryServiceSubscription: Subscription;
-
   private _drawerVisible = true;
 
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
     private coreAdapterService: SkyCoreAdapterService,
     private elementRef: ElementRef,
-    private mediaQueryService: SkyMediaQueryService
-  ) {
-  }
+    private mediaQueryService: SkyMediaQueryService,
+    private splitViewService: SkySplitViewService
+  ) {}
 
   public ngOnInit(): void {
-    this.mediaQueryServiceSubscription = this.mediaQueryService.subscribe(breakpoint => {
-      const nowMobile = breakpoint === SkyMediaBreakpoints.xs;
+    this.splitViewService.isMobileStream
+      .takeUntil(this.ngUnsubscribe)
+      .subscribe((mobile: boolean) => {
+        this.isMobile = mobile;
+        this.changeDetectorRef.markForCheck();
+      });
 
-      if (nowMobile && !this.isMobile) {
-        // switching to mobile
-        this.drawerVisible = false;
-
-      } else if (!nowMobile && this.isMobile) {
-        // switching to widescreen
-        this.drawerVisible = true;
-      }
-
-      this.isMobile = nowMobile;
-      this.drawerComponent.isMobile = this.isMobile;
-      this.workspaceComponent.isMobile = this.isMobile;
-      this.workspaceComponent.backButtonText = this.backButtonText;
-      this.changeDetectorRef.markForCheck();
-    });
+    this.splitViewService.drawerVisible
+      .takeUntil(this.ngUnsubscribe)
+      .subscribe((visible: boolean) => {
+        this.drawerVisible = visible;
+      });
 
     this.messageStream
       .takeUntil(this.ngUnsubscribe)
@@ -172,62 +159,36 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
         this.handleIncomingMessages(message);
       });
 
-    this.updateBreakpoint();
+    this.mediaQueryService.subscribe(breakpoint => {
+      this.coreAdapterService.setResponsiveContainerClass(this.elementRef, breakpoint);
+    });
   }
 
   public ngAfterViewInit(): void {
+    // TODO: Should this be moved to the service?
     // Watch for width changes on drawer and update workspace breakpoints.
     this.drawerComponent.widthChange
       .takeUntil(this.ngUnsubscribe)
       .subscribe(() => {
         this.workspaceComponent.updateBreakpoint();
       });
-
-    this.workspaceComponent.showDrawerButtonClick
-      .takeUntil(this.ngUnsubscribe)
-      .subscribe(() => {
-        this.onShowDrawerButtonClick();
-      });
-
-    this.drawerComponent.isMobile = this.isMobile;
-    this.workspaceComponent.isMobile = this.isMobile;
   }
 
   public ngOnDestroy(): void {
-    this.mediaQueryServiceSubscription.unsubscribe();
     this.beforeWorkspaceClose.complete();
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
-  }
-
-  public onShowDrawerButtonClick() {
-    /* istanbul ignore else */
-    if (this.beforeWorkspaceClose.observers.length === 0) {
-      this.drawerVisible = true;
-    } else {
-      this.beforeWorkspaceClose.emit(new SkySplitViewBeforeWorkspaceCloseHandler(() => {
-        this.drawerVisible = true;
-        this.changeDetectorRef.markForCheck();
-      }));
-    }
   }
 
   public onWorkspaceEnterComplete(): void {
     this.animationComplete.next();
   }
 
-  @HostListener('window:resize', ['$event'])
-  public onWindowResize(event: any): void {
-    // If window size is smaller than width + tolerance, shrink width.
-    if (!this.isMobile && event.target.innerWidth < this.drawerComponent.width + this.drawerComponent.widthTolerance) {
-      this.drawerComponent.width = event.target.innerWidth - this.drawerComponent.widthTolerance;
+  private applyAutofocus(): void {
+    const applyAutoFocus = this.coreAdapterService.applyAutoFocus(this.elementRef);
+    if (!applyAutoFocus) {
+      this.coreAdapterService.getFocusableChildrenAndApplyFocus(this.elementRef, '.sky-split-view-workspace-content');
     }
-    this.updateBreakpoint();
-  }
-
-  public updateBreakpoint(): void {
-    const newDrawerBreakpoint = this.mediaQueryService.current;
-    this.coreAdapterService.setResponsiveContainerClass(this.elementRef, newDrawerBreakpoint);
   }
 
   private handleIncomingMessages(message: SkySplitViewMessage) {
@@ -248,13 +209,6 @@ export class SkySplitViewComponent implements OnInit, AfterViewInit, OnDestroy {
         }
         this.changeDetectorRef.markForCheck();
         break;
-    }
-  }
-
-  private applyAutofocus(): void {
-    const applyAutoFocus = this.coreAdapterService.applyAutoFocus(this.elementRef);
-    if (!applyAutoFocus) {
-      this.coreAdapterService.getFocusableChildrenAndApplyFocus(this.elementRef, '.sky-split-view-workspace-content');
     }
   }
 }

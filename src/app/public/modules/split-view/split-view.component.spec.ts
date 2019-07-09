@@ -67,6 +67,11 @@ function getListPanel(): HTMLElement {
   return document.querySelector('.sky-split-view-drawer') as HTMLElement;
 }
 
+function listPanelHidden(): boolean {
+  const listPanel = document.querySelector('.sky-split-view-drawer-flex-container') as HTMLElement;
+  return listPanel.hasAttribute('hidden');
+}
+
 function getWorkspacePanel(): HTMLElement {
   return document.querySelector('.sky-split-view-workspace') as HTMLElement;
 }
@@ -160,7 +165,7 @@ describe('Split view component', () => {
         SplitViewFixturesModule
       ],
       providers: [
-        { provide: SkyMediaQueryService, useValue: mockQueryService}
+        { provide: SkyMediaQueryService, useValue: mockQueryService }
       ]
     });
 
@@ -397,22 +402,20 @@ describe('Split view component', () => {
 
     it('resize handle and workspace panel should be hidden when screen size changes to xs', fakeAsync(() => {
       initiateResponsiveMode(fixture);
-      const listPanelElement = getListPanel();
       const resizeHandle = getResizeHandle(fixture);
 
       expect(resizeHandle).toBeNull();
-      expect(listPanelElement).toBeNull();
+      expect(listPanelHidden()).toEqual(true);
     }));
 
     it('resize handle and workspace panel should be revealed when screen size changes back to md from xs', fakeAsync(() => {
       initiateResponsiveMode(fixture);
       mockQueryService.fire(SkyMediaBreakpoints.md);
       fixture.detectChanges();
-      const listPanelElement = getListPanel();
       const resizeHandle = getResizeHandle(fixture);
 
       expect(resizeHandle).not.toBeNull();
-      expect(listPanelElement).not.toBeNull();
+      expect(listPanelHidden()).toEqual(false);
     }));
 
     it('should set focus in the workspace when messages are sent to the stream', fakeAsync(() => {
@@ -482,29 +485,17 @@ describe('Split view component', () => {
     it ('should show the list when the back link is clicked', fakeAsync(() => {
       // Start in responsive mode.
       initiateResponsiveMode(fixture);
-      let list = getListPanel();
       const backToListButton = getBackToListButton();
 
       // Expect list to be hidden when in responsive mode.
-      expect(list).toBeNull();
+      expect(listPanelHidden()).toEqual(true);
 
       // Click the back button.
       backToListButton.click();
       fixture.detectChanges();
 
       // Expect list to now be shown.
-      list = getListPanel();
-      expect(list).not.toBeNull();
-    }));
-
-    it ('should call the host listener correctly on resize', fakeAsync(() => {
-      const resizeSpy = spyOn(SkySplitViewComponent.prototype, 'onWindowResize').and.callThrough();
-      spyOnProperty(window, 'innerWidth', 'get').and.callThrough();
-
-      SkyAppTestUtility.fireDomEvent(window, 'resize');
-      fixture.detectChanges();
-
-      expect(resizeSpy).toHaveBeenCalled();
+      expect(listPanelHidden()).toEqual(false);
     }));
 
     it ('should resize list panel as window gets smaller to prevent it from overflowing', fakeAsync(() => {
@@ -554,12 +545,21 @@ describe('Split view component confirm before close', () => {
         SplitViewFixturesModule
       ],
       providers: [
-        { provide: SkyMediaQueryService, useValue: mockQueryService}
+        { provide: SkyMediaQueryService, useValue: mockQueryService }
       ]
     });
 
     fixture = TestBed.createComponent(SplitViewBeforeCloseFixtureComponent);
     component = fixture.componentInstance;
+  }));
+
+  // Runs the initial getters. Make sure we always have a baseline of lg media breakpoint.
+  beforeEach(fakeAsync(() => {
+    mockQueryService.fire(SkyMediaBreakpoints.lg);
+    fixture.detectChanges();
+    tick();
+    fixture.detectChanges();
+    tick();
   }));
 
   it('should emit beforeWorkspaceClose if there are subscribers to the emitter', fakeAsync(() => {

@@ -5,6 +5,7 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  HostListener,
   Input,
   OnDestroy,
   OnInit
@@ -18,12 +19,17 @@ import {
 } from '@skyux/core';
 
 import {
-  Observable
+  Observable,
+  Subject
 } from 'rxjs';
 
 import {
   SkySplitViewMediaQueryService
 } from './split-view-media-query.service';
+
+import {
+  SkySplitViewService
+} from './split-view.service';
 
 let nextId = 0;
 
@@ -42,15 +48,7 @@ export class SkySplitViewDrawerComponent implements AfterViewInit, OnInit, OnDes
   @Input()
   public ariaLabel: string;
 
-  // Shows/hides the resize handle when the parent split view is in mobile view.
-  public set isMobile(value: boolean) {
-    this._isMobile = value;
-    this.changeDetectorRef.markForCheck();
-  }
-
-  public get isMobile(): boolean {
-    return this._isMobile || false;
-  }
+  public isMobile = false;
 
   @Input()
   public set width(value: number) {
@@ -91,9 +89,9 @@ export class SkySplitViewDrawerComponent implements AfterViewInit, OnInit, OnDes
 
   private isDragging = false;
 
-  private xCoord = 0;
+  private ngUnsubscribe = new Subject<void>();
 
-  private _isMobile: boolean;
+  private xCoord = 0;
 
   private _width: number;
 
@@ -102,11 +100,19 @@ export class SkySplitViewDrawerComponent implements AfterViewInit, OnInit, OnDes
     private coreAdapterService: SkyCoreAdapterService,
     private elementRef: ElementRef,
     private skyWindow: SkyAppWindowRef,
-    private splitViewMediaQueryService: SkySplitViewMediaQueryService
+    private splitViewMediaQueryService: SkySplitViewMediaQueryService,
+    private splitViewService: SkySplitViewService
   ) {}
 
   public ngOnInit(): void {
     this.setMaxWidth();
+
+    this.splitViewService.isMobileStream
+      .takeUntil(this.ngUnsubscribe)
+      .subscribe((mobile: boolean) => {
+        this.isMobile = mobile;
+        this.changeDetectorRef.markForCheck();
+      });
   }
 
   public ngAfterViewInit(): void {
@@ -115,6 +121,8 @@ export class SkySplitViewDrawerComponent implements AfterViewInit, OnInit, OnDes
 
   public ngOnDestroy(): void {
     this.widthChange.complete();
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
   public onResizeHandleMouseDown(event: MouseEvent): void {
@@ -182,6 +190,15 @@ export class SkySplitViewDrawerComponent implements AfterViewInit, OnInit, OnDes
   public onResizeHandleChange(event: any): void {
     this.width = event.target.value;
     this.setMaxWidth();
+  }
+
+  @HostListener('window:resize', ['$event'])
+  public onWindowResize(event: any): void {
+    // If window size is smaller than width + tolerance, shrink width.
+    if (!this.isMobile && event.target.innerWidth < this.width + this.widthTolerance) {
+      this.width = event.target.innerWidth - this.widthTolerance;
+    }
+    // this.updateBreakpoint();
   }
 
   private updateBreakpoint(): void {

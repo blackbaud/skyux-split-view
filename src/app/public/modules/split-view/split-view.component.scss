@@ -20,5 +20,6 @@
   .sky-split-view-workspace-flex-container {
     flex-grow: 1;
     flex-shrink: 99;
+    overflow: auto;
   }
 }
