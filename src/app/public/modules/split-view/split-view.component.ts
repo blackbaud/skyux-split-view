@@ -4,11 +4,9 @@ import {
   Component,
   ContentChild,
   ElementRef,
-  EventEmitter,
   Input,
   OnDestroy,
-  OnInit,
-  Output
+  OnInit
 } from '@angular/core';
 
 import {
@@ -35,10 +33,6 @@ import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/operator/takeWhile';
 
 import 'rxjs/add/observable/fromEvent';
-
-import {
-  SkySplitViewBeforeWorkspaceCloseHandler
-} from './types/split-view-before-workspace-close-handler';
 
 import {
   SkySplitViewMessage
@@ -92,22 +86,12 @@ export class SkySplitViewComponent implements OnInit, OnDestroy {
   @Input()
   public messageStream = new Subject<SkySplitViewMessage>();
 
-  @Output()
-  public beforeWorkspaceClose = new EventEmitter<SkySplitViewBeforeWorkspaceCloseHandler>();
-
   @ContentChild(SkySplitViewDrawerComponent)
   public drawerComponent: SkySplitViewDrawerComponent;
 
   public set drawerVisible(value: boolean) {
-    if (this.beforeWorkspaceClose.observers.length > 0 && this.isMobile && value) {
-      this.beforeWorkspaceClose.emit(new SkySplitViewBeforeWorkspaceCloseHandler(() => {
-        this._drawerVisible = value;
-        this.changeDetectorRef.markForCheck();
-      }));
-    } else {
-      this._drawerVisible = value;
-      this.changeDetectorRef.markForCheck();
-    }
+    this._drawerVisible = value;
+    this.changeDetectorRef.markForCheck();
   }
 
   public get drawerVisible() {
@@ -164,7 +148,6 @@ export class SkySplitViewComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    this.beforeWorkspaceClose.complete();
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
   }
