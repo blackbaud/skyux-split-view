@@ -443,9 +443,6 @@ describe('Split view component', () => {
       component.splitViewMessageStream.next(message);
       fixture.detectChanges();
       tick();
-      tick();
-      tick();
-      fixture.detectChanges();
 
       // Expect first element in workspace to have focus.
       const firstInputElement = document.querySelector('#sky-test-first-input');
