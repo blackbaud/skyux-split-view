@@ -56,10 +56,6 @@ import {
   SkySplitViewDrawerComponent
 } from './split-view-drawer.component';
 
-import {
-  SkySplitViewComponent
-} from './split-view.component';
-
 let mockQueryService: MockSkyMediaQueryService;
 
 // #region helpers

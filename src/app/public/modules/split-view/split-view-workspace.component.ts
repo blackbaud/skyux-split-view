@@ -37,13 +37,12 @@ import {
   ]
 })
 export class SkySplitViewWorkspaceComponent implements OnDestroy, OnInit {
-
-  // Shows/hides the workspace header when the parent split view is in mobile view.
   public set isMobile(value: boolean) {
     this._isMobile = value;
     this.changeDetectorRef.markForCheck();
   }
 
+  // Shows/hides the workspace header when the parent split view is in mobile responsive mode.
   public get isMobile(): boolean {
     return this._isMobile || false;
   }
@@ -72,6 +71,12 @@ export class SkySplitViewWorkspaceComponent implements OnDestroy, OnInit {
         this.isMobile = mobile;
         this.changeDetectorRef.markForCheck();
       });
+
+    this.splitViewService.drawerWidthStream
+      .takeUntil(this.ngUnsubscribe)
+      .subscribe(() => {
+        this.updateBreakpoint();
+      });
   }
 
   public ngOnDestroy(): void {
@@ -86,7 +91,7 @@ export class SkySplitViewWorkspaceComponent implements OnDestroy, OnInit {
   }
 
   public updateBreakpoint(): void {
-    const width = this.elementRef.nativeElement.clientWidth;
+    const width = this.elementRef.nativeElement.parentElement.clientWidth;
     this.splitViewMediaQueryService.setBreakpointForWidth(width);
     const newDrawerBreakpoint = this.splitViewMediaQueryService.current;
     this.coreAdapterService.setResponsiveContainerClass(this.elementRef, newDrawerBreakpoint);

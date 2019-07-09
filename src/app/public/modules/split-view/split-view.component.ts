@@ -1,5 +1,4 @@
 import {
-  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -82,7 +81,7 @@ import {
     )
   ]
 })
-export class SkySplitViewComponent implements AfterViewInit, OnInit, OnDestroy {
+export class SkySplitViewComponent implements OnInit, OnDestroy {
   @Input()
   public set backButtonText(value: string) {
     if (value) {
@@ -162,16 +161,6 @@ export class SkySplitViewComponent implements AfterViewInit, OnInit, OnDestroy {
     this.mediaQueryService.subscribe(breakpoint => {
       this.coreAdapterService.setResponsiveContainerClass(this.elementRef, breakpoint);
     });
-  }
-
-  public ngAfterViewInit(): void {
-    // TODO: Should this be moved to the service?
-    // Watch for width changes on drawer and update workspace breakpoints.
-    this.drawerComponent.widthChange
-      .takeUntil(this.ngUnsubscribe)
-      .subscribe(() => {
-        this.workspaceComponent.updateBreakpoint();
-      });
   }
 
   public ngOnDestroy(): void {
