@@ -90,7 +90,8 @@ export class SkySplitViewWorkspaceComponent implements OnDestroy, OnInit {
     this.updateBreakpoint();
   }
 
-  public updateBreakpoint(): void {
+  private updateBreakpoint(): void {
+    console.log('update breakpoints');
     const width = this.elementRef.nativeElement.parentElement.clientWidth;
     this.splitViewMediaQueryService.setBreakpointForWidth(width);
     const newDrawerBreakpoint = this.splitViewMediaQueryService.current;
