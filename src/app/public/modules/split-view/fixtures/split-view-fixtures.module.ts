@@ -15,10 +15,6 @@ import {
 } from '@skyux/modals';
 
 import {
-  SplitViewBeforeCloseFixtureComponent
-} from './split-view-before-close.fixture';
-
-import {
   SplitViewFixtureComponent
 } from './split-view.fixture';
 
@@ -28,8 +24,7 @@ import {
 
 @NgModule({
   declarations: [
-    SplitViewFixtureComponent,
-    SplitViewBeforeCloseFixtureComponent
+    SplitViewFixtureComponent
   ],
   providers: [
     SkyAppWindowRef

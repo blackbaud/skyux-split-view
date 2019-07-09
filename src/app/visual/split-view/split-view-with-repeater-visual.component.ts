@@ -15,10 +15,6 @@ import {
 } from 'rxjs/Subject';
 
 import {
-  SkySplitViewBeforeWorkspaceCloseHandler
-} from '../../public/modules/split-view/types/split-view-before-workspace-close-handler';
-
-import {
   SkySplitViewMessageType
 } from '../../public/modules/split-view/types/split-view-message-type';
 
@@ -73,22 +69,19 @@ export class SplitViewWithRepeaterVisualComponent implements AfterViewInit {
   }
 
   public onItemClick(index: number) {
-    this.activeIndex = index;
-    this.setFocusInWorkspace();
-  }
-
-  public onBeforeWorkspaceClose(closeHandler: SkySplitViewBeforeWorkspaceCloseHandler): void {
-    if (this.hasUnsavedWork) {
+    if (this.hasUnsavedWork && index !== this.activeIndex) {
       this.confirmService.open({
-        message: 'You have unsaved work. Are you sure you want to close this dialog?',
+        message: 'You have unsaved work. Are you sure you want to load a new item and lose your work?',
         type: SkyConfirmType.YesCancel
       }).closed.subscribe((closeArgs: SkyConfirmCloseEventArgs) => {
         if (closeArgs.action.toLowerCase() === 'yes') {
-          closeHandler.closeWorkspace();
+          this.activeIndex = index;
+          this.setFocusInWorkspace();
         }
       });
     } else {
-      closeHandler.closeWorkspace();
+      this.activeIndex = index;
+      this.setFocusInWorkspace();
     }
   }
 

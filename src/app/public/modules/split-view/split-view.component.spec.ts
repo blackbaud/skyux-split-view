@@ -37,14 +37,6 @@ import {
 } from './fixtures/split-view.fixture';
 
 import {
-  SplitViewBeforeCloseFixtureComponent
-} from './fixtures/split-view-before-close.fixture';
-
-import {
-  SkySplitViewBeforeWorkspaceCloseHandler
-} from './types/split-view-before-workspace-close-handler';
-
-import {
   SkySplitViewMessage
 } from './types/split-view-message';
 
@@ -525,48 +517,4 @@ describe('Split view component', () => {
       expect(fixture.nativeElement).toBeAccessible();
     }));
   });
-});
-
-describe('Split view component confirm before close', () => {
-  let component: SplitViewBeforeCloseFixtureComponent;
-  let fixture: ComponentFixture<SplitViewBeforeCloseFixtureComponent>;
-  mockQueryService = new MockSkyMediaQueryService();
-
-  beforeEach(fakeAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        SplitViewFixturesModule
-      ],
-      providers: [
-        { provide: SkyMediaQueryService, useValue: mockQueryService }
-      ]
-    });
-
-    fixture = TestBed.createComponent(SplitViewBeforeCloseFixtureComponent);
-    component = fixture.componentInstance;
-  }));
-
-  // Runs the initial getters. Make sure we always have a baseline of lg media breakpoint.
-  beforeEach(fakeAsync(() => {
-    mockQueryService.fire(SkyMediaBreakpoints.lg);
-    fixture.detectChanges();
-    tick();
-    fixture.detectChanges();
-    tick();
-  }));
-
-  it('should emit beforeWorkspaceClose if there are subscribers to the emitter', fakeAsync(() => {
-    // Set state for "unsaved work" and put split view in responsive mode.
-    initiateResponsiveMode(fixture);
-    const spy = spyOn(component, 'onBeforeWorkspaceClose');
-
-    // Click the back button.
-    const backToListButton = getBackToListButton();
-    backToListButton.click();
-    fixture.detectChanges();
-    tick();
-
-    // Expect beforeWorkspaceClose emitter has been called.
-    expect(spy).toHaveBeenCalledWith(jasmine.any(SkySplitViewBeforeWorkspaceCloseHandler));
-  }));
 });
