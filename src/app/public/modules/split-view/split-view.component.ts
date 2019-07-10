@@ -120,7 +120,9 @@ export class SkySplitViewComponent implements OnInit, OnDestroy {
     private elementRef: ElementRef,
     private mediaQueryService: SkyMediaQueryService,
     private splitViewService: SkySplitViewService
-  ) {}
+  ) {
+    splitViewService.splitViewElementRef = this.elementRef;
+  }
 
   public ngOnInit(): void {
     this.splitViewService.isMobileStream

@@ -11,7 +11,6 @@ import {
 } from '@angular/core';
 
 import {
-  SkyAppWindowRef,
   SkyCoreAdapterService,
   SkyMediaBreakpoints,
   SkyMediaQueryService
@@ -96,7 +95,6 @@ export class SkySplitViewDrawerComponent implements AfterViewInit, OnInit, OnDes
     private changeDetectorRef: ChangeDetectorRef,
     private coreAdapterService: SkyCoreAdapterService,
     private elementRef: ElementRef,
-    private skyWindow: SkyAppWindowRef,
     private splitViewMediaQueryService: SkySplitViewMediaQueryService,
     private splitViewService: SkySplitViewService
   ) {}
@@ -203,6 +201,7 @@ export class SkySplitViewDrawerComponent implements AfterViewInit, OnInit, OnDes
   }
 
   private setMaxWidth(): void {
-    this.widthMax = this.skyWindow.nativeWindow.innerWidth - this.widthTolerance;
+    const splitView = this.splitViewService.splitViewElementRef.nativeElement.querySelector('.sky-split-view');
+    this.widthMax = splitView.clientWidth - this.widthTolerance;
   }
 }

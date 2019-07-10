@@ -1,6 +1,7 @@
 import {
   Injectable,
-  OnDestroy
+  OnDestroy,
+  ElementRef
 } from '@angular/core';
 
 import {
@@ -30,6 +31,8 @@ export class SkySplitViewService implements OnDestroy {
   public get drawerWidthStream(): Observable<number> {
     return this._drawerWidthStream;
   }
+
+  public splitViewElementRef: ElementRef;
 
   public set isMobile(value: boolean) {
     this._isMobile = value;
