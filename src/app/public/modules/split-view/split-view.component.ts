@@ -76,6 +76,7 @@ import {
   ]
 })
 export class SkySplitViewComponent implements OnInit, OnDestroy {
+
   @Input()
   public set backButtonText(value: string) {
     if (value) {
@@ -94,7 +95,7 @@ export class SkySplitViewComponent implements OnInit, OnDestroy {
     this.changeDetectorRef.markForCheck();
   }
 
-  public get drawerVisible() {
+  public get drawerVisible(): boolean {
     return !this.isMobile || this._drawerVisible;
   }
 
@@ -104,7 +105,7 @@ export class SkySplitViewComponent implements OnInit, OnDestroy {
 
   public previousButtonDisabled = false;
 
-  public get workspaceVisible() {
+  public get workspaceVisible(): boolean {
     return !this.isMobile || !this._drawerVisible;
   }
 
@@ -165,7 +166,7 @@ export class SkySplitViewComponent implements OnInit, OnDestroy {
     }
   }
 
-  private handleIncomingMessages(message: SkySplitViewMessage) {
+  private handleIncomingMessages(message: SkySplitViewMessage): void {
     /* tslint:disable-next-line:switch-default */
     switch (message.type) {
       case SkySplitViewMessageType.FocusWorkspace:

@@ -104,7 +104,7 @@ function resizeList(deltaX: number, fixture: ComponentFixture<any>): void {
   tick();
 }
 
-function getElementCords(elementRef: any) {
+function getElementCords(elementRef: any): any {
   const rect = (elementRef.nativeElement as HTMLElement).getBoundingClientRect();
   const coords = {
     x: Math.round(rect.left + (rect.width / 2)),
@@ -135,7 +135,7 @@ function getHeader(): HTMLElement {
   return document.querySelector('.sky-split-view-workspace-header-content') as HTMLElement;
 }
 
-function isWithin(actual: number, base: number, distance: number) {
+function isWithin(actual: number, base: number, distance: number): boolean {
   return Math.abs(actual - base) <= distance;
 }
 // #endregion

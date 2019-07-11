@@ -1,13 +1,13 @@
 import {
   Injectable,
-  OnDestroy,
-  ElementRef
+  ElementRef,
+  OnDestroy
 } from '@angular/core';
 
 import {
-  Subscription,
   BehaviorSubject,
-  Observable
+  Observable,
+  Subscription
 } from 'rxjs';
 
 import {
@@ -89,11 +89,11 @@ export class SkySplitViewService implements OnDestroy {
     this.drawerVisible.next(true);
   }
 
-  public updateBackButtonText(text: string) {
+  public updateBackButtonText(text: string): void {
     this._backButtonTextStream.next(text);
   }
 
-  public updateDrawerWidth(drawerWidth: number) {
+  public updateDrawerWidth(drawerWidth: number): void {
     this._drawerWidthStream.next(drawerWidth);
   }
 

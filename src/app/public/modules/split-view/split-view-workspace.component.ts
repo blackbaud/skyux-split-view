@@ -37,6 +37,7 @@ import {
   ]
 })
 export class SkySplitViewWorkspaceComponent implements OnDestroy, OnInit {
+
   public set isMobile(value: boolean) {
     this._isMobile = value;
     this.changeDetectorRef.markForCheck();

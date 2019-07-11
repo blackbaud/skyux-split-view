@@ -34,7 +34,7 @@
     display: none;
   }
 
-  &::-ms-thumb {
+  &::-ms-thumb, &::-ms-track {
     -webkit-appearance: none;
     -moz-appearance: none;
     width: 0;

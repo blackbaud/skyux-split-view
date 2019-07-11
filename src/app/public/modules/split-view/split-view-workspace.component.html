@@ -3,11 +3,10 @@
   role="region"
   [attr.aria-label]="ariaLabel"
 >
-  <sky-split-view-workspace-header *ngIf="isMobile"
-  ></sky-split-view-workspace-header>
+  <sky-split-view-workspace-header *ngIf="isMobile"></sky-split-view-workspace-header>
   <div
     class="sky-split-view-workspace-content sky-padding-even-large"
   >
-  <ng-content></ng-content>
+    <ng-content></ng-content>
   </div>
 </div>

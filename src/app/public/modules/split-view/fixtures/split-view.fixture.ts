@@ -31,15 +31,6 @@ export class SplitViewFixtureComponent {
 
   public backButtonText: string;
 
-  public width: number;
-
-  public showIframe = false;
-
-  public splitViewMessageStream = new Subject<SkySplitViewMessage>();
-
-  @ViewChild(SkySplitViewComponent)
-  public splitViewComponent: SkySplitViewComponent;
-
   public hasUnsavedWork = false;
 
   public items = [
@@ -49,6 +40,15 @@ export class SplitViewFixtureComponent {
     { id: '4', name: 'pear' },
     { id: '5', name: 'strawberry' }
   ];
+
+  public showIframe = false;
+
+  @ViewChild(SkySplitViewComponent)
+  public splitViewComponent: SkySplitViewComponent;
+
+  public splitViewMessageStream = new Subject<SkySplitViewMessage>();
+
+  public width: number;
 
   constructor(
     public confirmService: SkyConfirmService

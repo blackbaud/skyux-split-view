@@ -29,6 +29,8 @@ describe('Split view', () => {
     });
   });
 
+  // Extra test to show the responsive drawer.
+  // No large version is needed, as the "back" button doesn't exist on larger screens.
   it('should match previous screenshot when drawer is displayed in mobile view (screen: xs)', (done) => {
     SkyHostBrowser.setWindowBreakpoint('xs');
     element(

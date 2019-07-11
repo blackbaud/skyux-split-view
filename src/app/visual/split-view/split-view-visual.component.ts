@@ -28,22 +28,6 @@ import {
 })
 export class SplitViewVisualComponent {
 
-  public splitViewStream = new Subject<SkySplitViewMessage>();
-
-  public hasUnsavedWork = false;
-
-  public width: number;
-
-  public items = [
-    { id: 1, name: 'Jennifer Standley', amount: 12.45, date: '04/28/2019' },
-    { id: 2, name: 'Jennifer Standley', amount: 52.39, date: '04/22/2019' },
-    { id: 3, name: 'Jennifer Standley', amount: 9.12, date: '04/09/2019' },
-    { id: 4, name: 'Jennifer Standley', amount: 193.00, date: '03/27/2019' },
-    { id: 5, name: 'Jennifer Standley', amount: 19.89, date: '03/11/2019' },
-    { id: 6, name: 'Jennifer Standley', amount: 214.18, date: '02/17/2019' },
-    { id: 7, name: 'Jennifer Standley', amount: 4.53, date: '02/26/2019' }
-  ];
-
   public set activeIndex(value: number) {
     this._activeIndex = value;
     this.activeRecord = this.items[this._activeIndex];
@@ -55,16 +39,32 @@ export class SplitViewVisualComponent {
 
   public activeRecord: any;
 
+  public hasUnsavedWork = false;
+
+  public items = [
+    { id: 1, name: 'Jennifer Standley', amount: 12.45, date: '04/28/2019' },
+    { id: 2, name: 'Jennifer Standley', amount: 52.39, date: '04/22/2019' },
+    { id: 3, name: 'Jennifer Standley', amount: 9.12, date: '04/09/2019' },
+    { id: 4, name: 'Jennifer Standley', amount: 193.00, date: '03/27/2019' },
+    { id: 5, name: 'Jennifer Standley', amount: 19.89, date: '03/11/2019' },
+    { id: 6, name: 'Jennifer Standley', amount: 214.18, date: '02/17/2019' },
+    { id: 7, name: 'Jennifer Standley', amount: 4.53, date: '02/26/2019' }
+  ];
+
+  public splitViewStream = new Subject<SkySplitViewMessage>();
+
+  public width: number;
+
   private _activeIndex = 0;
 
   constructor(
-    public confirmService: SkyConfirmService,
-    public changeDetectorRef: ChangeDetectorRef
+    public changeDetectorRef: ChangeDetectorRef,
+    public confirmService: SkyConfirmService
   ) {
     this.activeIndex = 0;
   }
 
-  public onItemClick(index: number) {
+  public onItemClick(index: number): void {
     if (this.hasUnsavedWork && index !== this.activeIndex) {
       this.confirmService.open({
         message: 'You have unsaved work. Would you like to save it before you change records?',

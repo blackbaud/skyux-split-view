@@ -29,7 +29,7 @@ import {
   SkySplitViewService
 } from './split-view.service';
 
-let nextId = 0;
+let skySplitViewNextId = 0;
 
 @Component({
   selector: 'sky-split-view-drawer',
@@ -46,8 +46,6 @@ export class SkySplitViewDrawerComponent implements AfterViewInit, OnInit, OnDes
   @Input()
   public ariaLabel: string;
 
-  public isMobile = false;
-
   @Input()
   public set width(value: number) {
     if (value) {
@@ -57,6 +55,10 @@ export class SkySplitViewDrawerComponent implements AfterViewInit, OnInit, OnDes
       this.changeDetectorRef.markForCheck();
     }
   }
+
+  public isMobile = false;
+
+  public splitViewDrawerId: string = `sky-split-view-drawer-${++skySplitViewNextId}`;
 
   public get width(): number {
     if (this.isMobile) {
@@ -71,15 +73,13 @@ export class SkySplitViewDrawerComponent implements AfterViewInit, OnInit, OnDes
     }
   }
 
-  public splitViewDrawerId: string = `sky-split-view-drawer-${++nextId}`;
+  public widthDefault = 320;
 
   // Max needs to start as something to allow input range to work.
   // This value is updated as soon as the user takes action.
   public widthMax = 9999;
 
   public widthMin = 100;
-
-  public widthDefault = 320;
 
   public widthTolerance = 100;
 

@@ -58,8 +58,8 @@ import {
   imports: [
     BrowserAnimationsModule,
     CommonModule,
-    SkySplitViewResourcesModule,
-    SkyIconModule
+    SkyIconModule,
+    SkySplitViewResourcesModule
   ],
   exports: [
     SkySplitViewComponent,

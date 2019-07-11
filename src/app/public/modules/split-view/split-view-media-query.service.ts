@@ -8,12 +8,9 @@ import {
 } from '@skyux/core';
 
 import {
+  Subscription,
   BehaviorSubject
-} from 'rxjs/BehaviorSubject';
-
-import {
-  Subscription
-} from 'rxjs/Subscription';
+} from 'rxjs';
 
 @Injectable()
 export class SkySplitViewMediaQueryService {

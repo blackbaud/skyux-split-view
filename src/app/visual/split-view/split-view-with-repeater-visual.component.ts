@@ -1,7 +1,6 @@
 import {
-  AfterViewInit,
-  Component,
-  ChangeDetectorRef
+  ChangeDetectorRef,
+  Component
 } from '@angular/core';
 
 import {
@@ -27,23 +26,7 @@ import {
   templateUrl: './split-view-with-repeater-visual.component.html',
   styleUrls: ['./split-view-visual.component.scss']
 })
-export class SplitViewWithRepeaterVisualComponent implements AfterViewInit {
-
-  public splitViewStream = new Subject<SkySplitViewMessage>();
-
-  public hasUnsavedWork = false;
-
-  public width: number;
-
-  public items = [
-    { id: 1, name: 'Jennifer Standley', amount: 12.45, date: '04/28/2019' },
-    { id: 2, name: 'Jennifer Standley', amount: 52.39, date: '04/22/2019' },
-    { id: 3, name: 'Jennifer Standley', amount: 9.12, date: '04/09/2019' },
-    { id: 4, name: 'Jennifer Standley', amount: 193.00, date: '03/27/2019' },
-    { id: 5, name: 'Jennifer Standley', amount: 19.89, date: '03/11/2019' },
-    { id: 6, name: 'Jennifer Standley', amount: 214.18, date: '02/17/2019' },
-    { id: 7, name: 'Jennifer Standley', amount: 4.53, date: '02/26/2019' }
-  ];
+export class SplitViewWithRepeaterVisualComponent {
 
   public set activeIndex(value: number) {
     this._activeIndex = value;
@@ -56,19 +39,32 @@ export class SplitViewWithRepeaterVisualComponent implements AfterViewInit {
 
   public activeRecord: any;
 
+  public hasUnsavedWork = false;
+
+  public items = [
+    { id: 1, name: 'Jennifer Standley', amount: 12.45, date: '04/28/2019' },
+    { id: 2, name: 'Jennifer Standley', amount: 52.39, date: '04/22/2019' },
+    { id: 3, name: 'Jennifer Standley', amount: 9.12, date: '04/09/2019' },
+    { id: 4, name: 'Jennifer Standley', amount: 193.00, date: '03/27/2019' },
+    { id: 5, name: 'Jennifer Standley', amount: 19.89, date: '03/11/2019' },
+    { id: 6, name: 'Jennifer Standley', amount: 214.18, date: '02/17/2019' },
+    { id: 7, name: 'Jennifer Standley', amount: 4.53, date: '02/26/2019' }
+  ];
+
+  public splitViewStream = new Subject<SkySplitViewMessage>();
+
+  public width: number;
+
   private _activeIndex = 0;
 
   constructor(
-    public confirmService: SkyConfirmService,
-    public changeDetectorRef: ChangeDetectorRef
+    public changeDetectorRef: ChangeDetectorRef,
+    public confirmService: SkyConfirmService
   ) {
     this.activeIndex = 0;
   }
 
-  public ngAfterViewInit(): void {
-  }
-
-  public onItemClick(index: number) {
+  public onItemClick(index: number): void {
     if (this.hasUnsavedWork && index !== this.activeIndex) {
       this.confirmService.open({
         message: 'You have unsaved work. Would you like to save it before you change records?',

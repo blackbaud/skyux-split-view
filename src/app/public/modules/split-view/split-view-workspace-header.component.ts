@@ -6,9 +6,12 @@ import {
 } from '@angular/core';
 
 import {
+  Subject
+} from 'rxjs';
+
+import {
   SkySplitViewService
 } from './split-view.service';
-import { Subject } from 'rxjs';
 
 @Component({
   selector: 'sky-split-view-workspace-header',

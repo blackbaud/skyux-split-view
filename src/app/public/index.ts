@@ -1,4 +1,3 @@
-
 // Split view modules.
 export * from './modules/split-view/split-view.module';
 
