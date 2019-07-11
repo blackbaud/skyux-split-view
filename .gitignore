@@ -18,12 +18,18 @@ yarn.lock
 .node_repl_history
 
 # SKY UX temp directory
-.skyuxtmp
 .skypageslocales
 .skypagestmp
+.skyuxtmp
+.srctmp
 
 # SKY UX build directory
 dist
+
+# SKY UX visual directory
+screenshots-baseline-local
+screenshots-diff-local
+BrowserStackLocal
 
 # OS specific files
 .DS_Store
