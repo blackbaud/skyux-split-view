@@ -43,12 +43,12 @@ export class SplitViewFixtureComponent {
 
   public showIframe = false;
 
-  @ViewChild(SkySplitViewComponent)
-  public splitViewComponent: SkySplitViewComponent;
-
   public splitViewMessageStream = new Subject<SkySplitViewMessage>();
 
   public width: number;
+
+  @ViewChild(SkySplitViewComponent)
+  public splitViewComponent: SkySplitViewComponent;
 
   constructor(
     public confirmService: SkyConfirmService
