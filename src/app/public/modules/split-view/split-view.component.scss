@@ -12,8 +12,15 @@
     flex-grow: 1;
     flex-shrink: 99;
     overflow: auto;
+    position: relative;
   }
+
 }
+    .sky-split-view-workspace-footer {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+    }
 
 // Drawer should be full-width when in mobile view.
 @include sky-host-responsive-container-xs-min() {
