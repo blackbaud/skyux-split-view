@@ -6,6 +6,7 @@ import {
 @Component({
   selector: 'sky-split-view-workspace-content',
   templateUrl: 'split-view-workspace-content.component.html',
+  styleUrls: ['./split-view-workspace-content.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SkySplitViewWorkspaceContentComponent {

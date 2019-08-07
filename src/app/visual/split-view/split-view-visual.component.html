@@ -53,12 +53,6 @@
             </label>
           </p>
 
-          <input
-            name="submit"
-            type="submit"
-            value="Save transaction"
-          />
-
           <label>
             <input
               name="unsavedWork"
@@ -69,6 +63,11 @@
           </label>
         </form>
       </sky-split-view-workspace-content>
+      <sky-split-view-workspace-footer>
+        <button type="button" class="sky-btn sky-btn-primary" (click)="submitForm()">
+          Save transaction
+        </button>
+      </sky-split-view-workspace-footer>
     </sky-split-view-workspace>
   </sky-split-view>
 </div>
