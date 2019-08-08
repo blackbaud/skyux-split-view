@@ -41,4 +41,32 @@ describe('Split view', () => {
       screenshotName: 'split-view-drawer-xs'
     });
   });
+
+  it('should match previous screenshot with repeater', (done) => {
+    SkyHostBrowser.scrollTo('#screenshot-split-view-with-repeater');
+    expect('#screenshot-split-view-with-repeater').toMatchBaselineScreenshot(done, {
+      screenshotName: 'split-view-repeater-lg'
+    });
+  });
+
+  it('should match previous screenshot with repeater (screen: xs)', (done) => {
+    SkyHostBrowser.setWindowBreakpoint('xs');
+    SkyHostBrowser.scrollTo('#screenshot-split-view-with-repeater');
+    expect('#screenshot-split-view-with-repeater').toMatchBaselineScreenshot(done, {
+      screenshotName: 'split-view-repeater-xs'
+    });
+  });
+
+  // Extra test to show the responsive drawer.
+  // No large version is needed, as the "back" button doesn't exist on larger screens.
+  it('should match previous screenshot when drawer is displayed in mobile view with repeater (screen: xs)', (done) => {
+    SkyHostBrowser.setWindowBreakpoint('xs');
+    element(
+      by.css('#screenshot-split-view-with-repeater .sky-split-view-workspace-header-content .sky-btn')
+    ).click();
+    SkyHostBrowser.scrollTo('#screenshot-split-view-with-repeater');
+    expect('#screenshot-split-view-with-repeater').toMatchBaselineScreenshot(done, {
+      screenshotName: 'split-view-drawer-repeater-xs'
+    });
+  });
 });
