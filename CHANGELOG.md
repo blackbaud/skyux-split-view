@@ -6,7 +6,7 @@
 
 ### Breaking changes
 
-- Dropped support for `rxjs@5`. Consumers may install `rxjs-compat@^6` to support older versions of `rxjs`. [#21](https://github.com/blackbaud/skyux-split-view/pull/21)
+- Dropped support for `rxjs@5`. Consumers can install `rxjs-compat@^6` to support older versions of `rxjs`. [#21](https://github.com/blackbaud/skyux-split-view/pull/21)
 
 # 3.0.0 (2020-03-12)
 
