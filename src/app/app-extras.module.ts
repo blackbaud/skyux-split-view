@@ -15,6 +15,11 @@ import {
 } from '@skyux/router';
 
 import {
+  SkyDocsToolsModule,
+  SkyDocsToolsOptions
+} from '@skyux/docs-tools';
+
+import {
   SkySplitViewModule
 } from './public/public_api';
 
@@ -22,8 +27,18 @@ import {
   exports: [
     SkyAppLinkModule,
     SkyConfirmModule,
+    SkyDocsToolsModule,
     SkySplitViewModule,
     SkyRepeaterModule
+  ],
+  providers: [
+    {
+      provide: SkyDocsToolsOptions,
+      useValue: {
+        gitRepoUrl: 'https://github.com/blackbaud/skyux-split-view',
+        packageName: '@skyux/split-view'
+      }
+    }
   ]
 })
 export class AppExtrasModule { }
