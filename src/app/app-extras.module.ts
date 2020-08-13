@@ -3,6 +3,11 @@ import {
 } from '@angular/core';
 
 import {
+  SkyDocsToolsModule,
+  SkyDocsToolsOptions
+} from '@skyux/docs-tools';
+
+import {
   SkyRepeaterModule
 } from '@skyux/lists';
 

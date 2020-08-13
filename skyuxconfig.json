@@ -14,14 +14,25 @@
       "browserSet": "paranoid"
     }
   },
+  "pipelineSettings": {
+    "vsts": {
+      "testSettings": {
+        "e2e": {
+          "browserSet": false
+        },
+        "unit": {
+          "browserSet": false
+        }
+      }
+    }
+  },
   "host": {
+    "url": "https://developer.blackbaud.com",
     "frameOptions": {
       "none": true
     }
   },
-  "omnibar": {
-    "experimental": true
-  },
+  "omnibar": {},
   "params": {
     "svcid": {
       "value": "skyux"
