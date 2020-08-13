@@ -173,24 +173,24 @@ describe('Split view component', () => {
     }));
 
     it('should accept configuration options for aria-label',
-    fakeAsync(() => {
-      const expectedLabelForList = 'customlabelledby';
-      const expectedLabelForWorkspace = 'customlabelledby';
+      fakeAsync(() => {
+        const expectedLabelForList = 'customlabelledby';
+        const expectedLabelForWorkspace = 'customlabelledby';
 
-      component.ariaLabelForDrawer = expectedLabelForList;
-      component.ariaLabelForWorkspace = expectedLabelForWorkspace;
+        component.ariaLabelForDrawer = expectedLabelForList;
+        component.ariaLabelForWorkspace = expectedLabelForWorkspace;
 
-      fixture.detectChanges();
-      tick();
+        fixture.detectChanges();
+        tick();
 
-      const list = getListPanel();
-      const workspace = getWorkspacePanel();
+        const list = getListPanel();
+        const workspace = getWorkspacePanel();
 
-      expect(list.getAttribute('aria-label')).toBe(expectedLabelForList);
-      expect(list.getAttribute('role')).toBe('region');
-      expect(workspace.getAttribute('aria-label')).toBe(expectedLabelForWorkspace);
-      expect(workspace.getAttribute('role')).toBe('region');
-    }));
+        expect(list.getAttribute('aria-label')).toBe(expectedLabelForList);
+        expect(list.getAttribute('role')).toBe('region');
+        expect(workspace.getAttribute('aria-label')).toBe(expectedLabelForWorkspace);
+        expect(workspace.getAttribute('role')).toBe('region');
+      }));
 
     it('should set iframe styles correctly during dragging', fakeAsync(() => {
       component.showIframe = true;
@@ -224,6 +224,55 @@ describe('Split view component', () => {
       tick();
 
       expect(iframe.style.pointerEvents).toBeFalsy();
+    }));
+
+    it('should bind the split view hight when the `bindHeightToWindow` property is set', fakeAsync(() => {
+      component.bindHeightToWindow = true;
+      fixture.detectChanges();
+      tick();
+      fixture.detectChanges();
+      const splitViewElement: HTMLElement = document.querySelector('.sky-split-view');
+      expect(splitViewElement.style.minHeight).toBe('300px');
+      expect(splitViewElement.style.maxHeight).toBe('calc((100vh - 0px) - 0px)');
+    }));
+
+    it('should bind the split view hight when the `bindHeightToWindow` property is set with an element above it', fakeAsync(() => {
+      component.bindHeightToWindow = true;
+      component.lowerSplitView = true;
+      fixture.detectChanges();
+      tick();
+      fixture.detectChanges();
+      const splitViewElement: HTMLElement = document.querySelector('.sky-split-view');
+      expect(splitViewElement.style.minHeight).toBe('300px');
+      expect(splitViewElement.style.maxHeight).toBe('calc((100vh - 100px) - 0px)');
+    }));
+
+    it('should bind the split view hight when the `bindHeightToWindow` property is set with a body bottom margin', async(() => {
+      component.bindHeightToWindow = true;
+      component.showActionBar = true;
+      fixture.detectChanges();
+      // Without the `setTimeout` the mutation observer isn't hit
+      setTimeout(() => {
+        fixture.detectChanges();
+        const splitViewElement: HTMLElement = document.querySelector('.sky-split-view');
+        expect(splitViewElement.style.minHeight).toBe('300px');
+        expect(splitViewElement.style.maxHeight).toBe('calc((100vh - 0px) - 69px)');
+      }, 10);
+    }));
+
+    it(`should bind the split view hight when the 'bindHeightToWindow' property is set with a body
+    bottom margin and element above it`, async(() => {
+      component.bindHeightToWindow = true;
+      component.lowerSplitView = true;
+      component.showActionBar = true;
+      fixture.detectChanges();
+      // Without the `setTimeout` the mutation observer isn't hit
+      setTimeout(() => {
+        fixture.detectChanges();
+        const splitViewElement: HTMLElement = document.querySelector('.sky-split-view');
+        expect(splitViewElement.style.minHeight).toBe('300px');
+        expect(splitViewElement.style.maxHeight).toBe('calc((100vh - 100px) - 69px)');
+      }, 10);
     }));
   });
 
@@ -419,7 +468,7 @@ describe('Split view component', () => {
       tick();
 
       // Expect first element in workspace to have focus.
-      const firstInputElement = document.querySelector('#sky-test-first-input');
+      const firstInputElement: HTMLElement = document.querySelector('#sky-test-first-input');
       expect(getFocusedElement()).toEqual(firstInputElement);
     }));
 
@@ -440,11 +489,11 @@ describe('Split view component', () => {
       tick();
 
       // Expect first element in workspace to have focus.
-      const firstInputElement = document.querySelector('#sky-test-first-input');
+      const firstInputElement: HTMLElement = document.querySelector('#sky-test-first-input');
       expect(getFocusedElement()).toEqual(firstInputElement);
     }));
 
-    it ('should show the header and back link on smaller screens', fakeAsync(() => {
+    it('should show the header and back link on smaller screens', fakeAsync(() => {
       initiateResponsiveMode(fixture);
       const responsiveHeader = getHeader();
       const backToListButton = getBackToListButton();
@@ -453,14 +502,14 @@ describe('Split view component', () => {
       expect(backToListButton).not.toBeNull();
     }));
 
-    it ('should use default when backButtonText property is not defined', fakeAsync(() => {
+    it('should use default when backButtonText property is not defined', fakeAsync(() => {
       initiateResponsiveMode(fixture);
       const backToListButton = getBackToListButton();
 
       expect(backToListButton.innerText.trim()).toEqual('Back to list');
     }));
 
-    it ('should allow custom labels for back button if backButtonText property is defined', fakeAsync(() => {
+    it('should allow custom labels for back button if backButtonText property is defined', fakeAsync(() => {
       const labelText = 'FOOBAR';
       component.backButtonText = labelText;
       fixture.detectChanges();
@@ -470,7 +519,7 @@ describe('Split view component', () => {
       expect(backToListButton.innerText.trim()).toEqual(labelText);
     }));
 
-    it ('should show the list when the back link is clicked', fakeAsync(() => {
+    it('should show the list when the back link is clicked', fakeAsync(() => {
       // Start in responsive mode.
       initiateResponsiveMode(fixture);
       const backToListButton = getBackToListButton();
@@ -486,7 +535,7 @@ describe('Split view component', () => {
       expect(listPanelHidden()).toEqual(false);
     }));
 
-    it ('should resize list panel as window gets smaller to prevent it from overflowing', fakeAsync(() => {
+    it('should resize list panel as window gets smaller to prevent it from overflowing', fakeAsync(() => {
       // Make list as wide as possible.
       component.width = 9999;
       fixture.detectChanges();
@@ -508,6 +557,40 @@ describe('Split view component', () => {
       // Use isWithin() to allow some pixel tolerance for different browsers.
       const newWidth = initialwidth - windowResizeAmount;
       expect(isWithin(listPanel.clientWidth, newWidth, 10)).toEqual(true);
+    }));
+
+    it(`should bind the split view hight when the 'bindHeightToWindow' property is set after
+    initialization and update correctly`, async(() => {
+      component.bindHeightToWindow = true;
+      fixture.detectChanges();
+      fixture.whenStable().then(() => {
+        fixture.detectChanges();
+        let splitViewElement: HTMLElement = document.querySelector('.sky-split-view');
+        expect(splitViewElement.style.minHeight).toBe('300px');
+        expect(splitViewElement.style.maxHeight).toBe('calc((100vh - 0px) - 0px)');
+        component.showActionBar = true;
+        fixture.detectChanges();
+        fixture.whenStable().then(() => {
+          fixture.detectChanges();
+          // Without the `setTimeout` the mutation observer isn't hit
+          setTimeout(() => {
+            fixture.detectChanges();
+            splitViewElement = document.querySelector('.sky-split-view');
+            expect(splitViewElement.style.minHeight).toBe('300px');
+            expect(splitViewElement.style.maxHeight).toBe('calc((100vh - 0px) - 69px)');
+
+            component.lowerSplitView = true;
+            fixture.detectChanges();
+
+            // Fire a window resize to trigger a sizing update.
+            SkyAppTestUtility.fireDomEvent(window, 'resize');
+            fixture.detectChanges();
+            splitViewElement = document.querySelector('.sky-split-view');
+            expect(splitViewElement.style.minHeight).toBe('300px');
+            expect(splitViewElement.style.maxHeight).toBe('calc((100vh - 100px) - 69px)');
+          }, 10);
+        });
+      });
     }));
 
     it('should pass accessibility', async(() => {
