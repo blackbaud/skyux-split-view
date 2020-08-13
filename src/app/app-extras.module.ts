@@ -20,11 +20,6 @@ import {
 } from '@skyux/router';
 
 import {
-  SkyDocsToolsModule,
-  SkyDocsToolsOptions
-} from '@skyux/docs-tools';
-
-import {
   SkySplitViewModule
 } from './public/public_api';
 
