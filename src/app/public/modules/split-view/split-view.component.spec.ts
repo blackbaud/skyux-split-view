@@ -248,8 +248,8 @@ describe('Split view component', () => {
       tick();
       fixture.detectChanges();
       const splitViewElement: HTMLElement = document.querySelector('.sky-split-view');
-      expect(rendererSpy).toHaveBeenCalledWith(splitViewElement, 'min-height', '300px');
-      expect(rendererSpy).toHaveBeenCalledWith(splitViewElement, 'max-height', 'calc(100vh - 0px - 0px)');
+      expect(rendererSpy.calls.allArgs()).toContain([splitViewElement, 'min-height', '300px']);
+      expect(rendererSpy.calls.allArgs()).toContain([splitViewElement, 'max-height', 'calc(100vh - 0px - 0px)']);
     }));
 
     it('should bind the split view hight when the `bindHeightToWindow` property is set with an element above it', fakeAsync(() => {
