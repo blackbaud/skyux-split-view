@@ -574,7 +574,8 @@ describe('Split view component', () => {
           },
           setStyle: (element: any, style: any, value: any) => {}
         }
-      })
+      });
+
       component.bindHeightToWindow = true;
       let rendererSpy = spyOn(renderer, 'setStyle').and.callThrough();
       fixture.detectChanges();
