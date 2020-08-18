@@ -1,5 +1,6 @@
 import {
-  DebugElement
+  DebugElement,
+  RendererFactory2
 } from '@angular/core';
 
 import {
@@ -561,13 +562,28 @@ describe('Split view component', () => {
 
     it(`should bind the split view hight when the 'bindHeightToWindow' property is set after
     initialization and update correctly`, async(() => {
+      const rendererFactory = TestBed.inject(RendererFactory2);
+      const renderer = rendererFactory.createRenderer(undefined, undefined);
+
+      // We have to override this this way instead of a standard spy because of how it can affect
+      // other components unintentionally.
+      TestBed.overrideProvider(RendererFactory2, {
+        useValue: {
+          createRenderer: (param1: any, param2: any) => {
+            return renderer;
+          },
+          setStyle: (element: any, style: any, value: any) => {}
+        }
+      })
       component.bindHeightToWindow = true;
+      let rendererSpy = spyOn(renderer, 'setStyle').and.callThrough();
       fixture.detectChanges();
       fixture.whenStable().then(() => {
         fixture.detectChanges();
         let splitViewElement: HTMLElement = document.querySelector('.sky-split-view');
-        expect(splitViewElement.style.minHeight).toBe('300px');
-        expect(splitViewElement.style.maxHeight).toBe('calc((100vh - 0px) - 0px)');
+        expect(rendererSpy).toHaveBeenCalledWith(splitViewElement, 'min-height', '300px');
+        expect(rendererSpy).toHaveBeenCalledWith(splitViewElement, 'max-height', 'calc(100vh - 0px - 0px)');
+        rendererSpy.calls.reset();
         component.showActionBar = true;
         fixture.detectChanges();
         fixture.whenStable().then(() => {
@@ -576,8 +592,9 @@ describe('Split view component', () => {
           setTimeout(() => {
             fixture.detectChanges();
             splitViewElement = document.querySelector('.sky-split-view');
-            expect(splitViewElement.style.minHeight).toBe('300px');
-            expect(splitViewElement.style.maxHeight).toBe('calc((100vh - 0px) - 69px)');
+            expect(rendererSpy).toHaveBeenCalledWith(splitViewElement, 'min-height', '300px');
+            expect(rendererSpy).toHaveBeenCalledWith(splitViewElement, 'max-height', 'calc(100vh - 0px - 69px)');
+            rendererSpy.calls.reset();
 
             component.lowerSplitView = true;
             fixture.detectChanges();
@@ -586,8 +603,8 @@ describe('Split view component', () => {
             SkyAppTestUtility.fireDomEvent(window, 'resize');
             fixture.detectChanges();
             splitViewElement = document.querySelector('.sky-split-view');
-            expect(splitViewElement.style.minHeight).toBe('300px');
-            expect(splitViewElement.style.maxHeight).toBe('calc((100vh - 100px) - 69px)');
+            expect(rendererSpy).toHaveBeenCalledWith(splitViewElement, 'min-height', '300px');
+            expect(rendererSpy).toHaveBeenCalledWith(splitViewElement, 'max-height', 'calc(100vh - 100px - 69px)');
           }, 10);
         });
       });
