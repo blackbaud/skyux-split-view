@@ -228,27 +228,72 @@ describe('Split view component', () => {
     }));
 
     it('should bind the split view hight when the `bindHeightToWindow` property is set', fakeAsync(() => {
+      const rendererFactory = TestBed.inject(RendererFactory2);
+      const renderer = rendererFactory.createRenderer(undefined, undefined);
+
+      // We have to override this this way instead of a standard spy because of how it can affect
+      // other components unintentionally.
+      TestBed.overrideProvider(RendererFactory2, {
+        useValue: {
+          createRenderer: (param1: any, param2: any) => {
+            return renderer;
+          },
+          setStyle: (element: any, style: any, value: any) => {}
+        }
+      });
+
       component.bindHeightToWindow = true;
+      let rendererSpy = spyOn(renderer, 'setStyle').and.callThrough();
       fixture.detectChanges();
       tick();
       fixture.detectChanges();
       const splitViewElement: HTMLElement = document.querySelector('.sky-split-view');
-      expect(splitViewElement.style.minHeight).toBe('300px');
-      expect(splitViewElement.style.maxHeight).toBe('calc((100vh - 0px) - 0px)');
+      expect(rendererSpy).toHaveBeenCalledWith(splitViewElement, 'min-height', '300px');
+      expect(rendererSpy).toHaveBeenCalledWith(splitViewElement, 'max-height', 'calc(100vh - 0px - 0px)');
     }));
 
     it('should bind the split view hight when the `bindHeightToWindow` property is set with an element above it', fakeAsync(() => {
+      const rendererFactory = TestBed.inject(RendererFactory2);
+      const renderer = rendererFactory.createRenderer(undefined, undefined);
+
+      // We have to override this this way instead of a standard spy because of how it can affect
+      // other components unintentionally.
+      TestBed.overrideProvider(RendererFactory2, {
+        useValue: {
+          createRenderer: (param1: any, param2: any) => {
+            return renderer;
+          },
+          setStyle: (element: any, style: any, value: any) => {}
+        }
+      });
+
+      let rendererSpy = spyOn(renderer, 'setStyle').and.callThrough();
       component.bindHeightToWindow = true;
       component.lowerSplitView = true;
       fixture.detectChanges();
       tick();
       fixture.detectChanges();
       const splitViewElement: HTMLElement = document.querySelector('.sky-split-view');
-      expect(splitViewElement.style.minHeight).toBe('300px');
-      expect(splitViewElement.style.maxHeight).toBe('calc((100vh - 100px) - 0px)');
+      expect(rendererSpy).toHaveBeenCalledWith(splitViewElement, 'min-height', '300px');
+      expect(rendererSpy).toHaveBeenCalledWith(splitViewElement, 'max-height', 'calc(100vh - 100px - 0px)');
     }));
 
     it('should bind the split view hight when the `bindHeightToWindow` property is set with a body bottom margin', async(() => {
+      const rendererFactory = TestBed.inject(RendererFactory2);
+      const renderer = rendererFactory.createRenderer(undefined, undefined);
+
+      // We have to override this this way instead of a standard spy because of how it can affect
+      // other components unintentionally.
+      TestBed.overrideProvider(RendererFactory2, {
+        useValue: {
+          createRenderer: (param1: any, param2: any) => {
+            return renderer;
+          },
+          setStyle: (element: any, style: any, value: any) => {}
+        }
+      });
+
+      let rendererSpy = spyOn(renderer, 'setStyle').and.callThrough();
       component.bindHeightToWindow = true;
       component.showActionBar = true;
       fixture.detectChanges();
@@ -256,13 +301,28 @@ describe('Split view component', () => {
       setTimeout(() => {
         fixture.detectChanges();
         const splitViewElement: HTMLElement = document.querySelector('.sky-split-view');
-        expect(splitViewElement.style.minHeight).toBe('300px');
-        expect(splitViewElement.style.maxHeight).toBe('calc((100vh - 0px) - 69px)');
+        expect(rendererSpy).toHaveBeenCalledWith(splitViewElement, 'min-height', '300px');
+        expect(rendererSpy).toHaveBeenCalledWith(splitViewElement, 'max-height', 'calc(100vh - 0px - 69px)');
       }, 10);
     }));
 
     it(`should bind the split view hight when the 'bindHeightToWindow' property is set with a body
     bottom margin and element above it`, async(() => {
+      const rendererFactory = TestBed.inject(RendererFactory2);
+      const renderer = rendererFactory.createRenderer(undefined, undefined);
+
+      // We have to override this this way instead of a standard spy because of how it can affect
+      // other components unintentionally.
+      TestBed.overrideProvider(RendererFactory2, {
+        useValue: {
+          createRenderer: (param1: any, param2: any) => {
+            return renderer;
+          },
+          setStyle: (element: any, style: any, value: any) => {}
+        }
+      });
+
+      let rendererSpy = spyOn(renderer, 'setStyle').and.callThrough();
       component.bindHeightToWindow = true;
       component.lowerSplitView = true;
       component.showActionBar = true;
@@ -271,8 +331,8 @@ describe('Split view component', () => {
       setTimeout(() => {
         fixture.detectChanges();
         const splitViewElement: HTMLElement = document.querySelector('.sky-split-view');
-        expect(splitViewElement.style.minHeight).toBe('300px');
-        expect(splitViewElement.style.maxHeight).toBe('calc((100vh - 100px) - 69px)');
+        expect(rendererSpy).toHaveBeenCalledWith(splitViewElement, 'min-height', '300px');
+        expect(rendererSpy).toHaveBeenCalledWith(splitViewElement, 'max-height', 'calc(100vh - 100px - 69px)');
       }, 10);
     }));
   });
