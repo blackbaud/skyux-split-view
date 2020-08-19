@@ -55,6 +55,7 @@ export class SkySplitViewDrawerComponent implements AfterViewInit, OnInit, OnDes
 
   /**
    * Sets the list panel's width in pixels.
+   * @default 320
    */
   @Input()
   public set width(value: number) {
