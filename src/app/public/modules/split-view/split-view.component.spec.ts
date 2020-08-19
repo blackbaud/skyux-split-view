@@ -238,7 +238,7 @@ describe('Split view component', () => {
           createRenderer: (param1: any, param2: any) => {
             return renderer;
           },
-          setStyle: (element: any, style: any, value: any) => {}
+          setStyle: (element: any, style: any, value: any) => { }
         }
       });
 
@@ -248,8 +248,8 @@ describe('Split view component', () => {
       tick();
       fixture.detectChanges();
       const splitViewElement: HTMLElement = document.querySelector('.sky-split-view');
-      expect(rendererSpy.calls.allArgs()).toContain([splitViewElement, 'min-height', '300px']);
-      expect(rendererSpy.calls.allArgs()).toContain([splitViewElement, 'max-height', 'calc(100vh - 0px - 0px)']);
+      expect(rendererSpy).toHaveBeenCalledWith(splitViewElement, 'min-height', '300px');
+      expect(rendererSpy).toHaveBeenCalledWith(splitViewElement, 'max-height', 'calc(100vh - ' + splitViewElement.offsetTop + 'px - 0px)');
     }));
 
     it('should bind the split view hight when the `bindHeightToWindow` property is set with an element above it', fakeAsync(() => {
@@ -263,7 +263,7 @@ describe('Split view component', () => {
           createRenderer: (param1: any, param2: any) => {
             return renderer;
           },
-          setStyle: (element: any, style: any, value: any) => {}
+          setStyle: (element: any, style: any, value: any) => { }
         }
       });
 
@@ -289,7 +289,7 @@ describe('Split view component', () => {
           createRenderer: (param1: any, param2: any) => {
             return renderer;
           },
-          setStyle: (element: any, style: any, value: any) => {}
+          setStyle: (element: any, style: any, value: any) => { }
         }
       });
 
@@ -301,8 +301,9 @@ describe('Split view component', () => {
       setTimeout(() => {
         fixture.detectChanges();
         const splitViewElement: HTMLElement = document.querySelector('.sky-split-view');
+        const actionBar: HTMLElement = document.querySelector('.sky-summary-action-bar');
         expect(rendererSpy).toHaveBeenCalledWith(splitViewElement, 'min-height', '300px');
-        expect(rendererSpy).toHaveBeenCalledWith(splitViewElement, 'max-height', 'calc(100vh - 0px - 69px)');
+        expect(rendererSpy).toHaveBeenCalledWith(splitViewElement, 'max-height', 'calc(100vh - 0px - ' + actionBar.offsetHeight + 'px)');
       }, 10);
     }));
 
@@ -318,7 +319,7 @@ describe('Split view component', () => {
           createRenderer: (param1: any, param2: any) => {
             return renderer;
           },
-          setStyle: (element: any, style: any, value: any) => {}
+          setStyle: (element: any, style: any, value: any) => { }
         }
       });
 
@@ -331,8 +332,9 @@ describe('Split view component', () => {
       setTimeout(() => {
         fixture.detectChanges();
         const splitViewElement: HTMLElement = document.querySelector('.sky-split-view');
+        const actionBar: HTMLElement = document.querySelector('.sky-summary-action-bar');
         expect(rendererSpy).toHaveBeenCalledWith(splitViewElement, 'min-height', '300px');
-        expect(rendererSpy).toHaveBeenCalledWith(splitViewElement, 'max-height', 'calc(100vh - 100px - 69px)');
+        expect(rendererSpy).toHaveBeenCalledWith(splitViewElement, 'max-height', 'calc(100vh - 100px - ' + actionBar.offsetHeight + 'px)');
       }, 10);
     }));
   });
@@ -632,7 +634,7 @@ describe('Split view component', () => {
           createRenderer: (param1: any, param2: any) => {
             return renderer;
           },
-          setStyle: (element: any, style: any, value: any) => {}
+          setStyle: (element: any, style: any, value: any) => { }
         }
       });
 
@@ -653,8 +655,11 @@ describe('Split view component', () => {
           setTimeout(() => {
             fixture.detectChanges();
             splitViewElement = document.querySelector('.sky-split-view');
+            let actionBar: HTMLElement = document.querySelector('.sky-summary-action-bar');
+
             expect(rendererSpy).toHaveBeenCalledWith(splitViewElement, 'min-height', '300px');
-            expect(rendererSpy).toHaveBeenCalledWith(splitViewElement, 'max-height', 'calc(100vh - 0px - 69px)');
+            expect(rendererSpy)
+              .toHaveBeenCalledWith(splitViewElement, 'max-height', 'calc(100vh - 0px - ' + actionBar.offsetHeight + 'px)');
             rendererSpy.calls.reset();
 
             component.lowerSplitView = true;
@@ -664,8 +669,9 @@ describe('Split view component', () => {
             SkyAppTestUtility.fireDomEvent(window, 'resize');
             fixture.detectChanges();
             splitViewElement = document.querySelector('.sky-split-view');
+            actionBar = document.querySelector('.sky-summary-action-bar');
             expect(rendererSpy).toHaveBeenCalledWith(splitViewElement, 'min-height', '300px');
-            expect(rendererSpy).toHaveBeenCalledWith(splitViewElement, 'max-height', 'calc(100vh - 100px - 69px)');
+            expect(rendererSpy).toHaveBeenCalledWith(splitViewElement, 'max-height', 'calc(100vh - 100px - ' + actionBar.offsetHeight + 'px)');
           }, 10);
         });
       });

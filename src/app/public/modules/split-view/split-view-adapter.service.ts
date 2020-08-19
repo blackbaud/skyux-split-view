@@ -68,7 +68,7 @@ export class SkySplitViewAdapterService {
 
   private setSplitViewBoundHeights(elementRef: ElementRef) {
     const splitViewElement = elementRef.nativeElement.querySelector('.sky-split-view');
-    const offsetTop = elementRef.nativeElement.offsetTop;
+    const offsetTop = splitViewElement.offsetTop;
     const marginBottom = document.body.style.marginBottom ? document.body.style.marginBottom : '0px';
     this.renderer.setStyle(splitViewElement, 'max-height',
       'calc(100vh - ' + offsetTop + 'px - ' + marginBottom + ')');
