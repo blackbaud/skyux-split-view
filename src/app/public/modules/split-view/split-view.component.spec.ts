@@ -248,8 +248,44 @@ describe('Split view component', () => {
       tick();
       fixture.detectChanges();
       const splitViewElement: HTMLElement = document.querySelector('.sky-split-view');
+      expect(component.splitViewComponent.bindHeightToWindow).toBeTruthy();
       expect(rendererSpy).toHaveBeenCalledWith(splitViewElement, 'min-height', '300px');
       expect(rendererSpy).toHaveBeenCalledWith(splitViewElement, 'max-height', 'calc(100vh - ' + splitViewElement.offsetTop + 'px - 0px)');
+    }));
+
+    it('should not bind the split view hight when the `bindHeightToWindow` property is removed', fakeAsync(() => {
+      const rendererFactory = TestBed.inject(RendererFactory2);
+      const renderer = rendererFactory.createRenderer(undefined, undefined);
+
+      // We have to override this this way instead of a standard spy because of how it can affect
+      // other components unintentionally.
+      TestBed.overrideProvider(RendererFactory2, {
+        useValue: {
+          createRenderer: (param1: any, param2: any) => {
+            return renderer;
+          },
+          setStyle: (element: any, style: any, value: any) => { }
+        }
+      });
+
+      component.bindHeightToWindow = true;
+      let rendererSpySetStyle = spyOn(renderer, 'setStyle').and.callThrough();
+      let rendererSpyRemoveStyle = spyOn(renderer, 'removeStyle').and.callThrough();
+      fixture.detectChanges();
+      tick();
+      fixture.detectChanges();
+      expect(component.splitViewComponent.bindHeightToWindow).toBeTruthy();
+      let splitViewElement: HTMLElement = document.querySelector('.sky-split-view');
+      expect(rendererSpySetStyle).toHaveBeenCalledWith(splitViewElement, 'min-height', '300px');
+      expect(rendererSpySetStyle).toHaveBeenCalledWith(splitViewElement, 'max-height', 'calc(100vh - ' + splitViewElement.offsetTop + 'px - 0px)');
+      component.bindHeightToWindow = false;
+      fixture.detectChanges();
+      tick();
+      fixture.detectChanges();
+      expect(component.splitViewComponent.bindHeightToWindow).toBeFalsy();
+      splitViewElement = document.querySelector('.sky-split-view');
+      expect(rendererSpyRemoveStyle).toHaveBeenCalledWith(splitViewElement, 'min-height');
+      expect(rendererSpyRemoveStyle).toHaveBeenCalledWith(splitViewElement, 'max-height');
     }));
 
     it('should bind the split view hight when the `bindHeightToWindow` property is set with an element above it', fakeAsync(() => {
@@ -273,6 +309,7 @@ describe('Split view component', () => {
       fixture.detectChanges();
       tick();
       fixture.detectChanges();
+      expect(component.splitViewComponent.bindHeightToWindow).toBeTruthy();
       const splitViewElement: HTMLElement = document.querySelector('.sky-split-view');
       expect(rendererSpy).toHaveBeenCalledWith(splitViewElement, 'min-height', '300px');
       expect(rendererSpy).toHaveBeenCalledWith(splitViewElement, 'max-height', 'calc(100vh - 100px - 0px)');
@@ -300,6 +337,7 @@ describe('Split view component', () => {
       // Without the `setTimeout` the mutation observer isn't hit
       setTimeout(() => {
         fixture.detectChanges();
+        expect(component.splitViewComponent.bindHeightToWindow).toBeTruthy();
         const splitViewElement: HTMLElement = document.querySelector('.sky-split-view');
         const actionBar: HTMLElement = document.querySelector('.sky-summary-action-bar');
         expect(rendererSpy).toHaveBeenCalledWith(splitViewElement, 'min-height', '300px');
@@ -331,6 +369,7 @@ describe('Split view component', () => {
       // Without the `setTimeout` the mutation observer isn't hit
       setTimeout(() => {
         fixture.detectChanges();
+        expect(component.splitViewComponent.bindHeightToWindow).toBeTruthy();
         const splitViewElement: HTMLElement = document.querySelector('.sky-split-view');
         const actionBar: HTMLElement = document.querySelector('.sky-summary-action-bar');
         expect(rendererSpy).toHaveBeenCalledWith(splitViewElement, 'min-height', '300px');
@@ -643,6 +682,7 @@ describe('Split view component', () => {
       fixture.detectChanges();
       fixture.whenStable().then(() => {
         fixture.detectChanges();
+        expect(component.splitViewComponent.bindHeightToWindow).toBeTruthy();
         let splitViewElement: HTMLElement = document.querySelector('.sky-split-view');
         expect(rendererSpy).toHaveBeenCalledWith(splitViewElement, 'min-height', '300px');
         expect(rendererSpy).toHaveBeenCalledWith(splitViewElement, 'max-height', 'calc(100vh - 0px - 0px)');
@@ -657,6 +697,7 @@ describe('Split view component', () => {
             splitViewElement = document.querySelector('.sky-split-view');
             let actionBar: HTMLElement = document.querySelector('.sky-summary-action-bar');
 
+            expect(component.splitViewComponent.bindHeightToWindow).toBeTruthy();
             expect(rendererSpy).toHaveBeenCalledWith(splitViewElement, 'min-height', '300px');
             expect(rendererSpy)
               .toHaveBeenCalledWith(splitViewElement, 'max-height', 'calc(100vh - 0px - ' + actionBar.offsetHeight + 'px)');
@@ -668,6 +709,7 @@ describe('Split view component', () => {
             // Fire a window resize to trigger a sizing update.
             SkyAppTestUtility.fireDomEvent(window, 'resize');
             fixture.detectChanges();
+            expect(component.splitViewComponent.bindHeightToWindow).toBeTruthy();
             splitViewElement = document.querySelector('.sky-split-view');
             actionBar = document.querySelector('.sky-summary-action-bar');
             expect(rendererSpy).toHaveBeenCalledWith(splitViewElement, 'min-height', '300px');
