@@ -98,8 +98,8 @@ export class SkySplitViewComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Provides an observable to send commands to the split view component.
-   * The commands should respect the `SkySplitViewMessage` type.
+   * Indicates whether the split view's height should be bound to the window height.
+   * @default false
    */
   @Input()
   public set bindHeightToWindow(bindToHeight: boolean) {
@@ -118,6 +118,10 @@ export class SkySplitViewComponent implements OnInit, OnDestroy {
     return this._bindHeightToWindow;
   }
 
+  /**
+   * Provides an observable to send commands to the split view component.
+   * The commands should respect the `SkySplitViewMessage` type.
+   */
   @Input()
   public messageStream = new Subject<SkySplitViewMessage>();
 
