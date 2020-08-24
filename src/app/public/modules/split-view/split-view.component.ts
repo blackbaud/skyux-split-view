@@ -51,6 +51,10 @@ import {
   SkySplitViewService
 } from './split-view.service';
 
+/**
+ * Displays a list alongside a workspace where users can view details for selected items
+ * and take actions.
+ */
 @Component({
   selector: 'sky-split-view',
   templateUrl: './split-view.component.html',
@@ -81,6 +85,11 @@ import {
 })
 export class SkySplitViewComponent implements OnInit, OnDestroy {
 
+  /**
+   * Specifies a label for the button that appears in the workspace header in responsive mode.
+   * The button returns users to the list.
+   * @default Back to list
+   */
   @Input()
   public set backButtonText(value: string) {
     if (value) {
@@ -88,6 +97,10 @@ export class SkySplitViewComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * Provides an observable to send commands to the split view component.
+   * The commands should respect the `SkySplitViewMessage` type.
+   */
   @Input()
   public set bindHeightToWindow(bindToHeight: boolean) {
     this._bindHeightToWindow = bindToHeight;
