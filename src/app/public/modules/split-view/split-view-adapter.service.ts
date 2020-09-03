@@ -20,6 +20,10 @@ import {
   takeUntil
 } from 'rxjs/operators';
 
+/**
+ * Adapter service for use when the split view component needs to manipulate the DOM
+ * @interal
+ */
 @Injectable()
 export class SkySplitViewAdapterService {
 
@@ -35,7 +39,7 @@ export class SkySplitViewAdapterService {
     this.renderer = this.rendererFactory.createRenderer(undefined, undefined);
   }
 
-  public bindHeightToWindow(elementRef: ElementRef, unsubscribeSubject: Subject<void>) {
+  public bindHeightToWindow(elementRef: ElementRef, unsubscribeSubject: Subject<void>): void {
     if (elementRef.nativeElement.offsetParent === document.body) {
       this.observer = this.observerService.create((mutations: MutationRecord[]) => {
         this.setSplitViewBoundHeights(elementRef);
@@ -66,7 +70,7 @@ export class SkySplitViewAdapterService {
     }
   }
 
-  private setSplitViewBoundHeights(elementRef: ElementRef) {
+  private setSplitViewBoundHeights(elementRef: ElementRef): void {
     const splitViewElement = elementRef.nativeElement.querySelector('.sky-split-view');
     const offsetTop = splitViewElement.offsetTop;
     const marginBottom = document.body.style.marginBottom ? document.body.style.marginBottom : '0px';
