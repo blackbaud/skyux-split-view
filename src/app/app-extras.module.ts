@@ -3,9 +3,17 @@ import {
 } from '@angular/core';
 
 import {
+  SkySummaryActionBarModule
+} from '@skyux/action-bars';
+
+import {
   SkyDocsToolsModule,
   SkyDocsToolsOptions
 } from '@skyux/docs-tools';
+
+import {
+  SkyDefinitionListModule
+} from '@skyux/layout';
 
 import {
   SkyRepeaterModule
@@ -27,8 +35,10 @@ import {
   exports: [
     SkyAppLinkModule,
     SkyConfirmModule,
+    SkyDefinitionListModule,
     SkyDocsToolsModule,
     SkySplitViewModule,
+    SkySummaryActionBarModule,
     SkyRepeaterModule
   ],
   providers: [

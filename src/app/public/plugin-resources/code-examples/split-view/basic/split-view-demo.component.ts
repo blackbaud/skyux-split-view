@@ -23,10 +23,10 @@ import {
 } from '@skyux/split-view';
 
 @Component({
-  selector: 'app-split-view-docs',
-  templateUrl: './split-view-docs.component.html'
+  selector: 'sky-split-view-demo',
+  templateUrl: './split-view-demo.component.html'
 })
-export class SplitViewDocsComponent {
+export class SkySplitViewDemoComponent {
 
   public set activeIndex(value: number) {
     this._activeIndex = value;
@@ -160,4 +160,5 @@ export class SplitViewDocsComponent {
     };
     this.splitViewStream.next(message);
   }
+
 }
