@@ -134,7 +134,14 @@
   </sky-split-view>
   </sky-docs-demo>
 
-  <sky-docs-code-examples>
+  <sky-docs-code-examples
+    [packageDependencies]="{
+      '@skyux/action-bars': '*',
+      '@skyux/inline-form': '*',
+      '@skyux/lists': '*',
+      '@skyux/split-view': '*'
+    }"
+  >
     <sky-docs-code-example
       heading="Basic setup"
       sourceCodePath="src/app/public/plugin-resources/code-examples/split-view/basic"
