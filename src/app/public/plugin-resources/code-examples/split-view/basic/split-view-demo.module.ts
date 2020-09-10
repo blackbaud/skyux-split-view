@@ -31,12 +31,12 @@ import {
 } from '@skyux/split-view';
 
 import {
-  SkySplitViewDemoComponent
+  SplitViewDemoComponent
 } from './split-view-demo.component';
 
 @NgModule({
   declarations: [
-    SkySplitViewDemoComponent
+    SplitViewDemoComponent
   ],
   imports: [
     CommonModule,
@@ -48,7 +48,7 @@ import {
     SkySummaryActionBarModule
   ],
   exports: [
-    SkySplitViewDemoComponent
+    SplitViewDemoComponent
   ]
 })
-export class SkySplitViewDemoModule { }
+export class SplitViewDemoModule { }

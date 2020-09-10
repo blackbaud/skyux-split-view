@@ -8,10 +8,6 @@ import {
 } from '@angular/forms';
 
 import {
-  Subject
-} from 'rxjs';
-
-import {
   SkyConfirmCloseEventArgs,
   SkyConfirmService,
   SkyConfirmType
@@ -22,11 +18,15 @@ import {
   SkySplitViewMessageType
 } from '@skyux/split-view';
 
+import {
+  Subject
+} from 'rxjs';
+
 @Component({
-  selector: 'sky-split-view-demo',
+  selector: 'app-split-view-demo',
   templateUrl: './split-view-demo.component.html'
 })
-export class SkySplitViewDemoComponent {
+export class SplitViewDemoComponent {
 
   public set activeIndex(value: number) {
     this._activeIndex = value;
@@ -44,7 +44,7 @@ export class SkySplitViewDemoComponent {
     {
       id: 1,
       amount: 73.19,
-      date: '5/13/2019',
+      date: '5/13/2020',
       vendor: 'amazon.com',
       receiptImage: 'amzn-office-supply-order-5-13-19.png',
       approvedAmount: 73.19,
@@ -53,7 +53,7 @@ export class SkySplitViewDemoComponent {
     {
       id: 2,
       amount: 214.12,
-      date: '5/14/2019',
+      date: '5/14/2020',
       vendor: 'Office Max',
       receiptImage: 'office-max-order.png',
       approvedAmount: 214.12,
@@ -62,7 +62,7 @@ export class SkySplitViewDemoComponent {
     {
       id: 3,
       amount: 29.99,
-      date: '5/14/2019',
+      date: '5/14/2020',
       vendor: 'amazon.com',
       receiptImage: 'amzn-office-supply-order-5-14-19.png',
       approvedAmount: 29.99,
@@ -71,7 +71,7 @@ export class SkySplitViewDemoComponent {
     {
       id: 4,
       amount: 1500,
-      date: '5/15/2019',
+      date: '5/15/2020',
       vendor: 'Fresh Catering, LLC',
       receiptImage: 'fresh-catering-llc-order.png',
       approvedAmount: 1500,
