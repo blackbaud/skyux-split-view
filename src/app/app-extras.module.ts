@@ -12,6 +12,10 @@ import {
 } from '@skyux/docs-tools';
 
 import {
+  SkyCheckboxModule
+} from '@skyux/forms';
+
+import {
   SkyDefinitionListModule
 } from '@skyux/layout';
 
@@ -34,6 +38,7 @@ import {
 @NgModule({
   exports: [
     SkyAppLinkModule,
+    SkyCheckboxModule,
     SkyConfirmModule,
     SkyDefinitionListModule,
     SkyDocsToolsModule,
