@@ -1,7 +1,7 @@
 # 4.1.0 (2020-09-11)
 
-- Added the `bindHeightToWindow` input property to the split view component to allow for split views on the main application page to be bound to the window's height. [#37](https://github.com/blackbaud/skyux-split-view/pull/37)
-- Fixed the split view component to set responsive styles after the split view has fully rendered. [#43](https://github.com/blackbaud/skyux-split-view/pull/43)
+- Added the `bindHeightToWindow` input property to the split view component to bind split views on the main application page to the window's height. [#37](https://github.com/blackbaud/skyux-split-view/pull/37)
+- Fixed the split view component to set responsive styles after the split view fully renders. [#43](https://github.com/blackbaud/skyux-split-view/pull/43)
 
 # 4.0.1 (2020-08-10)
 
