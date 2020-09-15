@@ -1,0 +1,37 @@
+<div
+  class="page-flex"
+  [style.top.px]="offsetTop"
+>
+  <div class="page-flex-header">
+    <h1>
+      Header
+    </h1>
+  </div>
+  <div class="page-flex-main">
+    <sky-split-view>
+      <sky-split-view-drawer>
+        <ul
+          class="sky-visual-list"
+        >
+          <li *ngFor="let item of items">
+            {{ item.name }}
+          </li>
+        </ul>
+      </sky-split-view-drawer>
+      <sky-split-view-workspace>
+        <sky-split-view-workspace-content>
+          Content here.
+        </sky-split-view-workspace-content>
+        <sky-split-view-workspace-footer>
+          <button
+            class="sky-btn sky-btn-primary"
+            type="button"
+            (click)="submitForm()"
+          >
+            Save transaction
+          </button>
+        </sky-split-view-workspace-footer>
+      </sky-split-view-workspace>
+    </sky-split-view>
+  </div>
+</div>
