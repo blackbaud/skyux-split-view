@@ -40,8 +40,6 @@ export class SplitViewPageBoundDemoComponent implements OnInit {
     return this._activeIndex;
   }
 
-  public offsetTop: number;
-
   public activeRecord: any;
 
   public items = [
@@ -130,6 +128,8 @@ export class SplitViewPageBoundDemoComponent implements OnInit {
 
   public listWidth: number;
 
+  public pageFlexOffsetTop: number;
+
   public splitViewDemoForm: FormGroup;
 
   public splitViewStream = new Subject<SkySplitViewMessage>();
@@ -146,12 +146,9 @@ export class SplitViewPageBoundDemoComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    const omnibarIframe = document.querySelector('.sky-omnibar-iframe');
-    const skyBuilderHeader = document.getElementById('skypages-header');
-
-    // Note: The page would be responsible for any `top` calculations.
-    this.offsetTop = omnibarIframe?.getBoundingClientRect().height +
-      skyBuilderHeader?.getBoundingClientRect().height;
+    // Make any adjustments to the page's offset top to accommodate fixed-positioned elements,
+    // such as a "sticky" navbar, etc.
+    this.pageFlexOffsetTop = 0;
   }
 
   public onItemClick(index: number): void {

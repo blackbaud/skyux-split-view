@@ -1,4 +1,3 @@
-// START PAGE FLEX
 .page-flex {
   display: flex;
   flex-direction: column;
@@ -10,28 +9,10 @@
 }
 
 .page-flex-header {
-  background-color: #fff;
-  border-bottom: 1px solid #ccc;
   flex: 0 0 auto;
-  padding: 10px 20px;
 }
 
 .page-flex-main {
   flex-grow: 1;
   overflow: auto;
-}
-// END PAGE FLEX
-
-.sky-visual-list {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-
-  li {
-    padding: 10px 20px;
-  }
-
-  li + li {
-    border-top: 1px solid #ccc;
-  }
 }
