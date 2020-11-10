@@ -70,7 +70,7 @@ function getResizeHandle(fixture: ComponentFixture<any>): DebugElement {
 }
 
 function getMaxWidth(): number {
-  return window.innerWidth - 102; // Acount for some padding.
+  return window.innerWidth - 102; // Account for some padding.
 }
 
 function dispatchMouseEvent(eventType: string, clientXArg: number, fixture: ComponentFixture<any>): void {
