@@ -46,7 +46,7 @@ import {
 
 import {
   SplitViewTestComponent
-} from './split-view-fixture-test.component';
+} from './fixtures/split-view-fixture-test.component';
 
 import {
   SkySplitViewTestingModule
