@@ -146,9 +146,12 @@ describe('Split view component', () => {
   let fixture: ComponentFixture<SplitViewFixtureComponent>;
   let minWidth = 100;
   let maxWidth: number;
-  mockQueryService = new MockSkyMediaQueryService();
 
   beforeEach(fakeAsync(() => {
+
+    // replace the mock service before using in the test bed to avoid change detection errors
+    mockQueryService = new MockSkyMediaQueryService();
+
     TestBed.configureTestingModule({
       imports: [
         SplitViewFixturesModule
