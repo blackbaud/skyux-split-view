@@ -61,12 +61,12 @@ const DEFAULT_BACK_BUTTON_TEXT = 'Back to list';
 describe('SplitView fixture', () => {
   let fixture: ComponentFixture<SplitViewTestComponent>;
   let testComponent: SplitViewTestComponent;
-  let mockQueryService: MockSkyMediaQueryService = new MockSkyMediaQueryService();
+  let mockQueryService: MockSkyMediaQueryService;
   let splitViewFixture: SkySplitViewFixture;
 
   //#region helpers
 
-  function initiateResponsiveMode(breakpoint: SkyMediaBreakpoints): Promise<void> {
+  async function initiateResponsiveMode(breakpoint: SkyMediaBreakpoints): Promise<void> {
     mockQueryService.fire(breakpoint);
     fixture.detectChanges();
     return fixture.whenStable();
@@ -86,7 +86,10 @@ describe('SplitView fixture', () => {
 
   //#endregion
 
-  beforeEach(async () => {
+  beforeEach(() => {
+    // replace the mock service before using in the test bed to avoid change detection errors
+    mockQueryService = new MockSkyMediaQueryService();
+
     TestBed.configureTestingModule({
       declarations: [
         SplitViewTestComponent
@@ -110,8 +113,6 @@ describe('SplitView fixture', () => {
     );
     testComponent = fixture.componentInstance;
     splitViewFixture = new SkySplitViewFixture(fixture, SplitViewTestComponent.dataSkyId);
-
-    await initiateResponsiveMode(SkyMediaBreakpoints.lg);
   });
 
   it('should expose drawer properties', async () => {
@@ -168,16 +169,12 @@ describe('SplitView fixture', () => {
   it('should open drawer when in responsive mode', async () => {
     // switch to responsive mode
     await initiateResponsiveMode(SkyMediaBreakpoints.xs);
-
-    // verify state of workspace view
     expect(splitViewFixture.drawer.isVisible).toBeFalse();
     expect(splitViewFixture.drawer.width).toBe('');
     expect(splitViewFixture.workspace.isVisible).toBeTrue();
 
     // switch to drawer
     await splitViewFixture.openDrawer();
-
-    // verify state of drawer view
     expect(splitViewFixture.drawer.isVisible).toBeTrue();
     expect(splitViewFixture.drawer.width).toBe('');
     expect(splitViewFixture.workspace.isVisible).toBeFalse();
@@ -190,7 +187,7 @@ describe('SplitView fixture', () => {
     expect(splitViewFixture.workspace.backButtonIsVisible).toBeTrue();
     expect(splitViewFixture.workspace.isVisible).toBeTrue();
 
-    // switch to the drawer, so it's already open
+    // switch to the drawer so it's already open
     await splitViewFixture.openDrawer();
     expect(splitViewFixture.drawer.isVisible).toBeTrue();
     expect(splitViewFixture.workspace.backButtonIsVisible).toBeFalse();
@@ -209,7 +206,7 @@ describe('SplitView fixture', () => {
     expect(splitViewFixture.workspace.backButtonIsVisible).toBeFalse();
     expect(splitViewFixture.workspace.isVisible).toBeTrue();
 
-    // try to open the drawer, even though it's already open; this should be a noop
+    // try to open the drawer even though it's already open; this should be a noop
     await splitViewFixture.openDrawer();
     expect(splitViewFixture.drawer.isVisible).toBeTrue();
     expect(splitViewFixture.workspace.backButtonIsVisible).toBeFalse();
@@ -217,10 +214,24 @@ describe('SplitView fixture', () => {
   });
 
   it('should switch to workspace on item selection', async () => {
-    // testComponent.listWidth = 500;
-    // fixture.detectChanges();
-    // await fixture.whenStable();
+    // responsive mode switches to the workspace by default
+    await initiateResponsiveMode(SkyMediaBreakpoints.xs);
+    expect(splitViewFixture.drawer.isVisible).toBeFalse();
+    expect(splitViewFixture.workspace.backButtonIsVisible).toBeTrue();
+    expect(splitViewFixture.workspace.isVisible).toBeTrue();
 
+    // switch to the drawer for item selection
+    await splitViewFixture.openDrawer();
+    expect(splitViewFixture.drawer.isVisible).toBeTrue();
+    expect(splitViewFixture.workspace.backButtonIsVisible).toBeFalse();
+    expect(splitViewFixture.workspace.isVisible).toBeFalse();
+
+    // select a different item
     await selectRepeaterItem(2);
+
+    // verify the workspace is now active
+    expect(splitViewFixture.drawer.isVisible).toBeFalse();
+    expect(splitViewFixture.workspace.backButtonIsVisible).toBeTrue();
+    expect(splitViewFixture.workspace.isVisible).toBeTrue();
   });
 });
