@@ -512,7 +512,7 @@ describe('Split view component', () => {
       const resizeHandle = getResizeHandle(fixture).nativeElement;
 
       // Attmpt to resize list panel larger than maximum.
-      resizeList(999, fixture);
+      resizeList(9999, fixture);
 
       // Expect list panel width and handle to remain at default.
       // Note: a human user would see this revert to the last valid drag point,
