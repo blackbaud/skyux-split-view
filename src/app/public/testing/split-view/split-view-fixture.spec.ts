@@ -58,7 +58,7 @@ const DEFAULT_DRAWER_WIDTH = '320px';
 const DEFAULT_WORKSPACE_ARIA_LABEL = 'Transaction form';
 const DEFAULT_BACK_BUTTON_TEXT = 'Back to list';
 
-fdescribe('SplitView fixture', () => {
+describe('SplitView fixture', () => {
   let fixture: ComponentFixture<SplitViewTestComponent>;
   let testComponent: SplitViewTestComponent;
   let mockQueryService: MockSkyMediaQueryService = new MockSkyMediaQueryService();
@@ -66,8 +66,8 @@ fdescribe('SplitView fixture', () => {
 
   //#region helpers
 
-  function initiateResponsiveMode(): Promise<void> {
-    mockQueryService.fire(SkyMediaBreakpoints.xs);
+  function initiateResponsiveMode(breakpoint: SkyMediaBreakpoints): Promise<void> {
+    mockQueryService.fire(breakpoint);
     fixture.detectChanges();
     return fixture.whenStable();
   }
@@ -110,41 +110,117 @@ fdescribe('SplitView fixture', () => {
     );
     testComponent = fixture.componentInstance;
     splitViewFixture = new SkySplitViewFixture(fixture, SplitViewTestComponent.dataSkyId);
+
+    await initiateResponsiveMode(SkyMediaBreakpoints.lg);
   });
 
-  it('should allow exensions by default', async () => {
+  it('should expose drawer properties', async () => {
+    // non-responsive mode
+    expect(splitViewFixture.drawer.ariaLabel).toBe(DEFAULT_DRAWER_ARIA_LABEL);
+    expect(splitViewFixture.drawer.isVisible).toBeTrue();
+    expect(splitViewFixture.drawer.width).toBe(DEFAULT_DRAWER_WIDTH);
+
+    // responsive mode
+    await initiateResponsiveMode(SkyMediaBreakpoints.xs);
+    expect(splitViewFixture.drawer.ariaLabel).toBe(DEFAULT_DRAWER_ARIA_LABEL);
+    expect(splitViewFixture.drawer.isVisible).toBeFalse();
+    expect(splitViewFixture.drawer.width).toBe('');
+  });
+
+  it('should reflect changes to default drawer properties', async () => {
+    // update to non-default values
+    testComponent.listAriaLabel = 'not-default';
+    testComponent.listWidth = 500;
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    // verify updates
+    expect(splitViewFixture.drawer.ariaLabel).toBe(testComponent.listAriaLabel);
+    expect(splitViewFixture.drawer.width).toBe(`${testComponent.listWidth}px`);
+  });
+
+  it('should expose workspace properties', async () => {
+    // non-reponsive mode
+    expect(splitViewFixture.workspace.ariaLabel).toBe(DEFAULT_WORKSPACE_ARIA_LABEL);
+    expect(splitViewFixture.workspace.backButtonText).toBeUndefined();
+    expect(splitViewFixture.workspace.isVisible).toBeTrue();
+
+    // responsive mode
+    await initiateResponsiveMode(SkyMediaBreakpoints.xs);
+    expect(splitViewFixture.workspace.ariaLabel).toBe(DEFAULT_WORKSPACE_ARIA_LABEL);
+    expect(splitViewFixture.workspace.backButtonText).toBe(DEFAULT_BACK_BUTTON_TEXT);
+    expect(splitViewFixture.workspace.isVisible).toBeTrue();
+  });
+
+  it('should reflect changes to default workspace properties', async () => {
+    // update to non-default values
+    testComponent.workspaceAriaLabel = 'not-default';
+    testComponent.backButtonText = 'Back';
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    // verify updates
+    await initiateResponsiveMode(SkyMediaBreakpoints.xs);
+    expect(splitViewFixture.workspace.ariaLabel).toBe(testComponent.workspaceAriaLabel);
+    expect(splitViewFixture.workspace.backButtonText).toBe(testComponent.backButtonText);
+  });
+
+  it('should open drawer when in responsive mode', async () => {
+    // switch to responsive mode
+    await initiateResponsiveMode(SkyMediaBreakpoints.xs);
+
+    // verify state of workspace view
+    expect(splitViewFixture.drawer.isVisible).toBeFalse();
+    expect(splitViewFixture.drawer.width).toBe('');
+    expect(splitViewFixture.workspace.isVisible).toBeTrue();
+
+    // switch to drawer
+    await splitViewFixture.openDrawer();
+
+    // verify state of drawer view
+    expect(splitViewFixture.drawer.isVisible).toBeTrue();
+    expect(splitViewFixture.drawer.width).toBe('');
+    expect(splitViewFixture.workspace.isVisible).toBeFalse();
+  });
+
+  it('should handle attempting to open drawer when already open', async () => {
+    // responsive mode switches to the workspace by default
+    await initiateResponsiveMode(SkyMediaBreakpoints.xs);
+    expect(splitViewFixture.drawer.isVisible).toBeFalse();
+    expect(splitViewFixture.workspace.backButtonIsVisible).toBeTrue();
+    expect(splitViewFixture.workspace.isVisible).toBeTrue();
+
+    // switch to the drawer, so it's already open
+    await splitViewFixture.openDrawer();
+    expect(splitViewFixture.drawer.isVisible).toBeTrue();
+    expect(splitViewFixture.workspace.backButtonIsVisible).toBeFalse();
+    expect(splitViewFixture.workspace.isVisible).toBeFalse();
+
+    // try to open it again; this should be a noop
+    await splitViewFixture.openDrawer();
+    expect(splitViewFixture.drawer.isVisible).toBeTrue();
+    expect(splitViewFixture.workspace.backButtonIsVisible).toBeFalse();
+    expect(splitViewFixture.workspace.isVisible).toBeFalse();
+  });
+
+  it('should handle attempting to open drawer on large screen', async () => {
+    // non-responsive mode should never display the back to list button
+    expect(splitViewFixture.drawer.isVisible).toBeTrue();
+    expect(splitViewFixture.workspace.backButtonIsVisible).toBeFalse();
+    expect(splitViewFixture.workspace.isVisible).toBeTrue();
+
+    // try to open the drawer, even though it's already open; this should be a noop
+    await splitViewFixture.openDrawer();
+    expect(splitViewFixture.drawer.isVisible).toBeTrue();
+    expect(splitViewFixture.workspace.backButtonIsVisible).toBeFalse();
+    expect(splitViewFixture.workspace.isVisible).toBeTrue();
+  });
+
+  it('should switch to workspace on item selection', async () => {
     // testComponent.listWidth = 500;
     // fixture.detectChanges();
     // await fixture.whenStable();
 
     await selectRepeaterItem(2);
-
-    expect(splitViewFixture.drawer.ariaLabel).toBe(DEFAULT_DRAWER_ARIA_LABEL);
-    expect(splitViewFixture.drawer.isVisible).toBeTrue();
-    expect(splitViewFixture.drawer.width).toBe(DEFAULT_DRAWER_WIDTH);
-
-    expect(splitViewFixture.workspace.ariaLabel).toBe(DEFAULT_WORKSPACE_ARIA_LABEL);
-    expect(splitViewFixture.workspace.backButtonText).toBeUndefined();
-    expect(splitViewFixture.workspace.isVisible).toBeTrue();
-
-    await initiateResponsiveMode();
-
-    expect(splitViewFixture.drawer.ariaLabel).toBe(DEFAULT_DRAWER_ARIA_LABEL);
-    expect(splitViewFixture.drawer.isVisible).toBeFalse();
-    expect(splitViewFixture.drawer.width).toBe('');
-
-    expect(splitViewFixture.workspace.ariaLabel).toBe(DEFAULT_WORKSPACE_ARIA_LABEL);
-    expect(splitViewFixture.workspace.backButtonText).toBe(DEFAULT_BACK_BUTTON_TEXT);
-    expect(splitViewFixture.workspace.isVisible).toBeTrue();
-
-    await splitViewFixture.openDrawer();
-
-    expect(splitViewFixture.drawer.ariaLabel).toBe(DEFAULT_DRAWER_ARIA_LABEL);
-    expect(splitViewFixture.drawer.isVisible).toBeTrue();
-    expect(splitViewFixture.drawer.width).toBe('');
-
-    expect(splitViewFixture.workspace.ariaLabel).toBe(DEFAULT_WORKSPACE_ARIA_LABEL);
-    expect(splitViewFixture.workspace.backButtonText).toBe(DEFAULT_BACK_BUTTON_TEXT);
-    expect(splitViewFixture.workspace.isVisible).toBeFalse();
   });
 });

@@ -2,9 +2,10 @@
   <sky-split-view
     data-sky-id="test-split-view"
     [messageStream]="splitViewStream"
+    [backButtonText]="backButtonText"
   >
     <sky-split-view-drawer
-      [ariaLabel]="'Transaction list'"
+      [ariaLabel]="listAriaLabel"
       [width]="listWidth"
     >
       <sky-repeater
@@ -22,12 +23,8 @@
       </sky-repeater>
     </sky-split-view-drawer>
 
-    <sky-split-view-workspace-header>
-      HEADER
-    </sky-split-view-workspace-header>
-
     <sky-split-view-workspace
-      [ariaLabel]="'Transaction form'"
+      [ariaLabel]="workspaceAriaLabel"
     >
       <sky-split-view-workspace-content
         class="sky-padding-even-large"

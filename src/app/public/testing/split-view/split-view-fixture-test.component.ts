@@ -43,6 +43,8 @@ export class SplitViewTestComponent {
 
   public activeRecord: any;
 
+  public backButtonText: string = 'Back to list';
+
   public items = [
     {
       id: 1,
@@ -82,11 +84,15 @@ export class SplitViewTestComponent {
     }
   ];
 
+  public listAriaLabel: string = 'Transaction list';
+
   public listWidth: number;
 
   public splitViewDemoForm: FormGroup;
 
   public splitViewStream = new Subject<SkySplitViewMessage>();
+
+  public workspaceAriaLabel: string = 'Transaction form';
 
   private _activeIndex = 0;
 
