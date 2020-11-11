@@ -27,8 +27,6 @@ import {
   templateUrl: './split-view-fixture-test.component.html'
 })
 export class SplitViewTestComponent {
-
-  // TODO: how can I bind the template to this?
   public static dataSkyId: string = 'test-split-view';
 
   public set activeIndex(value: number) {

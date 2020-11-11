@@ -6,14 +6,19 @@ import {
 import {
   async,
   ComponentFixture,
+  fakeAsync,
   TestBed,
-  tick,
-  fakeAsync
+  tick
 } from '@angular/core/testing';
 
 import {
   By
 } from '@angular/platform-browser';
+
+import {
+  expect,
+  SkyAppTestUtility
+} from '@skyux-sdk/testing';
 
 import {
   SkyMediaBreakpoints,
@@ -25,11 +30,6 @@ import {
 } from '@skyux/core/testing';
 
 import {
-  expect,
-  SkyAppTestUtility
-} from '@skyux-sdk/testing';
-
-import {
   SplitViewFixturesModule
 } from './fixtures/split-view-fixtures.module';
 
@@ -38,16 +38,16 @@ import {
 } from './fixtures/split-view.fixture';
 
 import {
+  SkySplitViewDrawerComponent
+} from './split-view-drawer.component';
+
+import {
   SkySplitViewMessage
 } from './types/split-view-message';
 
 import {
   SkySplitViewMessageType
 } from './types/split-view-message-type';
-
-import {
-  SkySplitViewDrawerComponent
-} from './split-view-drawer.component';
 
 let mockQueryService: MockSkyMediaQueryService;
 
