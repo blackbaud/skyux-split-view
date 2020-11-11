@@ -41,10 +41,6 @@ import {
 } from '@skyux/modals';
 
 import {
-  SkySplitViewModule
-} from '@skyux/split-view';
-
-import {
   SkySplitViewFixture
 } from './split-view-fixture';
 
@@ -102,7 +98,6 @@ describe('SplitView fixture', () => {
         SkyConfirmModule,
         SkyDefinitionListModule,
         SkyRepeaterModule,
-        SkySplitViewModule,
         SkySummaryActionBarModule,
         SkySplitViewTestingModule
       ],
