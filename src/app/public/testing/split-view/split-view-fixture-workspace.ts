@@ -1,6 +1,6 @@
 export interface SkySplitViewFixtureWorkspace {
   ariaLabel: string;
-  backButtonText: string;
   backButtonIsVisible: boolean;
+  backButtonText: string;
   isVisible: boolean;
 }

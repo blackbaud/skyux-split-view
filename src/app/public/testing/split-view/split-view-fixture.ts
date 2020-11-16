@@ -53,8 +53,8 @@ export class SkySplitViewFixture {
 
     return {
       ariaLabel: workspace.getAttribute('aria-label'),
-      backButtonText: SkyAppTestUtility.getText(backButton),
       backButtonIsVisible: !workspaceIsHidden && backButton !== undefined,
+      backButtonText: SkyAppTestUtility.getText(backButton),
       isVisible: !workspaceIsHidden
     };
   }
