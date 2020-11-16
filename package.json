@@ -1,6 +1,6 @@
 {
   "name": "@skyux/split-view",
-  "version": "4.1.0",
+  "version": "4.2.0",
   "description": "SKY UX Split View",
   "scripts": {
     "build": "skyux build-public-library",
@@ -56,7 +56,7 @@
     "@skyux/core": "4.3.1",
     "@skyux/docs-tools": "4.7.4",
     "@skyux/forms": "4.13.4",
-    "@skyux/http": "4.0.1",
+    "@skyux/http": "4.1.0",
     "@skyux/i18n": "4.0.3",
     "@skyux/indicators": "4.7.0",
     "@skyux/inline-form": "4.1.0",
@@ -65,7 +65,7 @@
     "@skyux/lookup": "4.8.1",
     "@skyux/modals": "4.5.1",
     "@skyux/omnibar-interop": "4.0.1",
-    "@skyux/popovers": "4.3.0",
+    "@skyux/popovers": "4.3.1",
     "@skyux/router": "4.0.1",
     "@skyux/split-view": "4.1.0",
     "@skyux/tabs": "4.4.0",
