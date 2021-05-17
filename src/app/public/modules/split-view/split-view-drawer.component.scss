@@ -2,6 +2,7 @@
 @import "~@skyux/theme/scss/_compat/mixins";
 
 .sky-split-view-drawer {
+  background: #ffffff;
   border-right: 1px solid $sky-border-color-neutral-medium;
   overflow: auto;
   height: 100%;
@@ -55,4 +56,13 @@
     background: none;
     display: none;
   }
+}
+
+@include sky-theme-modern {
+
+  .sky-split-view-drawer {
+    background: transparent;
+    border: none;
+  }
+
 }
