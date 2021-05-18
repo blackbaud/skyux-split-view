@@ -1,5 +1,6 @@
 @import "~@skyux/theme/scss/mixins";
 @import "~@skyux/theme/scss/_compat/mixins";
+@import "~@skyux/theme/scss/variables";
 
 .sky-split-view-drawer {
   background: #ffffff;
@@ -63,6 +64,18 @@
   .sky-split-view-drawer {
     background: transparent;
     border: none;
+  }
+
+  .sky-split-view-resize-handle {
+    transition: box-shadow $sky-transition-time-short;
+
+    &:focus {
+      border: solid 2px $sky-theme-modern-background-color-primary-dark;
+      box-shadow:
+        $sky-theme-modern-elevation-3-shadow-size
+        $sky-theme-modern-elevation-3-shadow-color;
+      outline: none;
+    }
   }
 
 }
