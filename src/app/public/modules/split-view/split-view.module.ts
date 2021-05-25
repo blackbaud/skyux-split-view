@@ -7,10 +7,6 @@ import {
 } from '@angular/common';
 
 import {
-  BrowserAnimationsModule
-} from '@angular/platform-browser/animations';
-
-import {
   MutationObserverService,
   SkyCoreAdapterService,
   SkyMediaQueryService
@@ -72,7 +68,6 @@ import {
     SkySplitViewMediaQueryService
   ],
   imports: [
-    BrowserAnimationsModule,
     CommonModule,
     SkyIconModule,
     SkySplitViewResourcesModule,

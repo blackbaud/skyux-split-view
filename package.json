@@ -1,6 +1,6 @@
 {
   "name": "@skyux/split-view",
-  "version": "4.3.0",
+  "version": "5.0.0-alpha.0",
   "description": "SKY UX Split View",
   "scripts": {
     "build": "skyux build-public-library",

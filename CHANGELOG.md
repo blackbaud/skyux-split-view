@@ -1,3 +1,7 @@
+# 5.0.0-alpha.0 (2021-05-24)
+
+- Removed `BrowserAnimationsModule` from the `imports` section of `SkySplitViewModule` to support lazy-loading. Consumers of `SkySplitViewModule` must now import `BrowserAnimationsModule` into their application's root module. [#58](https://github.com/blackbaud/skyux-split-view/pull/58)
+
 # 4.3.0 (2021-05-21)
 
 - Updated the split view component to use the modern theme. [#55](https://github.com/blackbaud/skyux-split-view/pull/55)
