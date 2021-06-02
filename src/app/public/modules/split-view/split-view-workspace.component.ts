@@ -41,7 +41,6 @@ import {
   styleUrls: ['./split-view-workspace.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
-    SkySplitViewMediaQueryService,
     { provide: SkyMediaQueryService, useExisting: SkySplitViewMediaQueryService }
   ]
 })

@@ -45,7 +45,6 @@ let skySplitViewNextId = 0;
   styleUrls: ['split-view-drawer.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
-    SkySplitViewMediaQueryService,
     { provide: SkyMediaQueryService, useExisting: SkySplitViewMediaQueryService }
   ]
 })
