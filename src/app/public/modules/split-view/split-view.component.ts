@@ -49,6 +49,10 @@ import {
 } from './split-view-drawer.component';
 
 import {
+  SkySplitViewMediaQueryService
+} from './split-view-media-query.service';
+
+import {
   SkySplitViewService
 } from './split-view.service';
 
@@ -62,6 +66,7 @@ import {
   styleUrls: ['./split-view.component.scss'],
   providers: [
     SkySplitViewAdapterService,
+    SkySplitViewMediaQueryService,
     SkySplitViewService
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -33,10 +33,6 @@ import {
 } from './split-view-drawer.component';
 
 import {
-  SkySplitViewMediaQueryService
-} from './split-view-media-query.service';
-
-import {
   SkySplitViewWorkspaceHeaderComponent
 } from './split-view-workspace-header.component';
 
@@ -64,8 +60,7 @@ import {
   providers: [
     MutationObserverService,
     SkyCoreAdapterService,
-    SkyMediaQueryService,
-    SkySplitViewMediaQueryService
+    SkyMediaQueryService
   ],
   imports: [
     CommonModule,
