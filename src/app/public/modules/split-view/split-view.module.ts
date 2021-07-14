@@ -7,12 +7,6 @@ import {
 } from '@angular/common';
 
 import {
-  MutationObserverService,
-  SkyCoreAdapterService,
-  SkyMediaQueryService
-} from '@skyux/core';
-
-import {
   SkyIconModule
 } from '@skyux/indicators';
 
@@ -56,11 +50,6 @@ import {
     SkySplitViewWorkspaceContentComponent,
     SkySplitViewWorkspaceFooterComponent,
     SkySplitViewWorkspaceHeaderComponent
-  ],
-  providers: [
-    MutationObserverService,
-    SkyCoreAdapterService,
-    SkyMediaQueryService
   ],
   imports: [
     CommonModule,
