@@ -1,4 +1,4 @@
-# 5.0.0-beta.0 (2021-07-14)
+# 5.0.0-beta.0 (2021-07-15)
 
 - Initial beta release.
 - Added support for `5.0.0-beta.*` versions of SKY UX component libraries. [#60](https://github.com/blackbaud/skyux-split-view/pull/60)
