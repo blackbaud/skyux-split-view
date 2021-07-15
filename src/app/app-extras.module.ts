@@ -37,10 +37,17 @@ import {
 } from '@skyux/router';
 
 import {
+  SkySplitViewForRootCompatModule
+} from './public/modules/shared/split-view-for-root-compat.module';
+
+import {
   SkySplitViewModule
 } from './public/public_api';
 
 @NgModule({
+  imports: [
+    SkySplitViewForRootCompatModule
+  ],
   exports: [
     SkyAppLinkModule,
     SkyCheckboxModule,

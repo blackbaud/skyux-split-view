@@ -11,16 +11,16 @@ import {
 } from '@skyux/action-bars';
 
 import {
-  SkyAppWindowRef
-} from '@skyux/core';
-
-import {
   SkyConfirmModule
 } from '@skyux/modals';
 
 import {
   SkyThemeModule
 } from '@skyux/theme';
+
+import {
+  SkySplitViewForRootCompatModule
+} from '../../shared/split-view-for-root-compat.module';
 
 import {
   SplitViewFixtureComponent
@@ -34,11 +34,9 @@ import {
   declarations: [
     SplitViewFixtureComponent
   ],
-  providers: [
-    SkyAppWindowRef
-  ],
   imports: [
     CommonModule,
+    SkySplitViewForRootCompatModule,
     SkySplitViewModule,
     SkySummaryActionBarModule,
     SkyThemeModule

@@ -41,6 +41,14 @@ import {
 } from '@skyux/modals';
 
 import {
+  SkyThemeService
+} from '@skyux/theme';
+
+import {
+  SkySplitViewForRootCompatModule
+} from '../../modules/shared/split-view-for-root-compat.module';
+
+import {
   SkySplitViewFixture
 } from './split-view-fixture';
 
@@ -99,10 +107,15 @@ describe('SplitView fixture', () => {
         SkyDefinitionListModule,
         SkyRepeaterModule,
         SkySummaryActionBarModule,
+        SkySplitViewForRootCompatModule,
         SkySplitViewTestingModule
       ],
       providers: [
-        { provide: SkyMediaQueryService, useValue: mockQueryService }
+        SkyThemeService,
+        {
+          provide: SkyMediaQueryService,
+          useValue: mockQueryService
+        }
       ]
     });
 
