@@ -24,6 +24,7 @@
         <sky-repeater-item *ngFor="let item of items; let i = index"
           [ngClass]="{ 'sky-repeater-active' : activeIndex === i }"
           (click)="onItemClick(i)"
+          (keyup.enter)="onItemClick(i)"
         >
           <sky-repeater-item-title>
               {{ item.name }}
