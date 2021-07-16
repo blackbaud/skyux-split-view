@@ -1,24 +1,17 @@
+<sky-docs-demo-control-panel-theme
+  (themeSettingsChange)="themeSettingsChange($event)"
+></sky-docs-demo-control-panel-theme>
+
 <div
-  class="page-flex"
-  [style.top.px]="pageFlexOffsetTop"
+  class="sky-padding-even-large"
 >
-  <div class="page-flex-header">
-    <sky-page-summary>
-      <sky-page-summary-alert *ngIf="unapprovedTransaction">
-        <sky-alert alertType="info">There is an unapproved transaction.</sky-alert>
-      </sky-page-summary-alert>
-      <sky-page-summary-title>
-        SKY Developers, LLC
-      </sky-page-summary-title>
-      <sky-page-summary-subtitle>
-        Petty Cash Transactions
-      </sky-page-summary-subtitle>
-      <sky-page-summary-content>
-        The transactions below cover various operating expenses which do not fall under one of the budgets areas of expenditures.
-      </sky-page-summary-content>
-    </sky-page-summary>
-  </div>
-  <div class="page-flex-main">
+
+  <h3>Split view with repeater and summary action bar</h3>
+
+  <div
+    id="screenshot-split-view"
+    [@.disabled]="animationsDisabled"
+  >
     <sky-split-view
       [messageStream]="splitViewStream"
     >
@@ -31,7 +24,6 @@
         >
           <sky-repeater-item *ngFor="let item of items; let i = index"
             (click)="onItemClick(i)"
-            (keyup.enter)="onItemClick(i)"
           >
             <sky-repeater-item-content>
               {{ item.amount }} <br />
@@ -43,7 +35,7 @@
       </sky-split-view-drawer>
 
       <sky-split-view-workspace
-        [ariaLabel]="'Transaction form'"
+        ariaLabel="Transaction form"
       >
         <sky-split-view-workspace-content
           class="sky-padding-even-large"

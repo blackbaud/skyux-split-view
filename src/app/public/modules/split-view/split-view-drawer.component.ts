@@ -17,6 +17,11 @@ import {
 } from '@skyux/core';
 
 import {
+  takeUntil,
+  takeWhile
+} from 'rxjs/operators';
+
+import {
   fromEvent,
   Subject
 } from 'rxjs';
@@ -28,7 +33,6 @@ import {
 import {
   SkySplitViewService
 } from './split-view.service';
-import { takeUntil, takeWhile } from 'rxjs/operators';
 
 let skySplitViewNextId = 0;
 
@@ -48,7 +52,8 @@ let skySplitViewNextId = 0;
 export class SkySplitViewDrawerComponent implements AfterViewInit, OnInit, OnDestroy {
 
   /**
-   * Sets the list panel's `aria-label` attribute to support accessibility.
+   * Specifies an ARIA label for the list panel. This sets the panel's `aria-label` attribute
+   * [to support accessibility](https://developer.blackbaud.com/skyux/learn/accessibility).
    */
   @Input()
   public ariaLabel: string;

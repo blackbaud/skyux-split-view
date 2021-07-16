@@ -6,14 +6,19 @@ import {
 import {
   async,
   ComponentFixture,
+  fakeAsync,
   TestBed,
-  tick,
-  fakeAsync
+  tick
 } from '@angular/core/testing';
 
 import {
   By
 } from '@angular/platform-browser';
+
+import {
+  expect,
+  SkyAppTestUtility
+} from '@skyux-sdk/testing';
 
 import {
   SkyMediaBreakpoints,
@@ -25,9 +30,16 @@ import {
 } from '@skyux/core/testing';
 
 import {
-  expect,
-  SkyAppTestUtility
-} from '@skyux-sdk/testing';
+  SkyTheme,
+  SkyThemeMode,
+  SkyThemeService,
+  SkyThemeSettings,
+  SkyThemeSettingsChange
+} from '@skyux/theme';
+
+import {
+  BehaviorSubject
+} from 'rxjs';
 
 import {
   SplitViewFixturesModule
@@ -38,16 +50,16 @@ import {
 } from './fixtures/split-view.fixture';
 
 import {
+  SkySplitViewDrawerComponent
+} from './split-view-drawer.component';
+
+import {
   SkySplitViewMessage
 } from './types/split-view-message';
 
 import {
   SkySplitViewMessageType
 } from './types/split-view-message-type';
-
-import {
-  SkySplitViewDrawerComponent
-} from './split-view-drawer.component';
 
 let mockQueryService: MockSkyMediaQueryService;
 
@@ -70,7 +82,7 @@ function getResizeHandle(fixture: ComponentFixture<any>): DebugElement {
 }
 
 function getMaxWidth(): number {
-  return window.innerWidth - 102; // Acount for some padding.
+  return window.innerWidth - 102; // Account for some padding.
 }
 
 function dispatchMouseEvent(eventType: string, clientXArg: number, fixture: ComponentFixture<any>): void {
@@ -146,15 +158,36 @@ describe('Split view component', () => {
   let fixture: ComponentFixture<SplitViewFixtureComponent>;
   let minWidth = 100;
   let maxWidth: number;
-  mockQueryService = new MockSkyMediaQueryService();
+  let mockThemeSvc: {
+    settingsChange: BehaviorSubject<SkyThemeSettingsChange>
+  };
 
   beforeEach(fakeAsync(() => {
+    mockThemeSvc = {
+      settingsChange: new BehaviorSubject<SkyThemeSettingsChange>(
+        {
+          currentSettings: new SkyThemeSettings(
+            SkyTheme.presets.default,
+            SkyThemeMode.presets.light
+          ),
+          previousSettings: undefined
+        }
+      )
+    };
+
+    // replace the mock service before using in the test bed to avoid change detection errors
+    mockQueryService = new MockSkyMediaQueryService();
+
     TestBed.configureTestingModule({
       imports: [
         SplitViewFixturesModule
       ],
       providers: [
-        { provide: SkyMediaQueryService, useValue: mockQueryService }
+        { provide: SkyMediaQueryService, useValue: mockQueryService },
+        {
+          provide: SkyThemeService,
+          useValue: mockThemeSvc
+        }
       ]
     });
 
@@ -512,7 +545,7 @@ describe('Split view component', () => {
       const resizeHandle = getResizeHandle(fixture).nativeElement;
 
       // Attmpt to resize list panel larger than maximum.
-      resizeList(999, fixture);
+      resizeList(9999, fixture);
 
       // Expect list panel width and handle to remain at default.
       // Note: a human user would see this revert to the last valid drag point,

@@ -4,7 +4,7 @@
   pageTitle="Split view"
 >
   <sky-docs-demo-page-summary>
-    Split views display a list beside a workspace where users can view details for a selected item and take actions.
+    A split view displays a workspace beside a list to let users view details and take actions for the selected item.
   </sky-docs-demo-page-summary>
 
   <sky-docs-demo>
@@ -80,34 +80,42 @@
           <div
             class="sky-form-group"
           >
-            <label
-              class="sky-control-label"
-              for="approvedAmount"
-            >
-              Approved amount
-            </label>
-            <input
-              class="sky-form-control"
-              formControlName="approvedAmount"
-              name="approvedAmount"
-              type="text"
-            />
+            <sky-input-box>
+              <label
+                class="sky-control-label"
+                [for]="amountInput.id"
+              >
+                Approved amount
+              </label>
+              <input
+                class="sky-form-control"
+                formControlName="approvedAmount"
+                name="approvedAmount"
+                type="text"
+                skyId
+                #amountInput
+              />
+            </sky-input-box>
           </div>
 
           <div
             class="sky-form-group"
           >
-            <label
-              class="sky-control-label"
-              for="comments"
-            >
-              Comments
-            </label>
-            <textarea
-              class="sky-form-control"
-              formControlName="comments"
-              name="comments"
-            ></textarea>
+            <sky-input-box>
+              <label
+                class="sky-control-label"
+                [for]="commentsInput.id"
+              >
+                Comments
+              </label>
+              <textarea
+                class="sky-form-control"
+                formControlName="comments"
+                name="comments"
+                skyId
+                #commentsInput
+              ></textarea>
+            </sky-input-box>
           </div>
         </form>
       </sky-split-view-workspace-content>
@@ -263,29 +271,30 @@
         >
         </sky-docs-design-guideline-thumbnail>
       </sky-docs-design-guideline>
-
-      <sky-docs-design-guideline
-        heading="List manipulation"
-      >
-        <p>
-          If users need to search for specific items in the list or show and hide items with certain statuses, include a search input or status checkbox filter in the list panel.
-        </p>
-        <sky-docs-design-guideline-thumbnail
-          imageSource="~/assets/img/option-search-toggle.png"
+      <div *skyThemeIf="'default'">
+        <sky-docs-design-guideline
+          heading="List manipulation"
         >
-        </sky-docs-design-guideline-thumbnail>
-      </sky-docs-design-guideline>
-      <sky-docs-design-guideline>
-        <p>
-          When possible, pre-filter the list to relevant items and pre-sort it to the expected useful order. If you can't predict how users will use the list, include a <a href="https://developer.blackbaud.com/skyux/components/toolbar">toolbar</a> to let them add items or filter, sort, and search the list.
-        </p>
-        <sky-docs-design-guideline-thumbnail
-        caption="Use caution when using a full toolbar with a split view. Automatically filter and sort the list when possible."
-        captionType="warning"
-        imageSource="~/assets/img/option-toolbar.png"
-        >
-        </sky-docs-design-guideline-thumbnail>
-      </sky-docs-design-guideline>
+          <p>
+            If users need to search for specific items in the list or show and hide items with certain statuses, include a search input or status checkbox filter in the list panel.
+          </p>
+          <sky-docs-design-guideline-thumbnail
+            imageSource="~/assets/img/option-search-toggle.png"
+          >
+          </sky-docs-design-guideline-thumbnail>
+        </sky-docs-design-guideline>
+        <sky-docs-design-guideline>
+          <p>
+            When possible, pre-filter the list to relevant items and pre-sort it to the expected useful order. If you can't predict how users will use the list, include a <a href="https://developer.blackbaud.com/skyux/components/toolbar">toolbar</a> to let them add items or filter, sort, and search the list.
+          </p>
+          <sky-docs-design-guideline-thumbnail
+          caption="Use caution when using a full toolbar with a split view. Automatically filter and sort the list when possible."
+          captionType="warning"
+          imageSource="~/assets/img/option-toolbar.png"
+          >
+          </sky-docs-design-guideline-thumbnail>
+        </sky-docs-design-guideline>
+    </div>
     </sky-docs-demo-page-section>
 
     <sky-docs-demo-page-section
@@ -295,7 +304,7 @@
         heading="Automatically advance to the next item"
       >
         <p class="sky-docs-text-block">
-          If users are likely to work through the list sequentially, automatically advance to the next item after users invoke the primary action in the workspace.
+          If users are likely to work through the list sequentially, remove the selected item and automatically advance to the next item after users invoke the primary action in the workspace.
         </p>
       </sky-docs-design-guideline>
       <sky-docs-design-guideline

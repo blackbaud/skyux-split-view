@@ -7,7 +7,8 @@ import {
   EventEmitter,
   HostListener,
   Input,
-  OnDestroy
+  OnDestroy,
+  OnInit
 } from '@angular/core';
 
 import {
@@ -44,7 +45,7 @@ import {
     { provide: SkyMediaQueryService, useExisting: SkySplitViewMediaQueryService }
   ]
 })
-export class SkySplitViewWorkspaceComponent implements AfterViewInit, OnDestroy {
+export class SkySplitViewWorkspaceComponent implements AfterViewInit, OnDestroy, OnInit {
 
   public set isMobile(value: boolean) {
     this._isMobile = value;
@@ -57,7 +58,8 @@ export class SkySplitViewWorkspaceComponent implements AfterViewInit, OnDestroy 
   }
 
   /**
-   * Sets the workspace panel's `aria-label` attribute to support accessibility.
+   * Specifies an ARIA label for the workspace panel. This sets the panel's `aria-label` attribute
+   * [to support accessibility](https://developer.blackbaud.com/skyux/learn/accessibility).
    */
   @Input()
   public ariaLabel: string;
@@ -76,14 +78,16 @@ export class SkySplitViewWorkspaceComponent implements AfterViewInit, OnDestroy 
     private splitViewService: SkySplitViewService
   ) {}
 
-  public ngAfterViewInit(): void {
+  public ngOnInit(): void {
     this.splitViewService.isMobileStream
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((mobile: boolean) => {
         this.isMobile = mobile;
         this.changeDetectorRef.markForCheck();
       });
+  }
 
+  public ngAfterViewInit(): void {
     this.splitViewService.drawerWidthStream
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(() => {
