@@ -154,8 +154,6 @@ export class SkySplitViewComponent implements OnInit, OnDestroy {
 
   private bindHeightToWindowUnsubscribe: Subject<void>;
 
-  private mediaQuerySubscription: Subscription;
-
   private ngUnsubscribe = new Subject<void>();
 
   private _bindHeightToWindow = false;
@@ -197,10 +195,6 @@ export class SkySplitViewComponent implements OnInit, OnDestroy {
     if (this.bindHeightToWindowUnsubscribe) {
       this.bindHeightToWindowUnsubscribe.next();
       this.bindHeightToWindowUnsubscribe.complete();
-    }
-
-    if (this.mediaQuerySubscription) {
-      this.mediaQuerySubscription.unsubscribe();
     }
 
     this.ngUnsubscribe.next();
