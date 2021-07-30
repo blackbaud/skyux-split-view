@@ -22,8 +22,7 @@ import {
 } from '@skyux/core';
 
 import {
-  Subject,
-  Subscription
+  Subject
 } from 'rxjs';
 
 import {
