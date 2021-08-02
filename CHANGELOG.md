@@ -1,7 +1,6 @@
-
 # 5.0.0-beta.1 (2021-08-03)
 
-- Added bug fixes and features from the `master` branch. [#64](https://github.com/blackbaud/skyux-split-view/pull/64)
+- Added bug fixes and features from the `master` branch. [#65](https://github.com/blackbaud/skyux-split-view/pull/65)
 
 # 4.3.1 (2021-08-02)
 
