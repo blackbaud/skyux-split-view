@@ -16,7 +16,7 @@ import {
 } from '@angular/platform-browser';
 
 import {
-  expect,
+  expect, expectAsync,
   SkyAppTestUtility
 } from '@skyux-sdk/testing';
 
@@ -752,15 +752,32 @@ describe('Split view component', () => {
       });
     }));
 
-    it('should pass accessibility', async(() => {
+    it('should pass accessibility', async () => {
       fixture.componentInstance.ariaLabelForDrawer = 'My drawer';
       fixture.detectChanges();
-      expect(fixture.nativeElement).toBeAccessible();
-    }));
+      await fixture.whenStable();
+      return expectAsync(fixture.nativeElement).toBeAccessible();
+    });
 
-    it('should pass accessibility when in responsive mode', async(() => {
+    it('should pass accessibility when in responsive mode', async () => {
       initiateResponsiveMode(fixture);
-      expect(fixture.nativeElement).toBeAccessible();
-    }));
+      await fixture.whenStable();
+      return expectAsync(fixture.nativeElement).toBeAccessible();
+    });
+
+    fit('should pass accessibility when scrolling', async () => {
+      component.ariaLabelForDrawer = 'My drawer';
+      Array.from(Array(200).keys()).forEach((i) => {
+        component.items.push({
+          id: `${component.items.length + 1}`,
+          name: `item ${component.items.length + 1}`
+        });
+        component.additionalItems.push(`additional item ${i + 1}`);
+      });
+      fixture.detectChanges();
+      await fixture.whenStable();
+      console.log('accessibility');
+      return expectAsync(fixture.nativeElement).toBeAccessible();
+    });
   });
 });
