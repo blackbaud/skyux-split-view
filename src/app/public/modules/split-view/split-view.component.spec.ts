@@ -768,7 +768,7 @@ describe('Split view component', () => {
 
     it('should pass accessibility when scrolling', async(() => {
       component.ariaLabelForDrawer = 'My drawer';
-      Array.from(Array(200).keys()).forEach((i) => {
+      Array.from(Array(70).keys()).forEach((i) => {
         component.items.push({
           id: `${component.items.length + 1}`,
           name: `item ${component.items.length + 1}`
