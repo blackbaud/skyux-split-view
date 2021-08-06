@@ -753,20 +753,20 @@ describe('Split view component', () => {
       });
     }));
 
-    it('should pass accessibility', async(() => {
+    it('should pass accessibility', async () => {
       fixture.componentInstance.ariaLabelForDrawer = 'My drawer';
       fixture.detectChanges();
-      fixture.whenStable();
+      await fixture.whenStable();
       return expectAsync(fixture.nativeElement).toBeAccessible();
-    }));
+    });
 
-    it('should pass accessibility when in responsive mode', async(() => {
+    it('should pass accessibility when in responsive mode', async () => {
       initiateResponsiveMode(fixture);
-      fixture.whenStable();
+      await fixture.whenStable();
       return expectAsync(fixture.nativeElement).toBeAccessible();
-    }));
+    });
 
-    it('should pass accessibility when scrolling', async(() => {
+    it('should pass accessibility when scrolling', async () => {
       component.ariaLabelForDrawer = 'My drawer';
       Array.from(Array(70).keys()).forEach((i) => {
         component.items.push({
@@ -776,8 +776,8 @@ describe('Split view component', () => {
         component.additionalItems.push(`additional item ${i + 1}`);
       });
       fixture.detectChanges();
-      fixture.whenStable();
+      await fixture.whenStable();
       return expectAsync(fixture.nativeElement).toBeAccessible();
-    }));
+    });
   });
 });
