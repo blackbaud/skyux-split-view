@@ -765,7 +765,7 @@ describe('Split view component', () => {
       return expectAsync(fixture.nativeElement).toBeAccessible();
     });
 
-    fit('should pass accessibility when scrolling', async () => {
+    it('should pass accessibility when scrolling', async () => {
       component.ariaLabelForDrawer = 'My drawer';
       Array.from(Array(200).keys()).forEach((i) => {
         component.items.push({
@@ -776,7 +776,6 @@ describe('Split view component', () => {
       });
       fixture.detectChanges();
       await fixture.whenStable();
-      console.log('accessibility');
       return expectAsync(fixture.nativeElement).toBeAccessible();
     });
   });
