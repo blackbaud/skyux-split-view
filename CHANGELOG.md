@@ -1,3 +1,11 @@
+# 5.0.0-beta.2 (2021-08-09)
+
+- Added bug fixes and features from the `master` branch. [#65](https://github.com/blackbaud/skyux-split-view/pull/65)
+
+# 4.3.2 (2021-08-06)
+
+- Fixed the accessibility of scrollable regions in the split view component. [#66](https://github.com/blackbaud/skyux-split-view/pull/66)
+
 # 5.0.0-beta.1 (2021-08-03)
 
 - Added bug fixes and features from the `master` branch. [#65](https://github.com/blackbaud/skyux-split-view/pull/65)
