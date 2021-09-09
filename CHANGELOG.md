@@ -1,3 +1,7 @@
+# 4.3.3 (2021-08-10)
+
+- Fixed `sky-split-view-workspace-content` to address keyboard access to the component. [#69](https://github.com/blackbaud/skyux-split-view/pull/69)
+
 # 5.0.0-beta.2 (2021-08-09)
 
 - Added bug fixes and features from the `master` branch. [#68](https://github.com/blackbaud/skyux-split-view/pull/68)
