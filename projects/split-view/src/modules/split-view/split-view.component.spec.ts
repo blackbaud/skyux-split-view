@@ -333,7 +333,7 @@ describe('Split view component', () => {
         const actionBar: HTMLElement = document.querySelector('.sky-summary-action-bar');
         expect(rendererSpy).toHaveBeenCalledWith(splitViewElement, 'min-height', '300px');
         expect(rendererSpy).toHaveBeenCalledWith(splitViewElement, 'max-height', 'calc(100vh - 0px - ' + actionBar.offsetHeight + 'px)');
-      }, 10);
+      }, 100);
     }));
 
     it(`should bind the split view hight when the 'bindHeightToWindow' property is set with a body
