@@ -1,3 +1,7 @@
+# 5.0.0-beta.3 (2021-09-15)
+
+- Added bug fixes and features from the `master` branch and migrated to Angular CLI. [#71](https://github.com/blackbaud/skyux-split-view/pull/71)
+
 # 4.3.3 (2021-08-10)
 
 - Fixed `sky-split-view-workspace-content` to address keyboard access to the component. [#69](https://github.com/blackbaud/skyux-split-view/pull/69)
