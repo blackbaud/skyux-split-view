@@ -1,10 +1,31 @@
 {
-  "extends": "./node_modules/@skyux-sdk/builder/tsconfig",
+  "compileOnSave": false,
   "compilerOptions": {
+    "baseUrl": "./",
+    "outDir": "./dist/out-tsc",
+    "sourceMap": true,
+    "declaration": false,
+    "downlevelIteration": true,
     "experimentalDecorators": true,
-    "module": "commonjs"
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "target": "es2017",
+    "module": "es2020",
+    "paths": {
+      "split-view": [
+        "dist/split-view/split-view",
+        "dist/split-view"
+      ],
+      "@skyux/split-view": [
+        "projects/split-view/src/public-api.ts"
+      ]
+    },
+    "lib": [
+      "es2018",
+      "dom"
+    ]
   },
-  "exclude": [
-    "node_modules"
-  ]
+  "angularCompilerOptions": {
+    "enableI18nLegacyMessageIdFormat": false
+  }
 }
