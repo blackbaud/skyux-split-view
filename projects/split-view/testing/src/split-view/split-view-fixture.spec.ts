@@ -16,6 +16,10 @@ import {
 } from '@angular/platform-browser';
 
 import {
+  NoopAnimationsModule
+} from '@angular/platform-browser/animations';
+
+import {
   SkySummaryActionBarModule
 } from '@skyux/action-bars';
 
@@ -98,6 +102,7 @@ describe('SplitView fixture', () => {
         SplitViewTestComponent
       ],
       imports: [
+        NoopAnimationsModule,
         ReactiveFormsModule,
         SkyConfirmModule,
         SkyDefinitionListModule,
