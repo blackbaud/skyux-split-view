@@ -32,7 +32,8 @@
             "karmaConfig": "projects/split-view/karma.conf.js",
             "codeCoverage": true,
             "codeCoverageExclude": [
-              "**/fixtures/**"
+              "**/fixtures/**",
+              "projects/split-view/src/test.ts"
             ],
             "styles": [
               "@skyux/theme/css/sky.css",
