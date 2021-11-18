@@ -12,18 +12,10 @@
     "target": "es2017",
     "module": "es2020",
     "paths": {
-      "split-view": [
-        "dist/split-view/split-view",
-        "dist/split-view"
-      ],
-      "@skyux/split-view": [
-        "projects/split-view/src/public-api.ts"
-      ]
+      "split-view": ["dist/split-view/split-view", "dist/split-view"],
+      "@skyux/split-view": ["projects/split-view/src/public-api.ts"]
     },
-    "lib": [
-      "es2018",
-      "dom"
-    ]
+    "lib": ["es2018", "dom"]
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false

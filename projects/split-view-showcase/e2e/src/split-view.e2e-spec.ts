@@ -1,13 +1,6 @@
-import {
-  expect,
-  SkyHostBrowser,
-  SkyVisualThemeSelector
-} from '@skyux-sdk/e2e';
+import { expect, SkyHostBrowser, SkyVisualThemeSelector } from '@skyux-sdk/e2e';
 
-import {
-  by,
-  element
-} from 'protractor';
+import { by, element } from 'protractor';
 
 describe('Split view', () => {
   let currentTheme: string;
@@ -37,7 +30,7 @@ describe('Split view', () => {
       await SkyHostBrowser.scrollTo('#screenshot-split-view');
       await SkyHostBrowser.setWindowBreakpoint('lg');
       expect('#screenshot-split-view').toMatchBaselineScreenshot(done, {
-        screenshotName: getScreenshotName('split-view-lg')
+        screenshotName: getScreenshotName('split-view-lg'),
       });
     });
 
@@ -45,7 +38,7 @@ describe('Split view', () => {
       await SkyHostBrowser.scrollTo('#screenshot-split-view');
       await SkyHostBrowser.setWindowBreakpoint('xs');
       expect('#screenshot-split-view').toMatchBaselineScreenshot(done, {
-        screenshotName: getScreenshotName('split-view-xs')
+        screenshotName: getScreenshotName('split-view-xs'),
       });
     });
 
@@ -53,11 +46,13 @@ describe('Split view', () => {
       await SkyHostBrowser.scrollTo('#screenshot-split-view');
       await SkyHostBrowser.setWindowBreakpoint('xs');
       element(
-        by.css('#screenshot-split-view .sky-split-view-workspace-header-content .sky-btn')
+        by.css(
+          '#screenshot-split-view .sky-split-view-workspace-header-content .sky-btn'
+        )
       ).click();
       await SkyHostBrowser.scrollTo('#screenshot-split-view');
       expect('#screenshot-split-view').toMatchBaselineScreenshot(done, {
-        screenshotName: getScreenshotName('split-view-drawer-xs')
+        screenshotName: getScreenshotName('split-view-drawer-xs'),
       });
     });
   }
@@ -80,5 +75,4 @@ describe('Split view', () => {
     });
     runTests();
   });
-
 });
