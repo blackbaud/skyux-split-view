@@ -1,26 +1,17 @@
 <sky-e2e-theme-selector></sky-e2e-theme-selector>
 
-<div
-  class="sky-padding-even-large"
->
-
+<div class="sky-padding-even-large">
   <h3>Split view with repeater and summary action bar</h3>
 
-  <div
-    id="screenshot-split-view"
-    [@.disabled]="animationsDisabled"
-  >
-    <sky-split-view
-      [messageStream]="splitViewStream"
-    >
+  <div id="screenshot-split-view" [@.disabled]="animationsDisabled">
+    <sky-split-view [messageStream]="splitViewStream">
       <sky-split-view-drawer
         [ariaLabel]="'Transaction list'"
         [width]="listWidth"
       >
-        <sky-repeater
-          [activeIndex]="activeIndex"
-        >
-          <sky-repeater-item *ngFor="let item of items; let i = index"
+        <sky-repeater [activeIndex]="activeIndex">
+          <sky-repeater-item
+            *ngFor="let item of items; let i = index"
             (click)="onItemClick(i)"
             (keyup.enter)="onItemClick(i)"
           >
@@ -33,19 +24,10 @@
         </sky-repeater>
       </sky-split-view-drawer>
 
-      <sky-split-view-workspace
-        ariaLabel="Transaction form"
-      >
-        <sky-split-view-workspace-content
-          class="sky-padding-even-large"
-        >
-          <form
-            [formGroup]="splitViewDemoForm"
-            (ngSubmit)="onApprove()"
-          >
-            <sky-definition-list
-              labelWidth="150px"
-            >
+      <sky-split-view-workspace ariaLabel="Transaction form">
+        <sky-split-view-workspace-content class="sky-padding-even-large">
+          <form [formGroup]="splitViewDemoForm" (ngSubmit)="onApprove()">
+            <sky-definition-list labelWidth="150px">
               <sky-definition-list-content>
                 <sky-definition-list-label>
                   Receipt amount
@@ -55,17 +37,13 @@
                 </sky-definition-list-value>
               </sky-definition-list-content>
               <sky-definition-list-content>
-                <sky-definition-list-label>
-                  Date
-                </sky-definition-list-label>
+                <sky-definition-list-label> Date </sky-definition-list-label>
                 <sky-definition-list-value>
                   {{ activeRecord.date }}
                 </sky-definition-list-value>
               </sky-definition-list-content>
               <sky-definition-list-content>
-                <sky-definition-list-label>
-                  Vendor
-                </sky-definition-list-label>
+                <sky-definition-list-label> Vendor </sky-definition-list-label>
                 <sky-definition-list-value>
                   {{ activeRecord.vendor }}
                 </sky-definition-list-value>
@@ -79,14 +57,9 @@
                 </sky-definition-list-value>
               </sky-definition-list-content>
             </sky-definition-list>
-            <div
-              class="sky-form-group"
-            >
+            <div class="sky-form-group">
               <sky-input-box>
-                <label
-                  class="sky-control-label"
-                  [for]="amountInput.id"
-                >
+                <label class="sky-control-label" [for]="amountInput.id">
                   Approved amount
                 </label>
                 <input
@@ -100,14 +73,9 @@
               </sky-input-box>
             </div>
 
-            <div
-              class="sky-form-group"
-            >
+            <div class="sky-form-group">
               <sky-input-box>
-                <label
-                  class="sky-control-label"
-                  [for]="commentsInput.id"
-                >
+                <label class="sky-control-label" [for]="commentsInput.id">
                   Comments
                 </label>
                 <textarea
@@ -122,9 +90,7 @@
           </form>
         </sky-split-view-workspace-content>
         <sky-split-view-workspace-footer>
-          <sky-summary-action-bar
-            id="summary-action-bar"
-          >
+          <sky-summary-action-bar id="summary-action-bar">
             <sky-summary-action-bar-actions>
               <sky-summary-action-bar-primary-action
                 (actionClick)="onApprove()"

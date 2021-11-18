@@ -12,18 +12,13 @@ import { SplitViewWithRepeaterVisualComponent } from './split-view/basic/split-v
 import { SplitViewVisualComponent } from './split-view/page-bound/split-view-visual.component';
 import { VisualComponent } from './visual.component';
 
-
-
 @NgModule({
   declarations: [
     SplitViewVisualComponent,
     SplitViewWithRepeaterVisualComponent,
-    VisualComponent
+    VisualComponent,
   ],
-  exports: [
-    SplitViewVisualComponent,
-    SplitViewWithRepeaterVisualComponent
-  ],
+  exports: [SplitViewVisualComponent, SplitViewWithRepeaterVisualComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -34,7 +29,7 @@ import { VisualComponent } from './visual.component';
     SkyInputBoxModule,
     SkyRepeaterModule,
     SkySplitViewModule,
-    SkySummaryActionBarModule
-  ]
+    SkySummaryActionBarModule,
+  ],
 })
-export class VisualModule { }
+export class VisualModule {}

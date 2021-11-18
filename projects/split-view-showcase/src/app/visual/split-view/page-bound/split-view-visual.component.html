@@ -1,29 +1,16 @@
 <sky-e2e-theme-selector></sky-e2e-theme-selector>
 
-<div
-  class="sky-padding-even-large"
->
+<div class="sky-padding-even-large">
   <h3>Split view with page binding</h3>
 
-  <div
-    style="height: 300px;"
-  >
+  <div style="height: 300px">
     Intentional white space to help show page binding below.
   </div>
 
-  <sky-split-view
-    [bindHeightToWindow]="true"
-    [messageStream]="splitViewStream"
-  >
-    <sky-split-view-drawer
-      [width]="width"
-    >
-      <ul
-        class="sky-visual-list"
-      >
-        <li *ngFor="let item of items; let i = index"
-          (click)="onItemClick(i)"
-        >
+  <sky-split-view [bindHeightToWindow]="true" [messageStream]="splitViewStream">
+    <sky-split-view-drawer [width]="width">
+      <ul class="sky-visual-list">
+        <li *ngFor="let item of items; let i = index" (click)="onItemClick(i)">
           {{ item.name }} <br />
           {{ item.date }} <br />
           {{ item.amount }}
@@ -33,18 +20,12 @@
 
     <sky-split-view-workspace>
       <sky-split-view-workspace-content>
-        <h3>
-          Transaction for {{ activeRecord.name }}
-        </h3>
+        <h3>Transaction for {{ activeRecord.name }}</h3>
         <form>
           <p>
             <label>
               Post date
-              <input
-                name="date"
-                type="text"
-                [(ngModel)]="activeRecord.date"
-              />
+              <input name="date" type="text" [(ngModel)]="activeRecord.date" />
             </label>
           </p>
           <p>

@@ -8,24 +8,24 @@ const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: '/visual'
+    redirectTo: '/visual',
   },
   {
     path: 'visual',
-    component: VisualComponent
+    component: VisualComponent,
   },
   {
     path: 'visual/split-view/basic',
-    component: SplitViewWithRepeaterVisualComponent
+    component: SplitViewWithRepeaterVisualComponent,
   },
   {
     path: 'visual/split-view/page-bound',
-    component: SplitViewVisualComponent
-  }
+    component: SplitViewVisualComponent,
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

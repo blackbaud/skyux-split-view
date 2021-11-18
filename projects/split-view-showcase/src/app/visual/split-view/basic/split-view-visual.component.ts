@@ -1,43 +1,26 @@
-import {
-  ChangeDetectorRef,
-  Component
-} from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 
-import {
-  FormControl,
-  FormGroup
-} from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 
-import {
-  SkyAppConfig
-} from '@skyux/config';
+import { SkyAppConfig } from '@skyux/config';
 
 import {
   SkyConfirmCloseEventArgs,
   SkyConfirmService,
-  SkyConfirmType
+  SkyConfirmType,
 } from '@skyux/modals';
 
-import {
-  SkyThemeService,
-  SkyThemeSettings
-} from '@skyux/theme';
+import { SkyThemeService, SkyThemeSettings } from '@skyux/theme';
 
-import {
-  Subject
-} from 'rxjs';
+import { Subject } from 'rxjs';
 
-import {
-  SkySplitViewMessage,
-  SkySplitViewMessageType
-} from 'split-view';
+import { SkySplitViewMessage, SkySplitViewMessageType } from 'split-view';
 
 @Component({
-  selector: 'split-view-visual',
-  templateUrl: './split-view-visual.component.html'
+  selector: 'app-split-view-visual',
+  templateUrl: './split-view-visual.component.html',
 })
 export class SplitViewWithRepeaterVisualComponent {
-
   public animationsDisabled: boolean = false;
 
   public set activeIndex(value: number) {
@@ -60,7 +43,7 @@ export class SplitViewWithRepeaterVisualComponent {
       vendor: 'amazon.com',
       receiptImage: 'amzn-office-supply-order-5-13-19.png',
       approvedAmount: 73.19,
-      comments: ''
+      comments: '',
     },
     {
       id: 2,
@@ -69,7 +52,7 @@ export class SplitViewWithRepeaterVisualComponent {
       vendor: 'Office Max',
       receiptImage: 'office-max-order.png',
       approvedAmount: 214.12,
-      comments: ''
+      comments: '',
     },
     {
       id: 3,
@@ -78,7 +61,7 @@ export class SplitViewWithRepeaterVisualComponent {
       vendor: 'amazon.com',
       receiptImage: 'amzn-office-supply-order-5-14-19.png',
       approvedAmount: 29.99,
-      comments: ''
+      comments: '',
     },
     {
       id: 4,
@@ -87,8 +70,8 @@ export class SplitViewWithRepeaterVisualComponent {
       vendor: 'Fresh Catering, LLC',
       receiptImage: 'fresh-catering-llc-order.png',
       approvedAmount: 1500,
-      comments: ''
-    }
+      comments: '',
+    },
   ];
 
   public listWidth: number;
@@ -135,7 +118,7 @@ export class SplitViewWithRepeaterVisualComponent {
   private loadFormGroup(record: any): void {
     this.splitViewDemoForm = new FormGroup({
       approvedAmount: new FormControl(record.approvedAmount),
-      comments: new FormControl(record.comments)
+      comments: new FormControl(record.comments),
     });
   }
 
@@ -145,40 +128,43 @@ export class SplitViewWithRepeaterVisualComponent {
   }
 
   private openConfirmModal(index: number): void {
-    this.confirmService.open({
-      message: 'You have unsaved work. Would you like to save it before you change records?',
-      type: SkyConfirmType.Custom,
-      buttons: [
-        {
-          action: 'yes',
-          text: 'Yes',
-          styleType: 'primary'
-        },
-        {
-          action: 'discard',
-          text: 'Discard changes',
-          styleType: 'link'
+    this.confirmService
+      .open({
+        message:
+          'You have unsaved work. Would you like to save it before you change records?',
+        type: SkyConfirmType.Custom,
+        buttons: [
+          {
+            action: 'yes',
+            text: 'Yes',
+            styleType: 'primary',
+          },
+          {
+            action: 'discard',
+            text: 'Discard changes',
+            styleType: 'link',
+          },
+        ],
+      })
+      .closed.subscribe((closeArgs: SkyConfirmCloseEventArgs) => {
+        if (closeArgs.action.toLowerCase() === 'yes') {
+          this.saveForm();
         }
-      ]
-    }).closed.subscribe((closeArgs: SkyConfirmCloseEventArgs) => {
-      if (closeArgs.action.toLowerCase() === 'yes') {
-        this.saveForm();
-      }
-      this.loadWorkspace(index);
-    });
+        this.loadWorkspace(index);
+      });
   }
 
   private saveForm(): void {
-    this.activeRecord.approvedAmount = this.splitViewDemoForm.value.approvedAmount;
+    this.activeRecord.approvedAmount =
+      this.splitViewDemoForm.value.approvedAmount;
     this.activeRecord.comments = this.splitViewDemoForm.value.comments;
     this.splitViewDemoForm.reset(this.splitViewDemoForm.value);
   }
 
   private setFocusInWorkspace(): void {
     const message: SkySplitViewMessage = {
-      type: SkySplitViewMessageType.FocusWorkspace
+      type: SkySplitViewMessageType.FocusWorkspace,
     };
     this.splitViewStream.next(message);
   }
-
 }
