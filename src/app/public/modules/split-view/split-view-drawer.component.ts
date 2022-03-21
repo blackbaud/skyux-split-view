@@ -53,7 +53,7 @@ export class SkySplitViewDrawerComponent implements AfterViewInit, OnInit, OnDes
 
   /**
    * Specifies an ARIA label for the list panel. This sets the panel's `aria-label` attribute
-   * [to support accessibility](https://developer.blackbaud.com/skyux/learn/accessibility).
+   * [to support accessibility](https://developer.blackbaud.com/skyux-v4/learn/accessibility).
    */
   @Input()
   public ariaLabel: string;
